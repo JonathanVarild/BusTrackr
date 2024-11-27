@@ -31,4 +31,5 @@ jobs:
             - name: Create Release
               uses: ncipollo/release-action@v1
               with:
+                tag: ${{ github.sha }}
                 artifacts: "build.tar.gz"
