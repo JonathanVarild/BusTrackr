@@ -7,7 +7,7 @@ on:
     workflow_dispatch:
 
 permissions:
-  contents: write
+    contents: write
 
 jobs:
     build_and_release:
@@ -31,8 +31,17 @@ jobs:
             - name: Archive production artifacts
               run: tar -czf build.tar.gz dist
 
+            - name: Set Release Tag
+              run: |
+                  DATE=$(date '+%Y.%m.%d')
+                  TAG="$DATE.${{ github.run_number }}"
+                  echo "RELEASE_TAG=$TAG" >> $GITHUB_ENV
+                  echo "Release Tag: $TAG"
+
             - name: Create Release
               uses: ncipollo/release-action@v1
               with:
-                tag: ${{ github.sha }}
-                artifacts: "build.tar.gz"
+                  tag: ${{ env.RELEASE_TAG }}
+                  name: "Release ${{ env.RELEASE_TAG }}"
+                  body: "Build of commit ${{ github.sha }} - Run Number: ${{ github.run_number }}"
+                  artifacts: "build.tar.gz"
