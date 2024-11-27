@@ -29,19 +29,12 @@ jobs:
               run: tar -czf build.tar.gz dist
 
             - name: Create GitHub Release
-              id: create_release
-              uses: actions/create-release@v1
+              uses: ncipollo/release-action@v1
               with:
-                  tag_name: ${{ github.sha }}
-                  release_name: Release ${{ github.sha }}
-                  body: Build of commit ${{ github.sha }}
-                  draft: false
-                  prerelease: false
-
-            - name: Upload Release Asset
-              uses: actions/upload-release-asset@v1
-              with:
-                  upload_url: ${{ steps.create_release.outputs.upload_url }}
-                  asset_path: ./build.tar.gz
-                  asset_name: build.tar.gz
-                  asset_content_type: application/gzip
+                tag: ${{ github.sha }}
+                name: Release ${{ github.sha }}
+                body: Build of commit ${{ github.sha }}
+                draft: false
+                prerelease: false
+                artifacts: build.tar.gz
+                token: ${{ secrets.GITHUB_TOKEN }}
