@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./reducers";
+import { combineReducers } from "redux";
+import { counterReducer } from "./counter";
 
 const store = configureStore({
-	reducer: rootReducer,
+	reducer: combineReducers({
+		counter: counterReducer,
+	}),
 	devTools: process.env.NODE_ENV !== "production",
 });
 

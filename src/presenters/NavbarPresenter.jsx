@@ -1,4 +1,3 @@
-import React from "react";
 import NavbarView from "../components/NavbarView";
 
 function Navbar(props) {

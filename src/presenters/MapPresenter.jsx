@@ -1,4 +1,3 @@
-import React from "react";
 import MapControls from "../components/MapControls";
 import SearchBar from "../components/MapSearchBar";
 import MapShortcuts from "../components/MapShortcuts";
