@@ -1,22 +1,22 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./css/global.css";
-import NavbarPresenter from "./presenters/NavbarPresenter";
-import MapRoute from "./routes/MapRoute";
-import AboutRoute from "./routes/AboutRoute";
-import AttributionRoute from "./routes/AttributionRoute";
-import CounterTestRoute from "./routes/CounterTestRoute";
+import Navbar from "./presenters/NavbarPresenter";
+import Map from "./presenters/MapPresenter";
+import About from "./presenters/About";
+import Attribution from "./presenters/AttributionPresenter";
+import CounterTest from "./presenters/CounterTest";
 
 function App(props) {
 	return (
 		<>
-			<NavbarPresenter />
+			<Navbar />
 			<BrowserRouter>
 				<Routes>
-					<Route index element={<MapRoute />} />
-					<Route path="about" element={<AboutRoute />} />
-					<Route path="attribution" element={<AttributionRoute />} />
-					<Route path="reduxtest" element={<CounterTestRoute />} />
+					<Route index element={<Map />} />
+					<Route path="about" element={<About />} />
+					<Route path="attribution" element={<Attribution />} />
+					<Route path="reduxtest" element={<CounterTest />} />
 				</Routes>
 			</BrowserRouter>
 		</>

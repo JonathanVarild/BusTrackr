@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "../css/Navbar.module.css";
 
-function Navbar(props) {
+function NavbarView(props) {
 	return (
-		<header id={styles.navbarContainer}>
+		<header id={styles.container}>
 			<nav></nav>
 			<div></div>
 		</header>
 	);
 }
 
-export default Navbar;
+export default NavbarView;

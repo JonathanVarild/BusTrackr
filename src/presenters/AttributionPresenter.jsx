@@ -1,7 +1,7 @@
 import React from "react";
 
-function AttributionRoute(props) {
+function Attribution(props) {
 	return <div>This is the attribution page.</div>;
 }
 
-export default AttributionRoute;
+export default Attribution;

@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import NavbarView from "../components/NavbarView";
 
-function NavbarPresenter(props) {
-	return <Navbar />;
+function Navbar(props) {
+	return <NavbarView />;
 }
 
-export default NavbarPresenter;
+export default Navbar;

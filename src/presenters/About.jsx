@@ -1,7 +1,7 @@
 import React from "react";
 
-function AboutRoute(props) {
+function About(props) {
 	return <div>This is the about page.</div>;
 }
 
-export default AboutRoute;
+export default About;
