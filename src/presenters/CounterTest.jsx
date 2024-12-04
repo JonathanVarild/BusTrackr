@@ -1,18 +1,26 @@
-import { useSelector } from "react-redux";
-import { increment, decrement } from "../store/counter";
-import store from "../store";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement, fetchRandomNumber } from "../store/counter";
 import Counter from "../components/Counter";
 
 function CounterTest() {
 	const count = useSelector((state) => state.counter.count);
-	return <Counter count={count} increment={incrementACB} decrement={decrementACB} />;
+	const status = useSelector((state) => state.counter.status);
+	const error = useSelector((state) => state.counter.error);
+
+	const dispatch = useDispatch();
+
+	return <Counter count={count} status={status} error={error} increment={incrementACB} decrement={decrementACB} randomize={randomizeACB} />;
 
 	function incrementACB() {
-		store.dispatch(increment());
+		dispatch(increment());
 	}
 
 	function decrementACB() {
-		store.dispatch(decrement());
+		dispatch(decrement());
+	}
+
+	function randomizeACB() {
+		dispatch(fetchRandomNumber());
 	}
 }
 
