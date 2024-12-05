@@ -43,8 +43,6 @@ function Map(props) {
 		}),
 	});
 
-	console.log(quays);
-
 	return (
 		<>
 			<RMap ref={mapRef} width={"100%"} height={"100vh"} initial={{ center: center, zoom: 11 }} noDefaultControls={true} onMoveEnd={updateQuaysACB}>
@@ -92,9 +90,6 @@ function Map(props) {
 
 			const topLeft = toLonLat([mapExtent[0], mapExtent[3]]);
 			const bottomRight = toLonLat([mapExtent[2], mapExtent[1]]);
-
-			console.log("Top-Left:", topLeft);
-			console.log("Bottom-Right:", bottomRight);
 
 			dispatch(updateScreenTopLeft({ latitude: topLeft[1], longitude: topLeft[0] }));
 			dispatch(updateScreenBottomRight({ latitude: bottomRight[1], longitude: bottomRight[0] }));
