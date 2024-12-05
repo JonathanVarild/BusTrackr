@@ -8,7 +8,6 @@ import { RMap, ROSM, RLayerVector, RFeature } from "rlayers";
 import { fromLonLat, toLonLat } from "ol/proj";
 import { Style, Stroke, Circle, Fill } from "ol/style";
 import { LineString, Point } from "ol/geom";
-import "ol/ol.css";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../store/counter";
