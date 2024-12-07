@@ -1,25 +1,23 @@
 #container {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: var(--element-margin);
     padding: var(--element-margin);
-    background-color: transparent;
-    width: calc(100% - 2 * var(--element-margin));
-    height: var(--element-size);
+    width: 100%;
+    height: calc(var(--element-margin) +  var(--element-size));
     position: fixed;
-    bottom: 10px;
+    bottom: 0;
     z-index: 998;
-    transition: all 0.1s cubic-bezier(0.79, 0.14, 0.15, 0.86);
   }
   
   .input {
     flex-grow: 1;
     border: none;
     outline: none;
-    padding: 0 calc(0.5 * var(--element-margin));
-    background-color: var(--smooth-white-transparent);
+    padding: var(--element-margin);
+    height: var(--element-size);
     color: var(--smooth-black-transparent);
-    font-size: calc(0.7 * var(--element-size));
+    font-size: calc(0.5 * var(--element-size));
   }
   
   .input::placeholder {
@@ -30,12 +28,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: calc(1.05 * var(--element-size));
-    height: calc(1.05 * var(--element-size));
+    width: var(--element-size);
+    height: var(--element-size);
     border: none;
     color: var(--smooth-black-transparent);
-    background-color: var(--smooth-white-transparent);
     cursor: pointer;
-    transition: all 0.1s cubic-bezier(0.79, 0.14, 0.15, 0.86);
   }
   

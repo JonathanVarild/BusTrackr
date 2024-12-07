@@ -5,10 +5,10 @@ import logo from "../media/logo.png"
 function NavbarView(props) {
 	return (
 		<header id={styles.container}>
-			<div id={styles.logo} className="rounded-corners drop-shadow">
+			<div id={styles.logo} className="rounded-corners drop-shadow blurred-background">
 				<img src={logo} alt="BusTrackr Logo (BusTrackr LIVE)" />
 			</div>
-			<nav id={styles.headernav} className="rounded-corners drop-shadow"><IconMenu2 height="100%" width="100%" stroke={2}/></nav>
+			<nav id={styles.headernav} className="rounded-corners drop-shadow blurred-background"><IconMenu2 height="100%" width="100%" stroke={2}/></nav>
 		</header>
 	);
 }
