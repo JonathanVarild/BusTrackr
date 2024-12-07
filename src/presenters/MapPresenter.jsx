@@ -8,7 +8,7 @@ import { RMap, RLayerVector, RFeature, RLayerTile } from "rlayers";
 import { fromLonLat, toLonLat } from "ol/proj";
 import { Style, Stroke, Circle, Fill } from "ol/style";
 import { LineString, Point } from "ol/geom";
-import TileSource from "ol/source/Tile";
+import { boundingExtent } from "ol/extent";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../store/counter";
@@ -43,9 +43,20 @@ function Map(props) {
 		}),
 	});
 
+	const extent = boundingExtent([fromLonLat([16.08748, 59.90015]), fromLonLat([19.4616, 58.60894])]);
+
 	return (
 		<>
-			<RMap ref={mapRef} width={"100%"} height={"100vh"} initial={{ center: center, zoom: 11 }} noDefaultControls={true} onMoveEnd={updateQuaysACB}>
+			<RMap
+				ref={mapRef}
+				width={"100%"}
+				height={"100vh"}
+				initial={{ center: center, zoom: 11 }}
+				noDefaultControls={true}
+				onMoveEnd={updateQuaysACB}
+				minZoom={10}
+				extent={extent}
+			>
 				<RLayerTile url={"https://tiles.bustrackr.io/styles/basic/256/{z}/{x}/{y}.webp"} />
 				<RLayerVector>
 					<RFeature
