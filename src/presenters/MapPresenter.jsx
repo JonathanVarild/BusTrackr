@@ -4,10 +4,11 @@ import MapControls from "../components/MapControls";
 import SearchBar from "../components/MapSearchBar";
 import MapShortcuts from "../components/MapShortcuts";
 
-import { RMap, ROSM, RLayerVector, RFeature } from "rlayers";
+import { RMap, RLayerVector, RFeature, RLayerTile } from "rlayers";
 import { fromLonLat, toLonLat } from "ol/proj";
 import { Style, Stroke, Circle, Fill } from "ol/style";
 import { LineString, Point } from "ol/geom";
+import TileSource from "ol/source/Tile";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../store/counter";
@@ -45,7 +46,7 @@ function Map(props) {
 	return (
 		<>
 			<RMap ref={mapRef} width={"100%"} height={"100vh"} initial={{ center: center, zoom: 11 }} noDefaultControls={true} onMoveEnd={updateQuaysACB}>
-				<ROSM />
+				<RLayerTile url={"https://tiles.bustrackr.io/styles/basic/256/{z}/{x}/{y}.png"} />
 				<RLayerVector>
 					<RFeature
 						geometry={lineString}
