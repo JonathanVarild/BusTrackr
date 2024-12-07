@@ -46,7 +46,7 @@ function Map(props) {
 	return (
 		<>
 			<RMap ref={mapRef} width={"100%"} height={"100vh"} initial={{ center: center, zoom: 11 }} noDefaultControls={true} onMoveEnd={updateQuaysACB}>
-				<RLayerTile url={"https://tiles.bustrackr.io/styles/basic/256/{z}/{x}/{y}.png"} />
+				<RLayerTile url={"https://tiles.bustrackr.io/styles/basic/256/{z}/{x}/{y}.webp"} />
 				<RLayerVector>
 					<RFeature
 						geometry={lineString}
