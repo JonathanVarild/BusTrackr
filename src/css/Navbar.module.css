@@ -1,4 +1,4 @@
-header {
+#container {
     position: fixed;
     z-index: 999;
 
@@ -11,6 +11,13 @@ header {
     grid-template-columns: 1fr var(--element-size);
     grid-template-rows: 1fr;
     grid-template-areas: "h1 menu";
+
+    transition: grid-template-columns 0.33s cubic-bezier(0.79,0.14,0.15,0.86);
+}
+
+.navOpen {
+    transition: grid-template-columns 0.1s cubic-bezier(0.79,0.14,0.15,0.86) !important;
+    grid-template-columns: 1fr calc(3.3 * var(--element-size)) !important;
 }
 
 #logo {
@@ -28,4 +35,42 @@ header {
 
 #headernav {
     grid-area: menu;
+}
+
+#navContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--element-margin);
+    padding-bottom: var(--element-margin);
+}
+
+.navItem {
+    width: 100%;
+    height: var(--element-size);
+
+}
+
+.navItem > a {
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: var(--smooth-black-transparent);
+    font-size: calc(0.4 * var(--element-size));
+    padding: var(--element-margin);
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: calc(0.5 * var(--element-margin));
+}
+
+.iconContainer {
+    opacity: 40%;
+    color: var(--smooth-black);
+}
+
+.closeContainer {
+    display: flex;
+    justify-content: flex-end;
 }
