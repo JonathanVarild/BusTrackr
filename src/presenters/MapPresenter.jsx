@@ -87,8 +87,9 @@ function Map(props) {
 					))}
 				</RLayerVector>
 			</RMap>
-			<MapControls />
+
 			<SearchBar />
+			<MapControls />
 			<MapShortcuts />
 		</>
 	);

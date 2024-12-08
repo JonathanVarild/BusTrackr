@@ -61,3 +61,12 @@
 .ol-viewport {
 	background-color: rgb(161, 192, 223);
 }
+
+button {
+	background: none;
+	border: none;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+	padding: 0;
+}

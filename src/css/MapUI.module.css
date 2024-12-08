@@ -1,0 +1,28 @@
+.mapControls {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+    width: var(--element-size);
+    gap: var(--element-margin);
+    margin: var(--element-margin);
+    z-index: 10000;
+}
+
+.mapControls button {
+    height: var(--element-size);
+    width: var(--element-size);
+    padding: var(--element-margin);
+
+}
+
+#leftControls {
+	right: 0;
+    bottom: 0;
+    transform: none;
+}
+
+#rightControls {
+	right: 0;
+    display: none;
+}
+
