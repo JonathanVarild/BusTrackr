@@ -66,10 +66,9 @@ const mapDataSlice = createSlice({
                         location: createLocation(parseFloat(quay.location.lat), parseFloat(quay.location.lon))
                     }));
                     
-                    state.quays.list = {
-                        ...state.quays.list,
-                        ...Object.fromEntries(newQuays.map(quay => [quay.id, quay]))
-                    };
+                    state.quays.list = 
+                        Object.fromEntries(newQuays.map(quay => [quay.id, quay]))
+                    ;
                 }
             })
             .addCase(fetchQuays.rejected, (state, action) => {

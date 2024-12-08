@@ -45,6 +45,8 @@ function Map(props) {
 		}),
 	});
 
+	let mapMoveHandlerIsThrottled = false;
+
 	const extent = boundingExtent([fromLonLat([16.08748, 59.90015]), fromLonLat([19.4616, 58.60894])]);
 
 	return (
@@ -55,6 +57,7 @@ function Map(props) {
 				height={"100vh"}
 				initial={{ center: center, zoom: 11 }}
 				noDefaultControls={true}
+				onPointerDrag={mapMoveACB}
 				onMoveEnd={mapMoveACB}
 				minZoom={10}
 				extent={extent}
@@ -125,13 +128,23 @@ function Map(props) {
 	}
 
 	function mapMoveACB() {
-		const map = mapRef.current?.ol;
+		if (mapMoveHandlerIsThrottled) { return; }
 
-		if (map) {
-			const mapView = map.getView();
-			updateQuaysACB(mapView, map);
-			storeZoomLevelACB(mapView);
+		const map = mapRef.current?.ol;
+		if (!map) { return; }
+
+		const mapView = map.getView();
+		const zoom = mapView.getZoom();
+
+		if (zoom > 12.3) {
+			updateQuaysACB(mapView, map)
 		}
+		storeZoomLevelACB(mapView);
+
+		mapMoveHandlerIsThrottled = true;
+		setTimeout(() => {
+			mapMoveHandlerIsThrottled = false;
+		}, 250);
 	}
 
 	function updateQuaysACB(mapView, map) {
