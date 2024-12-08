@@ -13,16 +13,13 @@ header {
     grid-template-areas: "h1 menu";
 }
 
-header > * {
-    padding: var(--element-margin);
-}
-
 #logo {
     grid-area: h1;
 
     display: flex;
     align-items: center;
     height: var(--element-size);
+    padding: var(--element-margin);
 }
 
 #logo img {
@@ -31,10 +28,4 @@ header > * {
 
 #headernav {
     grid-area: menu;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
 }

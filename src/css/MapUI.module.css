@@ -8,13 +8,6 @@
     z-index: 10000;
 }
 
-.mapControls button {
-    height: var(--element-size);
-    width: var(--element-size);
-    padding: var(--element-margin);
-
-}
-
 #leftControls {
 	right: 0;
     bottom: 0;
@@ -25,4 +18,3 @@
 	right: 0;
     display: none;
 }
-

@@ -1,21 +1,26 @@
 import styles from "../css/MapUI.module.css";
 import { IconHeart, IconTrendingUp, IconArrowsShuffle, IconLocation } from "@tabler/icons-react";
+import ButtonWidget from "./ButtonWidgetView";
 
 function MapShortcuts(props) {
 	return (
 		<div id={styles.leftControls} className={styles.mapControls}>
-			<button id="favoritesButton" className="blurred-background drop-shadow rounded-corners">
-				<IconHeart width="100%" height="100%" stroke={2} />
-			</button>
-			<button id="trendingButton" className="blurred-background drop-shadow rounded-corners">
-				<IconTrendingUp width="100%" height="100%" stroke={2} />
-			</button>
-			<button id="shuffleButton" className="blurred-background drop-shadow rounded-corners">
-				<IconArrowsShuffle width="100%" height="100%" stroke={2} />
-			</button>
-			<button id="locateButton" className="blurred-background drop-shadow rounded-corners">
-				<IconLocation width="100%" height="100%" stroke={2} />
-			</button>
+			<ButtonWidget
+				id="favoritesButton"
+				iconElement={<IconHeart stroke={2} />}
+			/>
+			<ButtonWidget
+				id="trendingButton"
+				iconElement={<IconTrendingUp stroke={2} />}
+			/>
+			<ButtonWidget
+				id="shuffleButton"
+				iconElement={<IconArrowsShuffle stroke={2} />}
+			/>
+			<ButtonWidget
+				id="locateButton"
+				iconElement={<IconLocation stroke={2} />}
+			/>
 		</div>
 	);
 }

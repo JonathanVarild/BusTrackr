@@ -1,0 +1,15 @@
+.uiWidget {
+    width: var(--element-size);
+    height: var(--element-size);
+}
+
+.uiIconContainer {
+    opacity: 40%;
+    padding: var(--element-margin);
+    color: var(--smooth-black);
+}
+
+.uiIconContainer > svg {
+    width: 100%;
+    height: 100%;
+}
