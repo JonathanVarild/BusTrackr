@@ -21,6 +21,20 @@
 	font-variation-settings: "wdth" 100, "YTLC" 500;
 }
 
+.blurred-background {
+	background-color: var(--smooth-white-transparent);
+    color: var(--smooth-black-transparent);
+    backdrop-filter: saturate(185%) blur(calc(0.33 * var(--element-size)));
+
+    transition: all 0.33s cubic-bezier(0.79,0.14,0.15,0.86);
+}
+
+.blurred-background:hover {
+    background-color: var(--smooth-white);
+
+    transition: all 0.1s cubic-bezier(0.79,0.14,0.15,0.86);
+}
+
 .header-font {
 	font-weight: 600;
 	font-style: italic;
@@ -46,4 +60,13 @@
 
 .ol-viewport {
 	background-color: rgb(161, 192, 223);
+}
+
+button {
+	background: none;
+	border: none;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+	padding: 0;
 }

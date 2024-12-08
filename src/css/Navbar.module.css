@@ -14,19 +14,7 @@ header {
 }
 
 header > * {
-    background-color: var(--smooth-white-transparent);
     padding: var(--element-margin);
-
-    color: var(--smooth-black-transparent);
-    backdrop-filter: saturate(185%) blur(calc(0.33 * var(--element-size)));
-
-    transition: all 0.33s cubic-bezier(0.79,0.14,0.15,0.86);
-}
-
-header > *:hover {
-    background-color: var(--smooth-white);
-
-    transition: all 0.1s cubic-bezier(0.79,0.14,0.15,0.86);
 }
 
 #logo {
