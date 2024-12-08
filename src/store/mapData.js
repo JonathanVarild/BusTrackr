@@ -42,6 +42,9 @@ const mapDataSlice = createSlice({
         updateScreenBottomRight: (state, action) => {
             state.screenBoundary.bottomRight = {...state.screenBoundary.bottomRight, ...action.payload };;
         },
+        setQuayHovered: (state, action) => {
+            state.quays.list[action.payload.id].hovered = action.payload.hovered
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -75,7 +78,8 @@ const mapDataSlice = createSlice({
 export const {    
     updateScreenTopLeft,
     updateScreenBottomRight,
-    addQuays
+    addQuays,
+    setQuayHovered
 } = mapDataSlice.actions;
 
 export default mapDataSlice.reducer;

@@ -6,14 +6,15 @@ import MapShortcuts from "../components/MapShortcuts";
 
 import { RMap, RLayerVector, RFeature, RLayerTile } from "rlayers";
 import { fromLonLat, toLonLat } from "ol/proj";
-import { Style, Stroke, Circle, Fill } from "ol/style";
+import { Style, Stroke, Circle, Fill, Icon } from "ol/style";
 import { LineString, Point } from "ol/geom";
 import { boundingExtent } from "ol/extent";
 
 import { useSelector, useDispatch } from "react-redux";
-import { increment, decrement } from "../store/counter";
-import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays } from "../store/mapData";
+import { increment } from "../store/counter";
+import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered } from "../store/mapData";
 
+import directionPNG from "../media/directions.png";
 import coordinates from "../tmp/lineCords";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
@@ -69,23 +70,7 @@ function Map(props) {
 					<RFeature geometry={blipCircle} style={blipStyle} />
 				</RLayerVector>
 
-				<RLayerVector>
-					{Object.values(quays).map((quay) => (
-						<RFeature
-							key={quay.id}
-							geometry={new Point(fromLonLat([quay.location.longitude, quay.location.latitude]))}
-							style={
-								new Style({
-									image: new Circle({
-										radius: 3,
-										fill: new Fill({ color: "blue" }),
-										stroke: new Stroke({ color: "darkblue", width: 1 }),
-									}),
-								})
-							}
-						/>
-					))}
-				</RLayerVector>
+				<RLayerVector>{Object.values(quays).map(renderQuayBlip)}</RLayerVector>
 			</RMap>
 
 			<SearchBar />
@@ -93,6 +78,38 @@ function Map(props) {
 			<MapShortcuts />
 		</>
 	);
+
+	function renderQuayBlip(quay) {
+		function quayHoverACB() {
+			dispatch(setQuayHovered({ id: quay.id, hovered: true }));
+			document.body.style.cursor = "pointer";
+		}
+
+		function quayUnhoverACB() {
+			dispatch(setQuayHovered({ id: quay.id, hovered: false }));
+			document.body.style.cursor = "";
+		}
+
+		return (
+			<RFeature
+				key={quay.id}
+				geometry={new Point(fromLonLat([quay.location.longitude, quay.location.latitude]))}
+				style={
+					new Style({
+						image: new Icon({
+							src: directionPNG,
+							scale: quay?.hovered ? 0.4 : 0.3,
+							anchor: [0.5, 0.5],
+							anchorXUnits: "fraction",
+							anchorYUnits: "fraction",
+						}),
+					})
+				}
+				onPointerEnter={quayHoverACB}
+				onPointerLeave={quayUnhoverACB}
+			/>
+		);
+	}
 
 	function updateQuaysACB() {
 		const map = mapRef.current?.ol;
