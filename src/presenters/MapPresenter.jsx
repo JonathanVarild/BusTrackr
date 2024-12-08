@@ -55,7 +55,7 @@ function Map(props) {
 				height={"100vh"}
 				initial={{ center: center, zoom: 11 }}
 				noDefaultControls={true}
-				onMoveEnd={onMapMoveACB}
+				onMoveEnd={mapMoveACB}
 				minZoom={10}
 				extent={extent}
 			>
