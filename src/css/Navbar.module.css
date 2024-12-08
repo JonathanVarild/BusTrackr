@@ -37,7 +37,11 @@
     grid-area: menu;
 }
 
-#navContainer {
+.navContainerClosed {
+    display: none;
+}
+
+.navContainerOpen {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -48,7 +52,6 @@
 .navItem {
     width: 100%;
     height: var(--element-size);
-
 }
 
 .navItem > a {
@@ -73,4 +76,49 @@
 .closeContainer {
     display: flex;
     justify-content: flex-end;
+}
+
+@media screen and (min-width: 768px), screen and (orientation: landscape) {
+    #container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .navOpen {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #logo {
+        flex-grow: 1;
+    }
+
+    #headernav {
+        display: flex;
+    }
+
+    .navContainerClosed {
+        display: grid;
+        gap: var(--element-margin);
+        grid-template-columns: repeat(4, auto);
+        grid-template-rows: 1fr;
+        grid-template-areas: "map about attribution account"
+    }
+    
+    .navContainerOpen {
+        display: grid;
+        gap: var(--element-margin);
+        grid-template-columns: repeat(4, auto);
+        grid-template-rows: 1fr;
+        grid-template-areas: "map about attribution account"
+    }
+    
+    #mapLink { grid-area: map; }
+    #aboutLink { grid-area: about; }
+    #accountLink { grid-area: account; }
+    #attributionLink { grid-area: attribution; }
+    
+    .closeContainer {
+        display: none;
+    }
 }
