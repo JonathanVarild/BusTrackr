@@ -25,8 +25,9 @@ const mapDataSlice = createSlice({
     name: "mapData",
     initialState: {
         screenBoundary: {
-            topLeft: createLocation(59.406570, 17.931788),
-            bottomRight: createLocation(59.400608, 17.955837)
+            topLeft: null,
+            bottomRight: null,
+            zoom: null
         },
         quays: {
             status: "idle",
@@ -44,6 +45,9 @@ const mapDataSlice = createSlice({
         },
         setQuayHovered: (state, action) => {
             state.quays.list[action.payload.id].hovered = action.payload.hovered
+        },
+        setZoomLevel: (state, action) => {
+            state.screenBoundary.zoom = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -79,7 +83,8 @@ export const {
     updateScreenTopLeft,
     updateScreenBottomRight,
     addQuays,
-    setQuayHovered
+    setQuayHovered,
+    setZoomLevel
 } = mapDataSlice.actions;
 
 export default mapDataSlice.reducer;

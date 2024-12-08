@@ -12,7 +12,7 @@ import { boundingExtent } from "ol/extent";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment } from "../store/counter";
-import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered } from "../store/mapData";
+import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered, setZoomLevel } from "../store/mapData";
 
 import directionPNG from "../media/directions.png";
 import coordinates from "../tmp/lineCords";
@@ -24,6 +24,7 @@ function Map(props) {
 
 	const count = useSelector((state) => state.counter.count);
 	const quays = useSelector((state) => state.mapData.quays.list);
+	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
 	const dispatch = useDispatch();
 
 	const lineString = new LineString(coordinates.map((coord) => fromLonLat(coord)));
@@ -54,7 +55,7 @@ function Map(props) {
 				height={"100vh"}
 				initial={{ center: center, zoom: 11 }}
 				noDefaultControls={true}
-				onMoveEnd={updateQuaysACB}
+				onMoveEnd={onMapMoveACB}
 				minZoom={10}
 				extent={extent}
 			>
@@ -90,40 +91,62 @@ function Map(props) {
 			document.body.style.cursor = "";
 		}
 
+		function getBlipCB() {
+			if (zoom < 16) {
+				return new Style({
+					image: new Circle({
+						radius: quay?.hovered ? 6 : 4,
+						fill: new Fill({ color: "white" }),
+						stroke: new Stroke({ color: "#2e7aee", width: 1 }),
+					}),
+				});
+			} else {
+				return new Style({
+					image: new Icon({
+						src: directionPNG,
+						scale: quay?.hovered ? 0.35 : 0.3,
+						anchor: [0.5, 0.5],
+						anchorXUnits: "fraction",
+						anchorYUnits: "fraction",
+					}),
+				});
+			}
+		}
+
 		return (
 			<RFeature
 				key={quay.id}
 				geometry={new Point(fromLonLat([quay.location.longitude, quay.location.latitude]))}
-				style={
-					new Style({
-						image: new Icon({
-							src: directionPNG,
-							scale: quay?.hovered ? 0.4 : 0.3,
-							anchor: [0.5, 0.5],
-							anchorXUnits: "fraction",
-							anchorYUnits: "fraction",
-						}),
-					})
-				}
+				style={getBlipCB()}
 				onPointerEnter={quayHoverACB}
 				onPointerLeave={quayUnhoverACB}
 			/>
 		);
 	}
 
-	function updateQuaysACB() {
+	function mapMoveACB() {
 		const map = mapRef.current?.ol;
 
 		if (map) {
-			const mapExtent = map.getView().calculateExtent(map.getSize());
-
-			const topLeft = toLonLat([mapExtent[0], mapExtent[3]]);
-			const bottomRight = toLonLat([mapExtent[2], mapExtent[1]]);
-
-			dispatch(updateScreenTopLeft({ latitude: topLeft[1], longitude: topLeft[0] }));
-			dispatch(updateScreenBottomRight({ latitude: bottomRight[1], longitude: bottomRight[0] }));
-			dispatch(fetchQuays());
+			const mapView = map.getView();
+			updateQuaysACB(mapView, map);
+			storeZoomLevelACB(mapView);
 		}
+	}
+
+	function updateQuaysACB(mapView, map) {
+		const mapExtent = mapView.calculateExtent(map.getSize());
+
+		const topLeft = toLonLat([mapExtent[0], mapExtent[3]]);
+		const bottomRight = toLonLat([mapExtent[2], mapExtent[1]]);
+
+		dispatch(updateScreenTopLeft({ latitude: topLeft[1], longitude: topLeft[0] }));
+		dispatch(updateScreenBottomRight({ latitude: bottomRight[1], longitude: bottomRight[0] }));
+		dispatch(fetchQuays());
+	}
+
+	function storeZoomLevelACB(mapView) {
+		dispatch(setZoomLevel(mapView.getZoom()));
 	}
 }
 
