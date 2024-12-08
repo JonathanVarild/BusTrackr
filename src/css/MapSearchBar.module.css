@@ -1,29 +1,36 @@
-#container {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--element-margin);
-  padding: var(--element-margin);
-  width: calc(100% - (var(--element-size) + var(--element-margin)));
-  height: calc(var(--element-margin) +  var(--element-size));
+#outerContainer {
   position: fixed;
-  bottom: 0;
+  display: flex;
+  bottom: 0px;
+  margin: var(--element-margin);
+  height: var(--element-size);
+  width: calc(100% - 2 * var(--element-margin));
   z-index: 998;
 }
-  
+
+.justifyContent {
+  justify-content: flex-start;
+}
+
+#container {
+  display: flex;
+  gap: var(--element-margin);
+  width: calc(100% - var(--element-size) - var(--element-margin));
+}
+
 .input {
   flex-grow: 1;
   border: none;
   outline: none;
   padding: var(--element-margin);
-  height: var(--element-size);
-  color: var(--smooth-black-transparent);
   font-size: calc(0.5 * var(--element-size));
+  color: var(--smooth-black-transparent);
 }
-  
+
 .input::placeholder {
   color: var(--smooth-black-transparent);
 }
-  
+
 #button {
   display: none;
 }
@@ -31,5 +38,26 @@
 @media screen and (min-width: 768px), screen and (orientation: landscape) {
   #button {
     display: flex;
+    min-width: var(--element-size);
+  }
+
+  .justifyContent {
+    justify-content: center;
+  }
+
+  .input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: var(--element-margin);
+    font-size: calc(0.5 * var(--element-size));
+    color: var(--smooth-black-transparent);
+    width: 66.67%;
+  }
+
+  #container {
+    display: flex;
+    gap: var(--element-margin);
+    width: calc(33.33%);
   }
 }
