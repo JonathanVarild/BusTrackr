@@ -71,6 +71,8 @@
 .iconContainer {
     opacity: 40%;
     color: var(--smooth-black);
+
+    display: flex;
 }
 
 .closeContainer {

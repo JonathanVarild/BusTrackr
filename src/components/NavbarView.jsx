@@ -1,5 +1,5 @@
 import styles from "../css/Navbar.module.css";
-import { IconMenu2, IconX, IconUser, IconMap, IconUsers, IconQuestionMark } from "@tabler/icons-react";
+import { IconMenu2, IconX, IconUser, IconMap, IconUsers, IconBubbleText } from "@tabler/icons-react";
 import logo from "../media/logo.png";
 import ButtonWidget from "./ButtonWidgetView";
 
@@ -23,7 +23,7 @@ function NavbarView(props) {
             <a href="/about">
               <p>About</p>
               <div className={styles.iconContainer}>
-                <IconQuestionMark stroke={2.5} />
+                <IconBubbleText stroke={2.5} />
               </div>
             </a>
           </div>
