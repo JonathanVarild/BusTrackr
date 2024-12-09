@@ -220,9 +220,11 @@ function Map(props) {
 			return;
 		}
 
-		navigator.geolocation.clearWatch(navigator.geolocation.watchPosition.length);
+		if (userLocation == null) {
+			dispatch(setAwaitingLocation());
+		}
 
-		dispatch(setAwaitingLocation());
+		navigator.geolocation.clearWatch(navigator.geolocation.watchPosition.length);
 		navigator.geolocation.watchPosition((position) => {
 			dispatch(setUserLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude, accuracy: position.coords.accuracy }));
 		}),
