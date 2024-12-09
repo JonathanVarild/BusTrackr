@@ -51,8 +51,8 @@ const mapDataSlice = createSlice({
 			state.screenBoundary.zoom = action.payload;
 		},
 		setUserLocation: (state, action) => {
-			state.userLocation = { ...state.userLocation, latitude: action.payload.latitude, longitude: action.payload.longitude };
-		}
+			state.userLocation = { ...state.userLocation, latitude: action.payload.latitude, longitude: action.payload.longitude, accuracy: action.payload.accuracy };
+		},
 	},
 	extraReducers: (builder) => {
 		builder

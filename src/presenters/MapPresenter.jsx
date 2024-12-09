@@ -64,6 +64,7 @@ function Map(props) {
 				extent={extent}
 			>
 				<RLayerTile url={"https://tiles.bustrackr.io/styles/basic/256/{z}/{x}/{y}.webp"} />
+
 				<RLayerVector>
 					<RFeature
 						geometry={lineString}
@@ -130,10 +131,14 @@ function Map(props) {
 	}
 
 	function renderUserLocation() {
+		const locationPoint = new Point(fromLonLat([userLocation.longitude, userLocation.latitude]));
+
+		console.log("accuracy is: " + userLocation?.accuracy);
+
 		return (
 			<RLayerVector>
 				<RFeature
-					geometry={new Point(fromLonLat([userLocation.longitude, userLocation.latitude]))}
+					geometry={locationPoint}
 					style={
 						new Style({
 							image: new Circle({
@@ -144,6 +149,20 @@ function Map(props) {
 						})
 					}
 				/>
+				{userLocation?.accuracy > 25 && (
+					<RFeature
+						geometry={locationPoint}
+						style={
+							new Style({
+								image: new Circle({
+									radius: (userLocation?.accuracy * 2) / mapRef.current?.ol.getView().getResolution(),
+									fill: new Fill({ color: "rgba(0, 93, 230, 0.2)" }),
+									stroke: new Stroke({ color: "#afc8ed", width: 1 }),
+								}),
+							})
+						}
+					/>
+				)}
 			</RLayerVector>
 		);
 	}
@@ -200,8 +219,8 @@ function Map(props) {
 
 		navigator.geolocation.watchPosition((position) => {
 			console.log(position);
-			
-			dispatch(setUserLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude }));
+
+			dispatch(setUserLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude, accuracy: position.coords.accuracy }));
 		});
 
 		const coords = userLocation != null ? fromLonLat([userLocation.longitude, userLocation.latitude]) : center;
