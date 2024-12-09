@@ -8,7 +8,7 @@ function MapShortcuts(props) {
 			<ButtonWidget iconElement={<IconHeart stroke={2} />} />
 			<ButtonWidget iconElement={<IconTrendingUp stroke={2} />} />
 			<ButtonWidget iconElement={<IconArrowsShuffle stroke={2} />} />
-			<ButtonWidget iconElement={<IconLocation stroke={2} />} className={styles.locateButton} />
+			<ButtonWidget iconElement={<IconLocation stroke={2} />} className={styles.locateButton} onClick={props.enableUserLocation} />
 		</div>
 	);
 }

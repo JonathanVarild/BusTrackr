@@ -9,7 +9,7 @@ function MapControls(props) {
 				<ButtonWidget iconElement={<IconPlus stroke={2} onClick={zoomInACB} />} />
 				<ButtonWidget iconElement={<IconMinus stroke={2} onClick={zoomOutACB} />} />
 			</div>
-			<ButtonWidget iconElement={<IconLocation stroke={2} />} />
+			<ButtonWidget iconElement={<IconLocation stroke={2} onClick={props.enableUserLocation} />} />
 		</div>
 	);
 

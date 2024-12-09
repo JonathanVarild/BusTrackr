@@ -12,7 +12,7 @@ import { boundingExtent } from "ol/extent";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment } from "../store/counter";
-import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered, setZoomLevel } from "../store/mapData";
+import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered, setZoomLevel, setUserLocation } from "../store/mapData";
 
 import directionPNG from "../media/directions.png";
 import coordinates from "../tmp/lineCords";
@@ -27,6 +27,7 @@ function Map(props) {
 	const count = useSelector((state) => state.counter.count);
 	const quays = useSelector((state) => state.mapData.quays.list);
 	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
+	const userLocation = useSelector((state) => state.mapData.userLocation);
 	const dispatch = useDispatch();
 
 	const lineString = new LineString(coordinates.map((coord) => fromLonLat(coord)));
@@ -75,11 +76,12 @@ function Map(props) {
 				</RLayerVector>
 
 				<RLayerVector>{Object.values(quays).map(renderQuayBlip)}</RLayerVector>
+				{userLocation != null && renderUserLocation()}
 			</RMap>
 
 			<SearchBar />
-			<MapControls adjustMapZoom={mapZoomACB} />
-			<MapShortcuts />
+			<MapControls adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} />
+			<MapShortcuts enableUserLocation={enableUserLocationACB} />
 		</>
 	);
 
@@ -127,6 +129,25 @@ function Map(props) {
 		);
 	}
 
+	function renderUserLocation() {
+		return (
+			<RLayerVector>
+				<RFeature
+					geometry={new Point(fromLonLat([userLocation.longitude, userLocation.latitude]))}
+					style={
+						new Style({
+							image: new Circle({
+								radius: 8,
+								fill: new Fill({ color: "#2e7aee" }),
+								stroke: new Stroke({ color: "#afc8ed", width: 4 }),
+							}),
+						})
+					}
+				/>
+			</RLayerVector>
+		);
+	}
+
 	function mapMoveACB() {
 		if (mapMoveHandlerIsThrottled) return;
 		const map = mapRef.current?.ol;
@@ -166,6 +187,30 @@ function Map(props) {
 		if (map) {
 			const mapView = map.getView();
 			mapView.animate({ zoom: mapView.getZoom() + zoomDelta, duration: 200 });
+		}
+	}
+
+	function enableUserLocationACB() {
+		if (!navigator.geolocation) {
+			alert("Could not get your location.. Please check your browser permissions!");
+			return;
+		}
+
+		navigator.geolocation.clearWatch(navigator.geolocation.watchPosition.length);
+
+		navigator.geolocation.watchPosition((position) => {
+			console.log(position);
+			
+			dispatch(setUserLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude }));
+		});
+
+		const coords = userLocation != null ? fromLonLat([userLocation.longitude, userLocation.latitude]) : center;
+		const zoom = userLocation != null ? 18 : 12;
+
+		const map = mapRef.current?.ol;
+		if (map) {
+			const mapView = map.getView();
+			mapView.animate({ zoom: zoom, center: coords });
 		}
 	}
 }
