@@ -12,7 +12,7 @@ import { boundingExtent } from "ol/extent";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment } from "../store/counter";
-import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered, setZoomLevel, setUserLocation } from "../store/mapData";
+import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered, setZoomLevel, setUserLocation, setInvalidLocation, setAwaitingLocation } from "../store/mapData";
 
 import directionPNG from "../media/directions.png";
 import coordinates from "../tmp/lineCords";
@@ -28,6 +28,8 @@ function Map(props) {
 	const quays = useSelector((state) => state.mapData.quays.list);
 	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
 	const userLocation = useSelector((state) => state.mapData.userLocation);
+	const invalidLocation = useSelector((state) => state.mapData.invalidLocation);
+	const awaitingLocation = useSelector((state) => state.mapData.awaitingLocation);
 	const dispatch = useDispatch();
 
 	const lineString = new LineString(coordinates.map((coord) => fromLonLat(coord)));
@@ -77,12 +79,12 @@ function Map(props) {
 				</RLayerVector>
 
 				<RLayerVector>{Object.values(quays).map(renderQuayBlip)}</RLayerVector>
-				{userLocation != null && renderUserLocation()}
+				{userLocation != null && !invalidLocation && renderUserLocation()}
 			</RMap>
 
 			<SearchBar />
-			<MapControls adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} />
-			<MapShortcuts enableUserLocation={enableUserLocationACB} />
+			<MapControls adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
+			<MapShortcuts enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
 		</>
 	);
 
@@ -132,8 +134,6 @@ function Map(props) {
 
 	function renderUserLocation() {
 		const locationPoint = new Point(fromLonLat([userLocation.longitude, userLocation.latitude]));
-
-		console.log("accuracy is: " + userLocation?.accuracy);
 
 		return (
 			<RLayerVector>
@@ -210,6 +210,11 @@ function Map(props) {
 	}
 
 	function enableUserLocationACB() {
+		if (invalidLocation) {
+			alert("Could not get reliable location data.. Reload the page and try again.");
+			return;
+		}
+
 		if (!navigator.geolocation) {
 			alert("Could not get your location.. Please check your browser permissions!");
 			return;
@@ -217,11 +222,13 @@ function Map(props) {
 
 		navigator.geolocation.clearWatch(navigator.geolocation.watchPosition.length);
 
+		dispatch(setAwaitingLocation());
 		navigator.geolocation.watchPosition((position) => {
-			console.log(position);
-
 			dispatch(setUserLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude, accuracy: position.coords.accuracy }));
-		});
+		}),
+			(error) => {
+				setInvalidLocation(true);
+			};
 
 		const coords = userLocation != null ? fromLonLat([userLocation.longitude, userLocation.latitude]) : center;
 		const zoom = userLocation != null ? 18 : 12;

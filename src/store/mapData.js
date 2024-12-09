@@ -25,6 +25,8 @@ const mapDataSlice = createSlice({
 	name: "mapData",
 	initialState: {
 		userLocation: null,
+		invalidLocation: false,
+		awaitingLocation: false,
 		screenBoundary: {
 			topLeft: null,
 			bottomRight: null,
@@ -52,6 +54,14 @@ const mapDataSlice = createSlice({
 		},
 		setUserLocation: (state, action) => {
 			state.userLocation = { ...state.userLocation, latitude: action.payload.latitude, longitude: action.payload.longitude, accuracy: action.payload.accuracy };
+			state.invalidLocation = action.payload.accuracy > 1000;
+			state.awaitingLocation = false;
+		},
+		setInvalidLocation: (state, action) => {
+			state.invalidLocation = action.payload;
+		},
+		setAwaitingLocation: (state, action) => {
+			state.awaitingLocation = true;
 		},
 	},
 	extraReducers: (builder) => {
@@ -80,6 +90,7 @@ const mapDataSlice = createSlice({
 	},
 });
 
-export const { updateScreenTopLeft, updateScreenBottomRight, addQuays, setQuayHovered, setZoomLevel, setUserLocation } = mapDataSlice.actions;
+export const { updateScreenTopLeft, updateScreenBottomRight, addQuays, setQuayHovered, setZoomLevel, setUserLocation, setInvalidLocation, setAwaitingLocation } =
+	mapDataSlice.actions;
 
 export default mapDataSlice.reducer;

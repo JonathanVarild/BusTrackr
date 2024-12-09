@@ -1,5 +1,5 @@
 import styles from "../css/MapUI.module.css";
-import { IconHeart, IconTrendingUp, IconArrowsShuffle, IconLocation } from "@tabler/icons-react";
+import { IconHeart, IconTrendingUp, IconArrowsShuffle, IconLocation, IconAlertTriangle, IconRefresh } from "@tabler/icons-react";
 import ButtonWidget from "./ButtonWidgetView";
 
 function MapShortcuts(props) {
@@ -8,7 +8,14 @@ function MapShortcuts(props) {
 			<ButtonWidget iconElement={<IconHeart stroke={2} />} />
 			<ButtonWidget iconElement={<IconTrendingUp stroke={2} />} />
 			<ButtonWidget iconElement={<IconArrowsShuffle stroke={2} />} />
-			<ButtonWidget iconElement={<IconLocation stroke={2} />} className={styles.locateButton} onClick={props.enableUserLocation} />
+			<ButtonWidget
+				iconElement={
+					(props.invalidLocation && <IconAlertTriangle stroke={2} />) ||
+					(props.awaitingLocation && <IconRefresh stroke={2} className="spin-icon" />) || <IconLocation stroke={2} />
+				}
+				className={styles.locateButton}
+				onClick={props.enableUserLocation}
+			/>
 		</div>
 	);
 }

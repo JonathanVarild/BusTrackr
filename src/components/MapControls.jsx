@@ -1,5 +1,5 @@
 import styles from "../css/MapUI.module.css";
-import { IconLocation, IconPlus, IconMinus } from "@tabler/icons-react";
+import { IconLocation, IconPlus, IconMinus, IconAlertTriangle, IconRefresh } from "@tabler/icons-react";
 import ButtonWidget from "./ButtonWidgetView";
 
 function MapControls(props) {
@@ -9,7 +9,13 @@ function MapControls(props) {
 				<ButtonWidget iconElement={<IconPlus stroke={2} onClick={zoomInACB} />} />
 				<ButtonWidget iconElement={<IconMinus stroke={2} onClick={zoomOutACB} />} />
 			</div>
-			<ButtonWidget iconElement={<IconLocation stroke={2} onClick={props.enableUserLocation} />} />
+			<ButtonWidget
+				iconElement={
+					(props.invalidLocation && <IconAlertTriangle stroke={2} />) ||
+					(props.awaitingLocation && <IconRefresh stroke={2} className="spin-icon" />) || <IconLocation stroke={2} />
+				}
+				onClick={props.enableUserLocation}
+			/>
 		</div>
 	);
 
