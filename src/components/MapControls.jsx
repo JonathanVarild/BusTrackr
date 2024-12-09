@@ -1,22 +1,25 @@
 import styles from "../css/MapUI.module.css";
 import { IconLocation, IconPlus, IconMinus } from "@tabler/icons-react";
+import ButtonWidget from "./ButtonWidgetView";
 
 function MapControls(props) {
 	return (
-		<div id={styles.rightControls} className={styles.mapControls}>
-			<div id="zoomContainer" className="blurred-background drop-shadow rounded-corners">
-				<button>
-					<IconPlus width="100%" height="100%" stroke={2} />
-				</button>
-				<button className="blurred-background drop-shadow rounded-corners">
-					<IconMinus width="100%" height="100%" stroke={2} />
-				</button>
+		<div id={styles.mapControls} className={styles.mapWidgets}>
+			<div id={styles.zoomContainer} className="drop-shadow rounded-corners">
+				<ButtonWidget iconElement={<IconPlus stroke={2} onClick={zoomInACB} />} />
+				<ButtonWidget iconElement={<IconMinus stroke={2} onClick={zoomOutACB} />} />
 			</div>
-			<button id="locateButton" className="blurred-background drop-shadow rounded-corners">
-				<IconLocation width="100%" height="100%" stroke={2} />
-			</button>
+			<ButtonWidget iconElement={<IconLocation stroke={2} />} />
 		</div>
 	);
+
+	function zoomInACB() {
+		props.adjustMapZoom(0.5);
+	}
+
+	function zoomOutACB() {
+		props.adjustMapZoom(-0.5);
+	}
 }
 
 export default MapControls;

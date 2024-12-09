@@ -19,6 +19,8 @@ import coordinates from "../tmp/lineCords";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
+let mapMoveHandlerIsThrottled = false;
+
 function Map(props) {
 	const mapRef = useRef(null);
 
@@ -44,8 +46,6 @@ function Map(props) {
 			stroke: new Stroke({ color: "darkred", width: 2 }),
 		}),
 	});
-
-	let mapMoveHandlerIsThrottled = false;
 
 	const extent = boundingExtent([fromLonLat([16.08748, 59.90015]), fromLonLat([19.4616, 58.60894])]);
 
@@ -78,7 +78,7 @@ function Map(props) {
 			</RMap>
 
 			<SearchBar />
-			<MapControls />
+			<MapControls adjustMapZoom={mapZoomACB} />
 			<MapShortcuts />
 		</>
 	);
@@ -128,16 +128,15 @@ function Map(props) {
 	}
 
 	function mapMoveACB() {
-		if (mapMoveHandlerIsThrottled) { return; }
-
+		if (mapMoveHandlerIsThrottled) return;
 		const map = mapRef.current?.ol;
-		if (!map) { return; }
+		if (!map) return;
 
 		const mapView = map.getView();
 		const zoom = mapView.getZoom();
 
 		if (zoom > 12.3) {
-			updateQuaysACB(mapView, map)
+			updateQuaysACB(mapView, map);
 		}
 		storeZoomLevelACB(mapView);
 
@@ -160,6 +159,14 @@ function Map(props) {
 
 	function storeZoomLevelACB(mapView) {
 		dispatch(setZoomLevel(mapView.getZoom()));
+	}
+
+	function mapZoomACB(zoomDelta) {
+		const map = mapRef.current?.ol;
+		if (map) {
+			const mapView = map.getView();
+			mapView.animate({ zoom: mapView.getZoom() + zoomDelta, duration: 200 });
+		}
 	}
 }
 
