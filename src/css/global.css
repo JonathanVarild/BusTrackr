@@ -24,18 +24,18 @@
 
 .blurred-background {
 	background-color: var(--smooth-white-transparent);
-    color: var(--smooth-black-transparent);
+	color: var(--smooth-black-transparent);
 
 	-webkit-backdrop-filter: saturate(185%) blur(calc(0.33 * var(--element-size)));
-    backdrop-filter: saturate(185%) blur(calc(0.33 * var(--element-size)));
+	backdrop-filter: saturate(185%) blur(calc(0.33 * var(--element-size)));
 
-    transition: all 0.33s cubic-bezier(0.79,0.14,0.15,0.86);
+	transition: all 0.33s cubic-bezier(0.79, 0.14, 0.15, 0.86);
 }
 
 .blurred-background:hover {
-    background-color: var(--smooth-white);
+	background-color: var(--smooth-white);
 
-    transition: all 0.1s cubic-bezier(0.79,0.14,0.15,0.86);
+	transition: all 0.1s cubic-bezier(0.79, 0.14, 0.15, 0.86);
 }
 
 .header-font {
@@ -57,9 +57,7 @@
 	font-optical-sizing: auto;
 	font-weight: 100;
 	font-style: normal;
-	font-variation-settings:
-	  "wdth" 100,
-	  "YTLC" 500;
+	font-variation-settings: "wdth" 100, "YTLC" 500;
 }
 
 .rounded-corners {
@@ -81,4 +79,17 @@ button {
 	font: inherit;
 	cursor: pointer;
 	padding: 0;
+}
+
+.spin-icon {
+	animation: spinner 2s linear infinite;
+}
+
+@keyframes spinner {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
