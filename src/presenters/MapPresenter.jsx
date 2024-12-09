@@ -12,12 +12,14 @@ import { boundingExtent } from "ol/extent";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment } from "../store/counter";
-import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered, setZoomLevel } from "../store/mapData";
+import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered, setZoomLevel, setUserLocation } from "../store/mapData";
 
 import directionPNG from "../media/directions.png";
 import coordinates from "../tmp/lineCords";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
+
+let mapMoveHandlerIsThrottled = false;
 
 function Map(props) {
 	const mapRef = useRef(null);
@@ -25,6 +27,7 @@ function Map(props) {
 	const count = useSelector((state) => state.counter.count);
 	const quays = useSelector((state) => state.mapData.quays.list);
 	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
+	const userLocation = useSelector((state) => state.mapData.userLocation);
 	const dispatch = useDispatch();
 
 	const lineString = new LineString(coordinates.map((coord) => fromLonLat(coord)));
@@ -55,11 +58,13 @@ function Map(props) {
 				height={"100vh"}
 				initial={{ center: center, zoom: 11 }}
 				noDefaultControls={true}
+				onPointerDrag={mapMoveACB}
 				onMoveEnd={mapMoveACB}
 				minZoom={10}
 				extent={extent}
 			>
 				<RLayerTile url={"https://tiles.bustrackr.io/styles/basic/256/{z}/{x}/{y}.webp"} />
+
 				<RLayerVector>
 					<RFeature
 						geometry={lineString}
@@ -72,11 +77,12 @@ function Map(props) {
 				</RLayerVector>
 
 				<RLayerVector>{Object.values(quays).map(renderQuayBlip)}</RLayerVector>
+				{userLocation != null && renderUserLocation()}
 			</RMap>
 
 			<SearchBar />
-			<MapControls />
-			<MapShortcuts />
+			<MapControls adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} />
+			<MapShortcuts enableUserLocation={enableUserLocationACB} />
 		</>
 	);
 
@@ -124,14 +130,60 @@ function Map(props) {
 		);
 	}
 
-	function mapMoveACB() {
-		const map = mapRef.current?.ol;
+	function renderUserLocation() {
+		const locationPoint = new Point(fromLonLat([userLocation.longitude, userLocation.latitude]));
 
-		if (map) {
-			const mapView = map.getView();
+		console.log("accuracy is: " + userLocation?.accuracy);
+
+		return (
+			<RLayerVector>
+				<RFeature
+					geometry={locationPoint}
+					style={
+						new Style({
+							image: new Circle({
+								radius: 8,
+								fill: new Fill({ color: "#2e7aee" }),
+								stroke: new Stroke({ color: "#afc8ed", width: 4 }),
+							}),
+						})
+					}
+				/>
+				{userLocation?.accuracy > 25 && (
+					<RFeature
+						geometry={locationPoint}
+						style={
+							new Style({
+								image: new Circle({
+									radius: (userLocation?.accuracy * 2) / mapRef.current?.ol.getView().getResolution(),
+									fill: new Fill({ color: "rgba(0, 93, 230, 0.2)" }),
+									stroke: new Stroke({ color: "#afc8ed", width: 1 }),
+								}),
+							})
+						}
+					/>
+				)}
+			</RLayerVector>
+		);
+	}
+
+	function mapMoveACB() {
+		if (mapMoveHandlerIsThrottled) return;
+		const map = mapRef.current?.ol;
+		if (!map) return;
+
+		const mapView = map.getView();
+		const zoom = mapView.getZoom();
+
+		if (zoom > 12.3) {
 			updateQuaysACB(mapView, map);
-			storeZoomLevelACB(mapView);
 		}
+		storeZoomLevelACB(mapView);
+
+		mapMoveHandlerIsThrottled = true;
+		setTimeout(() => {
+			mapMoveHandlerIsThrottled = false;
+		}, 250);
 	}
 
 	function updateQuaysACB(mapView, map) {
@@ -147,6 +199,38 @@ function Map(props) {
 
 	function storeZoomLevelACB(mapView) {
 		dispatch(setZoomLevel(mapView.getZoom()));
+	}
+
+	function mapZoomACB(zoomDelta) {
+		const map = mapRef.current?.ol;
+		if (map) {
+			const mapView = map.getView();
+			mapView.animate({ zoom: mapView.getZoom() + zoomDelta, duration: 200 });
+		}
+	}
+
+	function enableUserLocationACB() {
+		if (!navigator.geolocation) {
+			alert("Could not get your location.. Please check your browser permissions!");
+			return;
+		}
+
+		navigator.geolocation.clearWatch(navigator.geolocation.watchPosition.length);
+
+		navigator.geolocation.watchPosition((position) => {
+			console.log(position);
+
+			dispatch(setUserLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude, accuracy: position.coords.accuracy }));
+		});
+
+		const coords = userLocation != null ? fromLonLat([userLocation.longitude, userLocation.latitude]) : center;
+		const zoom = userLocation != null ? 18 : 12;
+
+		const map = mapRef.current?.ol;
+		if (map) {
+			const mapView = map.getView();
+			mapView.animate({ zoom: zoom, center: coords });
+		}
 	}
 }
 

@@ -1,28 +1,52 @@
-.mapControls {
+.mapWidgets {
 	position: fixed;
 	display: flex;
 	flex-direction: column;
-    width: var(--element-size);
-    gap: var(--element-margin);
-    margin: var(--element-margin);
-    z-index: 10000;
+	width: var(--element-size);
+	gap: var(--element-margin);
+	margin: var(--element-margin);
+	z-index: 10000;
 }
 
-.mapControls button {
-    height: var(--element-size);
-    width: var(--element-size);
-    padding: var(--element-margin);
-
-}
-
-#leftControls {
+#mapShortcuts {
 	right: 0;
-    bottom: 0;
-    transform: none;
+	bottom: 0;
 }
 
-#rightControls {
+#mapControls {
 	right: 0;
-    display: none;
+	bottom: 50%;
+	transform: translateY(50%);
+	display: none;
 }
 
+#zoomContainer {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+#zoomContainer button {
+    box-shadow: none;
+}
+
+#zoomContainer button  {
+    border-radius: 0;
+}
+
+@media screen and (min-width: 768px), screen and (orientation: landscape) {
+	#mapShortcuts {
+		left: 0;
+		bottom: 50%;
+		transform: translateY(50%);
+	}
+
+	#mapShortcuts > .locateButton {
+		display: none;
+	}
+
+	#mapControls {
+		display: flex;
+	}
+}

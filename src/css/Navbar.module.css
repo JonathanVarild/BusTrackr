@@ -1,4 +1,4 @@
-header {
+#container {
     position: fixed;
     z-index: 999;
 
@@ -11,10 +11,13 @@ header {
     grid-template-columns: 1fr var(--element-size);
     grid-template-rows: 1fr;
     grid-template-areas: "h1 menu";
+
+    transition: grid-template-columns 0.33s cubic-bezier(0.79,0.14,0.15,0.86);
 }
 
-header > * {
-    padding: var(--element-margin);
+.navOpen {
+    transition: grid-template-columns 0.1s cubic-bezier(0.79,0.14,0.15,0.86) !important;
+    grid-template-columns: 1fr calc(3.3 * var(--element-size)) !important;
 }
 
 #logo {
@@ -23,6 +26,7 @@ header > * {
     display: flex;
     align-items: center;
     height: var(--element-size);
+    padding: var(--element-margin);
 }
 
 #logo img {
@@ -31,10 +35,92 @@ header > * {
 
 #headernav {
     grid-area: menu;
+}
+
+.navContainerClosed {
+    display: none;
+}
+
+.navContainerOpen {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--element-margin);
+    padding-bottom: var(--element-margin);
+}
+
+.navItem {
+    width: 100%;
+    height: var(--element-size);
+}
+
+.navItem > a {
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: var(--smooth-black-transparent);
+    font-size: calc(0.4 * var(--element-size));
+    padding: var(--element-margin);
 
     display: flex;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: center;
+    gap: calc(0.5 * var(--element-margin));
+}
 
-    cursor: pointer;
+.iconContainer {
+    opacity: 40%;
+    color: var(--smooth-black);
+
+    display: flex;
+}
+
+.closeContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media screen and (min-width: 768px), screen and (orientation: landscape) {
+    #container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .navOpen {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #logo {
+        flex-grow: 1;
+    }
+
+    #headernav {
+        display: flex;
+    }
+
+    .navContainerClosed {
+        display: grid;
+        gap: var(--element-margin);
+        grid-template-columns: repeat(4, auto);
+        grid-template-rows: 1fr;
+        grid-template-areas: "map about attribution account"
+    }
+    
+    .navContainerOpen {
+        display: grid;
+        gap: var(--element-margin);
+        grid-template-columns: repeat(4, auto);
+        grid-template-rows: 1fr;
+        grid-template-areas: "map about attribution account"
+    }
+    
+    #mapLink { grid-area: map; }
+    #aboutLink { grid-area: about; }
+    #accountLink { grid-area: account; }
+    #attributionLink { grid-area: attribution; }
+    
+    .closeContainer {
+        display: none;
+    }
 }

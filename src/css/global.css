@@ -9,6 +9,7 @@
 	--smooth-white-transparent: hsla(240, 11%, 96%, 0.8);
 	--smooth-black: hsla(240, 3%, 12%, 1);
 	--smooth-black-transparent: hsla(240, 3%, 12%, 0.4);
+	--smooth-black-transparent-80: hsla(240, 3%, 12%, 0.8);
 	--element-size: 3rem; /* Should be used for all UI components to have same widths and heights everywhere */
 	--element-margin: 0.66rem; /* Used when there needs to be a margin or gap somewhere */
 }
@@ -24,6 +25,8 @@
 .blurred-background {
 	background-color: var(--smooth-white-transparent);
     color: var(--smooth-black-transparent);
+
+	-webkit-backdrop-filter: saturate(185%) blur(calc(0.33 * var(--element-size)));
     backdrop-filter: saturate(185%) blur(calc(0.33 * var(--element-size)));
 
     transition: all 0.33s cubic-bezier(0.79,0.14,0.15,0.86);
@@ -36,18 +39,27 @@
 }
 
 .header-font {
+	font-family: "Exo 2", serif;
+	font-optical-sizing: auto;
 	font-weight: 600;
 	font-style: italic;
 }
 
 .header-2-font {
+	font-family: "Nunito", serif;
+	font-optical-sizing: auto;
 	font-weight: 300;
 	font-style: italic;
 }
 
 .text-font {
+	font-family: "Nunito Sans", sans-serif;
+	font-optical-sizing: auto;
 	font-weight: 100;
 	font-style: normal;
+	font-variation-settings:
+	  "wdth" 100,
+	  "YTLC" 500;
 }
 
 .rounded-corners {
