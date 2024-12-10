@@ -12,7 +12,17 @@ import { boundingExtent } from "ol/extent";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment } from "../store/counter";
-import { updateScreenTopLeft, updateScreenBottomRight, fetchQuays, setQuayHovered, setZoomLevel, setUserLocation, setInvalidLocation, setAwaitingLocation } from "../store/mapData";
+import {
+	updateScreenTopLeft,
+	updateScreenBottomRight,
+	fetchQuays,
+	fetchStops,
+	setStationHovered,
+	setZoomLevel,
+	setUserLocation,
+	setInvalidLocation,
+	setAwaitingLocation,
+} from "../store/mapData";
 
 import directionPNG from "../media/directions.png";
 import coordinates from "../tmp/lineCords";
@@ -20,11 +30,13 @@ import coordinates from "../tmp/lineCords";
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
 let mapMoveHandlerIsThrottled = false;
+const stationMinZoom = 12.3;
 
 function Map(props) {
 	const mapRef = useRef(null);
 
 	const count = useSelector((state) => state.counter.count);
+	const stops = useSelector((state) => state.mapData.stops.list);
 	const quays = useSelector((state) => state.mapData.quays.list);
 	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
 	const userLocation = useSelector((state) => state.mapData.userLocation);
@@ -78,7 +90,8 @@ function Map(props) {
 					<RFeature geometry={blipCircle} style={blipStyle} />
 				</RLayerVector>
 
-				<RLayerVector>{Object.values(quays).map(renderQuayBlip)}</RLayerVector>
+				{zoom > stationMinZoom && <RLayerVector>{Object.values(zoom > 16 && quays.length != 0 ? quays : stops).map(renderStationBlip)}</RLayerVector>}
+
 				{userLocation != null && !invalidLocation && renderUserLocation()}
 			</RMap>
 
@@ -88,14 +101,14 @@ function Map(props) {
 		</>
 	);
 
-	function renderQuayBlip(quay) {
-		function quayHoverACB() {
-			dispatch(setQuayHovered({ id: quay.id, hovered: true }));
+	function renderStationBlip(station) {
+		function stationHoverACB() {
+			dispatch(setStationHovered({ id: station.id, hovered: true }));
 			document.body.style.cursor = "pointer";
 		}
 
-		function quayUnhoverACB() {
-			dispatch(setQuayHovered({ id: quay.id, hovered: false }));
+		function stationUnhoverACB() {
+			dispatch(setStationHovered({ id: station.id, hovered: false }));
 			document.body.style.cursor = "";
 		}
 
@@ -103,7 +116,7 @@ function Map(props) {
 			if (zoom < 16) {
 				return new Style({
 					image: new Circle({
-						radius: quay?.hovered ? 6 : 4,
+						radius: station?.hovered ? 6 : 4,
 						fill: new Fill({ color: "white" }),
 						stroke: new Stroke({ color: "#2e7aee", width: 1 }),
 					}),
@@ -112,7 +125,7 @@ function Map(props) {
 				return new Style({
 					image: new Icon({
 						src: directionPNG,
-						scale: quay?.hovered ? 0.35 : 0.3,
+						scale: station?.hovered ? 0.35 : 0.3,
 						anchor: [0.5, 0.5],
 						anchorXUnits: "fraction",
 						anchorYUnits: "fraction",
@@ -123,11 +136,11 @@ function Map(props) {
 
 		return (
 			<RFeature
-				key={quay.id}
-				geometry={new Point(fromLonLat([quay.location.longitude, quay.location.latitude]))}
+				key={station.id}
+				geometry={new Point(fromLonLat([station.location.longitude, station.location.latitude]))}
 				style={getBlipCB()}
-				onPointerEnter={quayHoverACB}
-				onPointerLeave={quayUnhoverACB}
+				onPointerEnter={stationHoverACB}
+				onPointerLeave={stationUnhoverACB}
 			/>
 		);
 	}
@@ -175,10 +188,11 @@ function Map(props) {
 		const mapView = map.getView();
 		const zoom = mapView.getZoom();
 
-		if (zoom > 12.3) {
-			updateQuaysACB(mapView, map);
-		}
 		storeZoomLevelACB(mapView);
+
+		if (zoom > stationMinZoom) {
+			updateStationsACB(mapView, map, zoom);
+		}
 
 		mapMoveHandlerIsThrottled = true;
 		setTimeout(() => {
@@ -186,7 +200,7 @@ function Map(props) {
 		}, 250);
 	}
 
-	function updateQuaysACB(mapView, map) {
+	function updateStationsACB(mapView, map, latestZoom) {
 		const mapExtent = mapView.calculateExtent(map.getSize());
 
 		const topLeft = toLonLat([mapExtent[0], mapExtent[3]]);
@@ -194,7 +208,12 @@ function Map(props) {
 
 		dispatch(updateScreenTopLeft({ latitude: topLeft[1], longitude: topLeft[0] }));
 		dispatch(updateScreenBottomRight({ latitude: bottomRight[1], longitude: bottomRight[0] }));
-		dispatch(fetchQuays());
+
+		if (latestZoom > 16) {
+			dispatch(fetchQuays());
+		} else {
+			dispatch(fetchStops());
+		}
 	}
 
 	function storeZoomLevelACB(mapView) {
