@@ -6,6 +6,7 @@ import About from "./presenters/About";
 import Attribution from "./presenters/AttributionPresenter";
 import CounterTest from "./presenters/CounterTest";
 import MapDataDebugPresenter from "./presenters/MapDataDebugPresenter";
+import PopupBox from "./presenters/PopupBoxPresenter";
 
 function App(props) {
 	return (
@@ -20,6 +21,7 @@ function App(props) {
 					<Route path="mapdebug" element={<MapDataDebugPresenter />} />
 				</Routes>
 			</BrowserRouter>
+			<PopupBox />
 		</>
 	);
 }

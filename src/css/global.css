@@ -14,7 +14,7 @@
 	--element-margin: 0.66rem; /* Used when there needs to be a margin or gap somewhere */
 }
 
-.body {
+body {
 	font-family: "Nunito Sans", sans-serif;
 	font-optical-sizing: auto;
 	font-weight: 100;
