@@ -23,7 +23,6 @@ import {
 	setInvalidLocation,
 	setAwaitingLocation,
 } from "../store/mapData";
-import { queuePopup } from "../store/interface";
 
 import directionPNG from "../media/directions.png";
 import coordinates from "../tmp/lineCords";
@@ -100,37 +99,11 @@ function Map(props) {
 			<MapControls adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
 			<MapShortcuts
 				enableUserLocation={enableUserLocationACB}
-				openFavorites={testWarningPopup}
-				openTrending={testInformationPopup}
 				invalidLocation={invalidLocation}
 				awaitingLocation={awaitingLocation}
 			/>
 		</>
 	);
-
-	function testWarningPopup() {
-		dispatch(
-			queuePopup({
-				title: "Delete Account",
-				message:
-					"Are you sure that you want to delete your account? This action will remove all your account information including personal details, favorites, etc. This cannot be undone.",
-				type: 1,
-				continueAction: "DeleteAccount",
-				abortAction: "AbortDeleteAccount",
-			})
-		);
-	}
-
-	function testInformationPopup() {
-		dispatch(
-			queuePopup({
-				title: "Welcome Back",
-				message: "We haven't seen you in a long time! What do you think of this popup feature that we implemented while you were gone?",
-				type: 0,
-				continueAction: "ClosedWelcomeMessage",
-			})
-		);
-	}
 
 	function renderStationBlip(station) {
 		function stationHoverACB() {
