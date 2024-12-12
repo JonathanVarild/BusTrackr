@@ -1,5 +1,5 @@
 import styles from "../css/Navbar.module.css";
-import { IconMenu2, IconX, IconUser, IconMap, IconUsers, IconBubbleText } from "@tabler/icons-react";
+import { IconMenu2, IconX, IconUser, IconMap, IconSparkles, IconInfoCircle } from "@tabler/icons-react";
 import logo from "../media/logo.png";
 import ButtonWidget from "./ButtonWidgetView";
 
@@ -15,7 +15,7 @@ function NavbarView(props) {
             <a href="/">
               <p>Map</p>
               <div className={styles.iconContainer}>
-                <IconMap stroke={2.5} />
+                <IconMap stroke={2} />
               </div>
             </a>
           </div>
@@ -23,7 +23,7 @@ function NavbarView(props) {
             <a href="/about">
               <p>About</p>
               <div className={styles.iconContainer}>
-                <IconBubbleText stroke={2.5} />
+                <IconInfoCircle stroke={2} />
               </div>
             </a>
           </div>
@@ -31,7 +31,7 @@ function NavbarView(props) {
             <a href="/account">
               <p>Account</p>
               <div className={styles.iconContainer}>
-                <IconUser stroke={2.5} />
+                <IconUser stroke={2} />
               </div>
             </a>
           </div>
@@ -39,7 +39,7 @@ function NavbarView(props) {
             <a href="/attribution">
               <p>Attribution</p>
               <div className={styles.iconContainer}>
-                <IconUsers stroke={2.5} />
+                <IconSparkles stroke={2} />
               </div>
             </a>
           </div>
