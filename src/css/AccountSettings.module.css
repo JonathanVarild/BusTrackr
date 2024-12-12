@@ -14,6 +14,7 @@
 	display: grid;
 	grid-template-rows: 1fr 20fr 30fr;
 	height: 100%;
+    overflow-y: auto;
 }
 
 .header button {
@@ -36,6 +37,7 @@
 	justify-content: center;
 	font-size: 2.5rem;
 	font-weight: 700;
+    margin-bottom: 2rem;
 }
 
 #settingsMenu > .iconContainer svg {
@@ -200,7 +202,7 @@
         width: 90vw;
         height: 90vh;
         max-width: 60rem;
-        max-height: 33.75rem;
+        max-height: 40rem;
 		display: grid;
 		grid-template-columns: 7fr 20fr;
 		padding: var(--element-margin);
