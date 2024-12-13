@@ -46,6 +46,9 @@ const interfaceSlice = createSlice({
 				case "RevertSettingChanges":
 					state.changedUserInfo = null;
 					break;
+				case "LogoutUser":
+					console.log("User wants to log out!");
+					break;
 			}
 
 			state.queuedPopups.shift();

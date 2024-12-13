@@ -19,6 +19,7 @@ function AccountSettingsPresenter(props) {
 			reverseChanges={revertSettingChangedACB}
 			showUnsavedWarning={showUnsavedWarningACB}
 			showDeleteAccountWarning={showDeleteAccountWarningACB}
+			logout={logoutUserACB}
 		/>
 	);
 
@@ -60,6 +61,18 @@ function AccountSettingsPresenter(props) {
 				type: 1,
 				continueAction: "DeleteAccount",
 				abortAction: "AbortDeleteAccount",
+			})
+		);
+	}
+
+	function logoutUserACB() {
+		dispatch(
+			queuePopup({
+				title: "Sign out",
+				message:
+					"Are you sure that you want to sign out from your user account?",
+				type: 1,
+				continueAction: "LogoutUser",
 			})
 		);
 	}

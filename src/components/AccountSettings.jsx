@@ -1,5 +1,5 @@
 import styles from "../css/AccountSettings.module.css";
-import { IconUser, IconLock, IconContract, IconDatabase, IconDatabaseX, IconSettings, IconChevronLeft } from "@tabler/icons-react";
+import { IconUser, IconLock, IconContract, IconDatabase, IconDatabaseX, IconSettings, IconChevronLeft, IconLogout } from "@tabler/icons-react";
 
 function AccountSettings(props) {
 	const settingsNavTop = [
@@ -11,6 +11,7 @@ function AccountSettings(props) {
 	const settingsNavBottom = [
 		{ id: "data", icon: <IconDatabase stroke={2} />, text: "My data", renderFunction: renderMyData },
 		{ id: "delete", icon: <IconDatabaseX stroke={2} />, text: "Delete account", renderFunction: renderDeleteAcount },
+		{ id: "logout", icon: <IconLogout stroke={2} />, text: "Sign out", actionFunction: logoutUserACB },
 	];
 
 	return (
@@ -34,7 +35,7 @@ function AccountSettings(props) {
 						<IconSettings stroke={1.2} />
 						Account Settings
 					</div>
-					<div className={styles.settingsList}>{[...settingsNavTop, ...settingsNavBottom].map(renderSettingItem)}</div>
+					<div className={styles.settingsList}>{[...settingsNavTop, ...settingsNavBottom].map(renderSettingItemCB)}</div>
 				</div>
 			);
 		}
@@ -90,8 +91,8 @@ function AccountSettings(props) {
 			<div id={styles.accountSettingsDesktopView} className={styles.accountSettings}>
 				<div id={styles.settingWindow} className="rounded-corners drop-shadow">
 					<div className={styles.settingsListContainer}>
-						<div className={styles.settingsList}>{settingsNavTop.map(renderSettingItem)}</div>
-						<div className={styles.settingsList}>{settingsNavBottom.map(renderSettingItem)}</div>
+						<div className={styles.settingsList}>{settingsNavTop.map(renderSettingItemCB)}</div>
+						<div className={styles.settingsList}>{settingsNavBottom.map(renderSettingItemCB)}</div>
 					</div>
 					{props.settingOpen === "menu" ? renderSettingPage(settingsNavTop[0]) : renderSettingPage([...settingsNavTop, ...settingsNavBottom].find(findSettingByIDCB))}
 				</div>
@@ -128,15 +129,19 @@ function AccountSettings(props) {
 		} else {
 			return (
 				<button className={styles.closeButton} onClick={onExitACB}>
-					Close
+					Exit settings
 				</button>
 			);
 		}
 	}
 
-	function renderSettingItem(item) {
+	function renderSettingItemCB(item) {
 		function onClickItemACB() {
-			props.openSettingID(item.id);
+			if (item.renderFunction != null) {
+				props.openSettingID(item.id);
+			} else {
+				item.actionFunction();
+			}
 		}
 
 		return (
@@ -256,6 +261,10 @@ function AccountSettings(props) {
 
 	function deleteAccountACB() {
 		props.showDeleteAccountWarning();
+	}
+
+	function logoutUserACB() {
+		props.logout();
 	}
 }
 
