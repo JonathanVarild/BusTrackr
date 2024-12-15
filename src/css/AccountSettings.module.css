@@ -1,0 +1,257 @@
+.accountSettings {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	padding: var(--element-margin);
+	color: var(--smooth-black-transparent-80);
+	overflow: hidden;
+}
+
+#settingsMenu {
+	display: grid;
+	grid-template-rows: 1fr 20fr 30fr;
+	height: 100%;
+    overflow-y: auto;
+}
+
+.header button {
+	display: flex;
+	align-items: center;
+	font-size: 1.5rem;
+	font-weight: 600;
+	gap: 0.2rem;
+}
+
+.header svg {
+	height: 2rem;
+	width: 2rem;
+}
+
+#settingsMenu > .iconContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: 2.5rem;
+	font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+#settingsMenu > .iconContainer svg {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 10rem;
+	height: 10rem;
+}
+
+.settingsListContainer {
+	height: 100%;
+	overflow-y: auto;
+}
+
+.settingsList {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.settingsList svg {
+	color: var(--smooth-gray);
+    height: 2rem;
+    width: 2rem;
+}
+
+.settingsList > button {
+	display: flex;
+	align-items: center;
+	gap: var(--element-margin);
+	color: var(--smooth-black-transparent);
+	padding-block: var(--element-margin);
+	width: 60%;
+	border-bottom: 1px solid var(--smooth-black-transparent-10);
+	font-weight: 600;
+	padding-inline: var(--element-margin);
+    font-size: 1.5rem;
+}
+
+.settingPage {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow: hidden;
+}
+
+.settingPage > .header {
+	border-bottom: 1px solid var(--smooth-black-transparent-10);
+	padding-bottom: var(--element-margin);
+	display: flex;
+	margin-bottom: var(--element-margin);
+}
+
+.settingPageTitle {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.settingsContainer {
+	display: grid;
+	grid-template-rows: 1fr auto;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.actionButtonContainer {
+	display: flex;
+	gap: var(--element-margin);
+	justify-content: flex-end;
+}
+
+.actionButtonContainer button {
+	font-weight: 600;
+}
+
+.actionButtonContainer button:hover {
+	opacity: 0.85;
+}
+
+.actionButtonContainer button:last-child {
+	padding: var(--element-margin);
+	background-color: var(--smooth-black-transparent);
+	color: white;
+	border-radius: 25px;
+}
+
+.closeButton {
+	display: none;
+}
+
+#accountSettingsMobileView {
+	background-color: white;
+}
+
+#accountSettingsDesktopView {
+	display: none;
+}
+
+.settingText {
+	font-weight: 500;
+	padding-bottom: 1rem;
+}
+
+.inputHeader {
+	font-weight: 600;
+	line-height: 1.8rem;
+}
+
+.settingsContainer {
+	color: var(--smooth-black-transparent);
+}
+
+.settingsContainer input {
+	width: 100%;
+	padding: var(--element-margin);
+	border-radius: 5px;
+	border: 1px solid var(--smooth-black-transparent-20);
+	margin-bottom: 1.5rem;
+	font-weight: 600;
+	color: var(--smooth-black-transparent-80);
+}
+
+.settingsContainer a {
+	margin-bottom: 1rem;
+	display: block;
+	text-decoration: none;
+	font-weight: 400;
+	color: #2f7adf;
+}
+
+.settingsContainer a:hover,
+#deleteAccountButton:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.warningText {
+	font-weight: 800 !important;
+	color: #ff6161 !important;
+}
+
+@media screen and (min-width: 768px) {
+	#accountSettingsMobileView {
+		display: none;
+	}
+
+	#accountSettingsDesktopView {
+		background-color: rgba(0, 0, 0, 0.6);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	#settingWindow {
+		background-color: white;
+        aspect-ratio: 16/9;
+        width: 90vw;
+        height: 90vh;
+        max-width: 60rem;
+        max-height: 40rem;
+		display: grid;
+		grid-template-columns: 7fr 20fr;
+		padding: var(--element-margin);
+	}
+
+	.settingsListContainer {
+		border-right: 1px solid var(--smooth-black-transparent-10);
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+    .settingsList svg {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+
+	.settingsList > button {
+		width: 100%;
+		border: none;
+        font-size: 1rem;
+	}
+
+	.settingsList > button:hover {
+		opacity: 0.8;
+	}
+
+	.selectedItem,
+	.selectedItem svg {
+		color: var(--smooth-black-transparent-70) !important;
+	}
+
+	.settingPage {
+		padding: var(--element-margin);
+	}
+
+	.settingPageTitle {
+		position: unset;
+		left: unset;
+		transform: unset;
+	}
+
+	.settingPage > .header {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.closeButton {
+		display: unset;
+	}
+}

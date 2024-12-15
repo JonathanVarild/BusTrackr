@@ -8,13 +8,23 @@
 	--smooth-white: hsla(240, 11%, 96%, 1);
 	--smooth-white-transparent: hsla(240, 11%, 96%, 0.8);
 	--smooth-black: hsla(240, 3%, 12%, 1);
+	--smooth-gray:  hsl(0, 0%, 65%);
 	--smooth-black-transparent: hsla(240, 3%, 12%, 0.4);
+	--smooth-black-transparent-10: hsla(240, 3%, 12%, 0.1);
+	--smooth-black-transparent-20: hsla(240, 3%, 12%, 0.2);
+	--smooth-black-transparent-70: hsla(240, 3%, 12%, 0.7);
 	--smooth-black-transparent-80: hsla(240, 3%, 12%, 0.8);
 	--element-size: 3rem; /* Should be used for all UI components to have same widths and heights everywhere */
 	--element-margin: 0.66rem; /* Used when there needs to be a margin or gap somewhere */
 }
 
-.body {
+html,
+body {
+	touch-action: none;
+	overscroll-behavior: none;
+}
+
+body {
 	font-family: "Nunito Sans", sans-serif;
 	font-optical-sizing: auto;
 	font-weight: 100;
@@ -39,15 +49,11 @@
 }
 
 .header-font {
-	font-family: "Exo 2", serif;
-	font-optical-sizing: auto;
 	font-weight: 600;
 	font-style: italic;
 }
 
 .header-2-font {
-	font-family: "Nunito", serif;
-	font-optical-sizing: auto;
 	font-weight: 300;
 	font-style: italic;
 }

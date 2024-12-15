@@ -1,16 +1,21 @@
 import NavbarView from "../components/NavbarView";
+
 import { useSelector, useDispatch } from "react-redux";
-import { toggleNavigation } from "../store/interface";
+import { toggleNavigation, openAccountSetting } from "../store/interface";
 
 function Navbar(props) {
-  const dispatch = useDispatch();
-  const isNavOpen = useSelector((state) => state.interface.navigationOpen);
+	const dispatch = useDispatch();
+	const isNavOpen = useSelector((state) => state.interface.navigationOpen);
 
-  const handleToggleNav = () => {
-    dispatch(toggleNavigation());
-  };
+	const toggleNavACB = () => {
+		dispatch(toggleNavigation());
+	};
 
-  return <NavbarView isNavOpen={isNavOpen} onToggleNav={handleToggleNav} />;
+	function openAccountSettingsACB() {
+		dispatch(openAccountSetting("menu"));
+	}
+
+	return <NavbarView isNavOpen={isNavOpen} onToggleNav={toggleNavACB} onOpenAccountSettings={openAccountSettingsACB} />;
 }
 
 export default Navbar;
