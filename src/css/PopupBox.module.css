@@ -1,5 +1,5 @@
 .screenBlock {
-	z-index: 2147483647;
+	z-index: 999999;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -19,8 +19,8 @@
 	gap: var(--element-margin);
 	color: var(--smooth-black-transparent);
 	max-width: 700px;
-	margin: var(--element-margin);
-	flex-direction: column;
+    margin: var(--element-margin);
+    flex-direction: column;
 }
 
 .iconContainer,
@@ -65,7 +65,7 @@
 }
 
 @media screen and (min-width: 768px), screen and (orientation: landscape) {
-	.popupBox {
-		flex-direction: row;
-	}
+    .popupBox {
+        flex-direction: row;
+    }
 }

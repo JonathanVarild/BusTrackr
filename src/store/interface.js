@@ -5,19 +5,6 @@ const interfaceSlice = createSlice({
 	initialState: {
 		navigationOpen: false,
 		queuedPopups: [],
-		accountSettingOpen: null,
-		userInfo: {
-			username: "ExampleUser",
-			email: "firstname.lastname@example.com",
-			dateOfBirth: "2000-01-01",
-			lastLoginTime: "YYYY-MM-DD HH:MM:SS",
-			lastLoginFrom: "192.168.1.1",
-			termsOfServiceAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-			dataPolicyAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-			accountCreated: "YYYY-MM-DD HH:MM:SS",
-			lastReportGenerated: "YYYY-MM-DD HH:MM:SS",
-		},
-		changedUserInfo: null,
 	},
 	reducers: {
 		toggleNavigation: (state) => {
@@ -43,25 +30,13 @@ const interfaceSlice = createSlice({
 				case "ClosedWelcomeMessage":
 					console.log("Welcome message was closed.");
 					break;
-				case "RevertSettingChanges":
-					state.changedUserInfo = null;
-					break;
-				case "LogoutUser":
-					console.log("User wants to log out!");
-					break;
 			}
 
 			state.queuedPopups.shift();
 		},
-		openAccountSetting: (state, action) => {
-			state.accountSettingOpen = action.payload;
-		},
-		setChangedUserInfo: (state, action) => {
-			state.changedUserInfo = action.payload.length === 0 ? null : { ...state.changedUserInfo, ...action.payload };
-		},
 	},
 });
 
-export const { toggleNavigation, queuePopup, dequeuePopup, openAccountSetting, userInfo, setChangedUserInfo } = interfaceSlice.actions;
+export const { toggleNavigation, queuePopup, dequeuePopup } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;

@@ -54,7 +54,7 @@
     height: var(--element-size);
 }
 
-.navItem > a, .navItem > button {
+.navItem > a {
     width: 100%;
     height: 100%;
     text-decoration: none;

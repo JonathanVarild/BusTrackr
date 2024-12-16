@@ -7,11 +7,10 @@ import MapShortcuts from "../components/MapShortcuts";
 import { RMap, RLayerVector, RFeature, RLayerTile } from "rlayers";
 import { fromLonLat, toLonLat } from "ol/proj";
 import { Style, Stroke, Circle, Fill, Icon } from "ol/style";
-import { LineString, Point } from "ol/geom";
+import { Point } from "ol/geom";
 import { boundingExtent } from "ol/extent";
 
 import { useSelector, useDispatch } from "react-redux";
-import { increment } from "../store/counter";
 import {
 	updateScreenTopLeft,
 	updateScreenBottomRight,
@@ -23,9 +22,9 @@ import {
 	setInvalidLocation,
 	setAwaitingLocation,
 } from "../store/mapData";
+import { queuePopup } from "../store/interface";
 
 import directionPNG from "../media/directions.png";
-import coordinates from "../tmp/lineCords";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
@@ -35,7 +34,6 @@ const stationMinZoom = 12.3;
 function Map(props) {
 	const mapRef = useRef(null);
 
-	const count = useSelector((state) => state.counter.count);
 	const stops = useSelector((state) => state.mapData.stops.list);
 	const quays = useSelector((state) => state.mapData.quays.list);
 	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
@@ -43,24 +41,6 @@ function Map(props) {
 	const invalidLocation = useSelector((state) => state.mapData.invalidLocation);
 	const awaitingLocation = useSelector((state) => state.mapData.awaitingLocation);
 	const dispatch = useDispatch();
-
-	const lineString = new LineString(coordinates.map((coord) => fromLonLat(coord)));
-	const blipCircle = new Point(fromLonLat(coordinates[count]));
-
-	const lineStyle = new Style({
-		stroke: new Stroke({
-			color: "red",
-			width: 8,
-		}),
-	});
-
-	const blipStyle = new Style({
-		image: new Circle({
-			radius: 7,
-			fill: new Fill({ color: "red" }),
-			stroke: new Stroke({ color: "darkred", width: 2 }),
-		}),
-	});
 
 	const extent = boundingExtent([fromLonLat([16.08748, 59.90015]), fromLonLat([19.4616, 58.60894])]);
 
@@ -79,17 +59,6 @@ function Map(props) {
 			>
 				<RLayerTile url={"https://tiles.bustrackr.io/styles/basic/256/{z}/{x}/{y}.webp"} />
 
-				<RLayerVector>
-					<RFeature
-						geometry={lineString}
-						style={lineStyle}
-						onClick={() => {
-							dispatch(increment());
-						}}
-					/>
-					<RFeature geometry={blipCircle} style={blipStyle} />
-				</RLayerVector>
-
 				{zoom > stationMinZoom && <RLayerVector>{Object.values(zoom > 16 && quays.length != 0 ? quays : stops).map(renderStationBlip)}</RLayerVector>}
 
 				{userLocation != null && !invalidLocation && renderUserLocation()}
@@ -99,11 +68,37 @@ function Map(props) {
 			<MapControls adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
 			<MapShortcuts
 				enableUserLocation={enableUserLocationACB}
+				openFavorites={testWarningPopup}
+				openTrending={testInformationPopup}
 				invalidLocation={invalidLocation}
 				awaitingLocation={awaitingLocation}
 			/>
 		</>
 	);
+
+	function testWarningPopup() {
+		dispatch(
+			queuePopup({
+				title: "Delete Account",
+				message:
+					"Are you sure that you want to delete your account? This action will remove all your account information including personal details, favorites, etc. This cannot be undone.",
+				type: 1,
+				continueAction: "DeleteAccount",
+				abortAction: "AbortDeleteAccount",
+			})
+		);
+	}
+
+	function testInformationPopup() {
+		dispatch(
+			queuePopup({
+				title: "Welcome Back",
+				message: "We haven't seen you in a long time! What do you think of this popup feature that we implemented while you were gone?",
+				type: 0,
+				continueAction: "ClosedWelcomeMessage",
+			})
+		);
+	}
 
 	function renderStationBlip(station) {
 		function stationHoverACB() {
