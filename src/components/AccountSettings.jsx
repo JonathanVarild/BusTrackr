@@ -188,8 +188,8 @@ function AccountSettings(props) {
 
 	function renderSecurity() {
 		const options = [
-			{ id: "lastLoginTime", type: "text", header: "Last logged in:", disabled: true, autoComplete: "" },
-			{ id: "lastLoginFrom", type: "text", header: "Last logged in from:", disabled: true, autoComplete: "" },
+			{ id: "lastLoginTime", type: "text", header: "Last logged in:", disabled: true, autoComplete: "off" },
+			{ id: "lastLoginFrom", type: "text", header: "Last logged in from:", disabled: true, autoComplete: "off" },
 			{ id: "oldPassword", type: "password", header: "Old password:", autoComplete: "current-password" },
 			{ id: "newPassword", type: "password", header: "New password:", autoComplete: "new-password" },
 			{ id: "repeatPassword", type: "password", header: "Repeat new password:", autoComplete: "new-password" },
@@ -200,8 +200,8 @@ function AccountSettings(props) {
 
 	function renderAgreements() {
 		const options = [
-			{ id: "termsOfServiceAccepted", type: "text", header: "Terms of service:", disabled: true, autoComplete: "" },
-			{ id: "dataPolicyAccepted", type: "text", header: "Data security policy:", disabled: true, autoComplete: "" },
+			{ id: "termsOfServiceAccepted", type: "text", header: "Terms of service:", disabled: true, autoComplete: "off" },
+			{ id: "dataPolicyAccepted", type: "text", header: "Data security policy:", disabled: true, autoComplete: "off" },
 		];
 
 		return (
@@ -219,8 +219,8 @@ function AccountSettings(props) {
 
 	function renderMyData() {
 		const options = [
-			{ id: "accountCreated", type: "text", header: "Account created:", disabled: true, autoComplete: "" },
-			{ id: "lastReportGenerated", type: "text", header: "Last report generated:", disabled: true, autoComplete: "" },
+			{ id: "accountCreated", type: "text", header: "Account created:", disabled: true, autoComplete: "off" },
+			{ id: "lastReportGenerated", type: "text", header: "Last report generated:", disabled: true, autoComplete: "off" },
 		];
 
 		return (
