@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 import RMapView from "../components/RMapView";
 import MapControls from "../components/MapControls";
@@ -22,13 +22,12 @@ import {
 	setInvalidLocation,
 	setAwaitingLocation,
 } from "../store/mapData";
-import { queuePopup } from "../store/interface";
+import { queuePopup, updateLastInteraction } from "../store/interface";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
 let mapMoveHandlerIsThrottled = false;
 let fetchLiveVehiclesIsThrottled = false;
-let lastUserInteraction = Date.now()
 const stationMinZoom = 12.3;
 
 function Map(props) {
@@ -41,7 +40,31 @@ function Map(props) {
 	const userLocation = useSelector((state) => state.mapData.userLocation);
 	const invalidLocation = useSelector((state) => state.mapData.invalidLocation);
 	const awaitingLocation = useSelector((state) => state.mapData.awaitingLocation);
+	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
 	const dispatch = useDispatch();
+
+	useEffect(() => { // This should prrobably be cleaned up, but works for now
+		const intervalId = setInterval(() => {
+			const timeSinceLastInteraction = Date.now() - lastInteraction;
+			
+			if (timeSinceLastInteraction > 2 * 60 * 1000) {
+				dispatch(
+					queuePopup({
+						title: "Inactivity Detected",
+						message:
+							"Servers are expensive, buses will be live again after this popup is closed.",
+						type: 0,
+						continueAction: "NoLongerInactive"
+					})
+				);
+				clearInterval(intervalId); // Stop polling when inactive
+			} else {
+				dispatch(fetchLiveVehicles());
+			}
+		}, 2000);
+	
+		return () => clearInterval(intervalId); // Cleanup on unmount
+	}, [lastInteraction, dispatch]);
 
 	const extent = boundingExtent([fromLonLat([16.08748, 59.90015]), fromLonLat([19.4616, 58.60894])]);
 
@@ -101,17 +124,17 @@ function Map(props) {
 	}
 
 	function setStationHoveredACB(payload) {
-		lastUserInteraction = Date.now();
+		dispatch(updateLastInteraction());
 		dispatch(setStationHovered(payload));
 	}
 
 	function setVehicleHoveredACB(payload) {
-		lastUserInteraction = Date.now();
+		dispatch(updateLastInteraction());
 		dispatch(setLiveVehicleHovered(payload));
 	}
 
 	function mapMoveACB() {
-		lastUserInteraction = Date.now();
+		dispatch(updateLastInteraction());
 
 		if (mapMoveHandlerIsThrottled) return;
 		const map = mapRef.current?.ol;
@@ -126,29 +149,12 @@ function Map(props) {
 			updateStationsACB(mapView, map, zoom);
 		}
 
-		fetchLiveVehiclesConsitently();
+		// fetchLiveVehiclesConsitently();
 
 		mapMoveHandlerIsThrottled = true;
 		setTimeout(() => {
 			mapMoveHandlerIsThrottled = false;
 		}, 250);
-	}
-
-	function fetchLiveVehiclesConsitently() {
-		if (fetchLiveVehiclesIsThrottled) return;
-
-		const timeSinceLastInteraction = Date.now() - lastUserInteraction;
-		if (timeSinceLastInteraction > 2 * 60 * 1000) { // User is inactive after 2 minutes
-			return;
-		}
-
-		dispatch(fetchLiveVehicles());
-		
-		fetchLiveVehiclesIsThrottled = true;
-		setTimeout(() => {
-			fetchLiveVehiclesIsThrottled = false;
-			fetchLiveVehiclesConsitently();
-		}, 2000);
 	}
 
 	function updateStationsACB(mapView, map, latestZoom) {
@@ -172,7 +178,8 @@ function Map(props) {
 	}
 
 	function mapZoomACB(zoomDelta) {
-		lastUserInteraction = Date.now();
+		dispatch(updateLastInteraction());
+
 		const map = mapRef.current?.ol;
 		if (map) {
 			const mapView = map.getView();

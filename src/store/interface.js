@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const interfaceSlice = createSlice({
 	name: "interface",
 	initialState: {
+		lastInteraction: Date.now(),
 		navigationOpen: false,
 		queuedPopups: [],
 		accountSettingOpen: null,
@@ -22,6 +23,9 @@ const interfaceSlice = createSlice({
 	reducers: {
 		toggleNavigation: (state) => {
 			state.navigationOpen = !state.navigationOpen;
+		},
+		updateLastInteraction: (state) => {
+			state.lastInteraction = Date.now();
 		},
 		queuePopup: (state, action) => {
 			state.queuedPopups.push({
@@ -49,6 +53,13 @@ const interfaceSlice = createSlice({
 				case "LogoutUser":
 					console.log("User wants to log out!");
 					break;
+				case "NoLongerInactive":
+					console.log("User is active again!");
+					state.lastInteraction = Date.now();
+					break;
+				default:
+					console.log("Unknown popup action: " + action.payload);
+					break;
 			}
 
 			state.queuedPopups.shift();
@@ -62,6 +73,6 @@ const interfaceSlice = createSlice({
 	},
 });
 
-export const { toggleNavigation, queuePopup, dequeuePopup, openAccountSetting, userInfo, setChangedUserInfo } = interfaceSlice.actions;
+export const { toggleNavigation, queuePopup, dequeuePopup, openAccountSetting, userInfo, setChangedUserInfo, updateLastInteraction } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;
