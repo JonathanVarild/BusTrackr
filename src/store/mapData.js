@@ -55,6 +55,19 @@ export const fetchLiveVehicles = createAsyncThunk("mapData/fetchLiveVehicles", a
 	}).then((resp) => resp.json());
 });
 
+export const fetchJourneyDetails = createAsyncThunk("mapData/fetchJourneyDetails", async ({service_journey_id, vehicle_id}) => {
+	return await fetch("https://bustrackr.io/api/journey_details", {
+		method: "POST",
+		body: JSON.stringify({
+			service_journey_id,
+			vehicle_id,
+		}),
+		headers: {
+			"Content-type": "application/json; charset=UTF-8",
+		},
+	}).then((resp) => resp.json());
+});
+
 const mapDataSlice = createSlice({
 	name: "mapData",
 	initialState: {
@@ -83,7 +96,14 @@ const mapDataSlice = createSlice({
 			error: null,
 			requestId: null,
 			list: {},
-		}
+		},
+		showBusJourneyInfo: false,
+		journeyDetails: {
+			status: "idle",
+			error: null,
+			requestId: null,
+			details: {}
+		},
 	},
 	reducers: {
 		updateScreenTopLeft: (state, action) => {
@@ -105,6 +125,9 @@ const mapDataSlice = createSlice({
 			} else {
 				state.liveVehicles.list[action.payload.id].hovered = action.payload.hovered;
 			}
+		},
+		setShowBusJourneyInfo: (state, action) => {
+			state.showBusJourneyInfo = action.payload;
 		},
 		setZoomLevel: (state, action) => {
 			state.screenBoundary.zoom = action.payload;
@@ -191,10 +214,29 @@ const mapDataSlice = createSlice({
 				state.liveVehicles.status = "failed";
 				state.liveVehicles.error = action.error.message;
 			});
+
+		builder
+			.addCase(fetchJourneyDetails.pending, (state, action) => {
+				state.journeyDetails.status = "loading";
+				state.journeyDetails.requestId = action.meta.requestId;
+				state.showBusJourneyInfo = true;
+			})
+			.addCase(fetchJourneyDetails.fulfilled, (state, action) => {
+				if (state.journeyDetails.requestId === action.meta.requestId) {
+					state.journeyDetails.status = "idle";
+					state.journeyDetails.requestId = null;
+
+					state.journeyDetails.details = action.payload;
+				}
+			})
+			.addCase(fetchJourneyDetails.rejected, (state, action) => {
+				state.journeyDetails.status = "failed";
+				state.journeyDetails.error = action.error.message;
+			});
 	},
 });
 
-export const { updateScreenTopLeft, updateScreenBottomRight, addQuays, setStationHovered, setLiveVehicleHovered, setZoomLevel, setUserLocation, setInvalidLocation, setAwaitingLocation } =
+export const { updateScreenTopLeft, updateScreenBottomRight, addQuays, setStationHovered, setShowBusJourneyInfo, setLiveVehicleHovered, setZoomLevel, setUserLocation, setInvalidLocation, setAwaitingLocation } =
 	mapDataSlice.actions;
 
 export default mapDataSlice.reducer;

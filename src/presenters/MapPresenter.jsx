@@ -4,6 +4,7 @@ import RMapView from "../components/RMapView";
 import MapControls from "../components/MapControls";
 import SearchBar from "../components/MapSearchBar";
 import MapShortcuts from "../components/MapShortcuts";
+import BusJourneyInfo from "../components/BusJourneyInfoView";
 
 import { fromLonLat, toLonLat } from "ol/proj";
 import { boundingExtent } from "ol/extent";
@@ -15,12 +16,14 @@ import {
 	fetchQuays,
 	fetchStops,
 	fetchLiveVehicles,
+	fetchJourneyDetails,
 	setStationHovered,
 	setLiveVehicleHovered,
 	setZoomLevel,
 	setUserLocation,
 	setInvalidLocation,
 	setAwaitingLocation,
+	setShowBusJourneyInfo,
 } from "../store/mapData";
 import { queuePopup, updateLastInteraction } from "../store/interface";
 
@@ -36,6 +39,9 @@ function Map(props) {
 	const stops = useSelector((state) => state.mapData.stops.list);
 	const quays = useSelector((state) => state.mapData.quays.list);
 	const liveVehicles = useSelector((state) => state.mapData.liveVehicles.list);
+	const journeyDetails = useSelector((state) => state.mapData.journeyDetails.details);
+	const journeyDetailsStatus = useSelector((state) => state.mapData.journeyDetails.status);
+	const showBusJourneyInfo = useSelector((state) => state.mapData.showBusJourneyInfo);
 	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
 	const userLocation = useSelector((state) => state.mapData.userLocation);
 	const invalidLocation = useSelector((state) => state.mapData.invalidLocation);
@@ -85,7 +91,16 @@ function Map(props) {
 				mapMove={mapMoveACB}
 				setStationHovered={setStationHoveredACB}
 				setVehicleHovered={setVehicleHoveredACB}
+				setVehicleClicked={setVehicleClickedACB}
 			/>
+
+			{showBusJourneyInfo &&
+				<BusJourneyInfo
+					journeyDetails={journeyDetails}
+					journeyDetailsStatus={journeyDetailsStatus}
+					onCloseClick={closeBusInfoACB}
+				/>
+			}
 
 			<SearchBar />
 			<MapControls adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
@@ -123,6 +138,10 @@ function Map(props) {
 		);
 	}
 
+	function closeBusInfoACB() {
+		dispatch(setShowBusJourneyInfo(false));
+	}
+
 	function setStationHoveredACB(payload) {
 		dispatch(updateLastInteraction());
 		dispatch(setStationHovered(payload));
@@ -131,6 +150,10 @@ function Map(props) {
 	function setVehicleHoveredACB(payload) {
 		dispatch(updateLastInteraction());
 		dispatch(setLiveVehicleHovered(payload));
+	}
+
+	function setVehicleClickedACB(payload) {
+		dispatch(fetchJourneyDetails(payload));
 	}
 
 	function mapMoveACB() {

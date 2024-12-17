@@ -126,6 +126,10 @@ function RMapView(props) {
             document.body.style.cursor = "";
 		}
 
+        function vehicleClickACB() {
+            props.setVehicleClicked({service_journey_id: vehicle.service_journey_id, vehicle_id: vehicle.vehicle_id})
+        }
+
 		return (
 			<RFeature
 				key={vehicle.service_journey_id + vehicle.vehicle_id}
@@ -133,6 +137,7 @@ function RMapView(props) {
 				style={getVehicleStyle(vehicle?.hovered)}
 				onPointerEnter={vehicleHoverACB}
 				onPointerLeave={vehicleUnhoverACB}
+                onClick={vehicleClickACB}
 			/>
 		);
     }
@@ -146,7 +151,7 @@ function RMapView(props) {
                         geometry={locationPoint}
                         style={locationBlipStyle}
                     />
-                    {userLocation?.accuracy > 25 && (
+                    {props.userLocation?.accuracy > 25 && (
                         <RFeature
                             geometry={locationPoint}
                             style={getLocationErrorStyle(props.userLocation, props.mapRef)}
