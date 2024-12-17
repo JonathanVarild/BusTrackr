@@ -8,6 +8,7 @@ import CounterTest from "./presenters/CounterTest";
 import MapDataDebugPresenter from "./presenters/MapDataDebugPresenter";
 import AccountSettingsPresenter from "./presenters/AccountSettingsPresenter";
 import PopupBox from "./presenters/PopupBoxPresenter";
+import AuthPopupPresenter from "./presenters/AuthPopupPresenter";
 
 function App(props) {
 	return (
@@ -23,6 +24,7 @@ function App(props) {
 				</Routes>
 			</BrowserRouter>
 			<AccountSettingsPresenter />
+			<AuthPopupPresenter />
 			<PopupBox />
 		</>
 	);

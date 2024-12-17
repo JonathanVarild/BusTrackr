@@ -1,0 +1,117 @@
+#authPopupBackground {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 999999;
+}
+
+#authWindow {
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	border-radius: unset;
+	height: 100%;
+	overflow-y: auto;
+	color: var(--smooth-black-transparent-80);
+	padding: var(--element-margin);
+}
+
+#authWindow button:hover {
+    opacity: 0.85;
+}
+
+.header button {
+	display: flex;
+	align-items: center;
+	font-size: 1.5rem;
+	font-weight: 600;
+	gap: 0.2rem;
+}
+
+.header svg {
+	height: 2rem;
+	width: 2rem;
+}
+
+#desktopBackButton {
+	display: none;
+}
+
+.iconContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-bottom: 2rem;
+}
+
+.iconContainer svg {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 10rem;
+	height: 10rem;
+}
+
+.contentContainer {
+	color: var(--smooth-black-transparent);
+}
+
+.inputMargin {
+    margin-bottom: 1.5rem;
+}
+
+#authActions button {
+	padding: var(--element-margin);
+	border-radius: 25px;
+	font-weight: 600;
+	color: inherit;
+}
+
+#authActions button:first-child {
+	background-color: var(--smooth-black-transparent);
+	color: white;
+}
+
+@media screen and (min-width: 768px) {
+	#authWindow {
+		width: 50%;
+		height: auto;
+		max-height: 80%;
+		border-radius: 10px;
+	}
+
+    .header {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #mobileBackButton {
+        display: none;
+    }
+
+    #desktopBackButton {
+        display: unset;
+    }
+
+	.iconContainer svg {
+		width: 5rem;
+		height: 5rem;
+	}
+
+	.iconContainer {
+		font-size: 2rem;
+	}
+
+	.backText {
+		display: none;
+	}
+}

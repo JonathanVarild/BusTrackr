@@ -7,17 +7,35 @@ const interfaceSlice = createSlice({
 		navigationOpen: false,
 		queuedPopups: [],
 		accountSettingOpen: null,
-		userInfo: {
-			username: "ExampleUser",
-			email: "firstname.lastname@example.com",
-			dateOfBirth: "2000-01-01",
-			lastLoginTime: "YYYY-MM-DD HH:MM:SS",
-			lastLoginFrom: "192.168.1.1",
-			termsOfServiceAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-			dataPolicyAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-			accountCreated: "YYYY-MM-DD HH:MM:SS",
-			lastReportGenerated: "YYYY-MM-DD HH:MM:SS",
+		authPopup: null,
+		authPopupForm: {
+			login: {
+				email: "",
+				password: "",
+				fault: "",
+			},
+			signup: {
+				username: "",
+				email: "",
+				password: "",
+				repeatPassword: "",
+				termsOfService: false,
+				dataPolicy: false,
+				fault: "",
+			},
 		},
+		userInfo: null,
+		// userInfo: {
+		// 	username: "ExampleUser",
+		// 	email: "firstname.lastname@example.com",
+		// 	dateOfBirth: "2000-01-01",
+		// 	lastLoginTime: "YYYY-MM-DD HH:MM:SS",
+		// 	lastLoginFrom: "192.168.1.1",
+		// 	termsOfServiceAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
+		// 	dataPolicyAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
+		// 	accountCreated: "YYYY-MM-DD HH:MM:SS",
+		// 	lastReportGenerated: "YYYY-MM-DD HH:MM:SS",
+		// },
 		changedUserInfo: null,
 	},
 	reducers: {
@@ -70,9 +88,19 @@ const interfaceSlice = createSlice({
 		setChangedUserInfo: (state, action) => {
 			state.changedUserInfo = action.payload.length === 0 ? null : { ...state.changedUserInfo, ...action.payload };
 		},
+		setAuthPopup: (state, action) => {
+			state.authPopup = action.payload;
+		},
+		updateLoginForm: (state, action) => {
+			state.authPopupForm.login = { ...state.authPopupForm.login, ...action.payload };
+		},
+		updateSignupForm: (state, action) => {
+			state.authPopupForm.signup = { ...state.authPopupForm.signup, ...action.payload };
+		},
 	},
 });
 
-export const { toggleNavigation, queuePopup, dequeuePopup, openAccountSetting, userInfo, setChangedUserInfo, updateLastInteraction } = interfaceSlice.actions;
+export const { toggleNavigation, queuePopup, dequeuePopup, openAccountSetting, userInfo, setChangedUserInfo, setAuthPopup, updateLoginForm, updateSignupForm, updateLastInteraction,  } =
+	interfaceSlice.actions;
 
 export default interfaceSlice.reducer;

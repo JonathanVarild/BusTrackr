@@ -141,47 +141,19 @@
 	display: none;
 }
 
-.settingText {
-	font-weight: 500;
-	padding-bottom: 1rem;
-}
-
-.inputHeader {
-	font-weight: 600;
-	line-height: 1.8rem;
-}
-
 .settingsContainer {
 	color: var(--smooth-black-transparent);
-}
-
-.settingsContainer input {
-	width: 100%;
-	padding: var(--element-margin);
-	border-radius: 5px;
-	border: 1px solid var(--smooth-black-transparent-20);
-	margin-bottom: 1.5rem;
-	font-weight: 600;
-	color: var(--smooth-black-transparent-80);
 }
 
 .settingsContainer a {
 	margin-bottom: 1rem;
 	display: block;
-	text-decoration: none;
-	font-weight: 400;
-	color: #2f7adf;
 }
 
 .settingsContainer a:hover,
 #deleteAccountButton:hover {
 	text-decoration: underline;
 	cursor: pointer;
-}
-
-.warningText {
-	font-weight: 800 !important;
-	color: #ff6161 !important;
 }
 
 @media screen and (min-width: 768px) {

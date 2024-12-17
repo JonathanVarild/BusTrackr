@@ -163,7 +163,7 @@ function AccountSettings(props) {
 
 		return (
 			<div key={option.id}>
-				<div className={styles.inputHeader}>{option.header}</div>
+				<label htmlFor={option.id}>{option.header}</label>
 				<input
 					type={option.type}
 					value={props.changedUserInfo?.[option.id] || props.userInfo[option.id] || ""}
@@ -171,6 +171,8 @@ function AccountSettings(props) {
 					disabled={option.disabled}
 					maxLength={option.maxLength}
 					autoComplete={option.autoComplete}
+					className="form-input"
+					id={option.id}
 				/>
 			</div>
 		);
@@ -226,7 +228,7 @@ function AccountSettings(props) {
 		return (
 			<form>
 				{options.map(renderOptionCB)}
-				<div className={styles.settingText}>
+				<div className="input-text">
 					Generating a data report will give you an overview of all data that we keep which is related to your BusTrackr account. It will not contain internal server
 					logs, system diagnostics, or data that cannot be directly linked to your personal account.
 				</div>
@@ -240,19 +242,19 @@ function AccountSettings(props) {
 	function renderDeleteAcount() {
 		return (
 			<div>
-				<div className={styles.settingText}>
-					<span className={styles.warningText}>Warning:</span> Deleting your account will delete all data which is related to your account and cannot be undone.
+				<div className="input-text">
+					<span className="warning-text">Warning:</span> Deleting your account will delete all data which is related to your account and cannot be undone.
 				</div>
-				<div className={styles.settingText}>Deleted data includes account information, favorites, and account related logs.</div>
-				<div className={styles.settingText}>
+				<div className="input-text">Deleted data includes account information, favorites, and account related logs.</div>
+				<div className="input-text">
 					We may still keep certain logs such as server logs, agreement logs, and security logs to ensure the safety of our services. These logs will be deleted when
 					possible.
 				</div>
-				<div className={styles.settingText}>For full inforation about our data policy, see the link below.</div>
+				<div className="input-text">For full inforation about our data policy, see the link below.</div>
 				<a href="/data-policy" target="blank_">
 					Data security policy
 				</a>
-				<button className={styles.warningText} id={styles.deleteAccountButton} onClick={deleteAccountACB}>
+				<button className="warning-text" id={styles.deleteAccountButton} onClick={deleteAccountACB}>
 					Delete user account
 				</button>
 			</div>
