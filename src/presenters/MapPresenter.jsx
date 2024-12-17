@@ -14,7 +14,9 @@ import {
 	updateScreenBottomRight,
 	fetchQuays,
 	fetchStops,
+	fetchLiveVehicles,
 	setStationHovered,
+	setLiveVehicleHovered,
 	setZoomLevel,
 	setUserLocation,
 	setInvalidLocation,
@@ -25,6 +27,8 @@ import { queuePopup } from "../store/interface";
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
 let mapMoveHandlerIsThrottled = false;
+let fetchLiveVehiclesIsThrottled = false;
+let lastUserInteraction = Date.now()
 const stationMinZoom = 12.3;
 
 function Map(props) {
@@ -32,6 +36,7 @@ function Map(props) {
 
 	const stops = useSelector((state) => state.mapData.stops.list);
 	const quays = useSelector((state) => state.mapData.quays.list);
+	const liveVehicles = useSelector((state) => state.mapData.liveVehicles.list);
 	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
 	const userLocation = useSelector((state) => state.mapData.userLocation);
 	const invalidLocation = useSelector((state) => state.mapData.invalidLocation);
@@ -51,10 +56,12 @@ function Map(props) {
 				stationMinZoom={stationMinZoom}
 				quays={quays}
 				stops={stops}
+				liveVehicles={liveVehicles}
 				userLocation={userLocation}
 				invalidLocation={invalidLocation}
 				mapMove={mapMoveACB}
 				setStationHovered={setStationHoveredACB}
+				setVehicleHovered={setVehicleHoveredACB}
 			/>
 
 			<SearchBar />
@@ -94,10 +101,18 @@ function Map(props) {
 	}
 
 	function setStationHoveredACB(payload) {
+		lastUserInteraction = Date.now();
 		dispatch(setStationHovered(payload));
 	}
 
+	function setVehicleHoveredACB(payload) {
+		lastUserInteraction = Date.now();
+		dispatch(setLiveVehicleHovered(payload));
+	}
+
 	function mapMoveACB() {
+		lastUserInteraction = Date.now();
+
 		if (mapMoveHandlerIsThrottled) return;
 		const map = mapRef.current?.ol;
 		if (!map) return;
@@ -111,10 +126,29 @@ function Map(props) {
 			updateStationsACB(mapView, map, zoom);
 		}
 
+		fetchLiveVehiclesConsitently();
+
 		mapMoveHandlerIsThrottled = true;
 		setTimeout(() => {
 			mapMoveHandlerIsThrottled = false;
 		}, 250);
+	}
+
+	function fetchLiveVehiclesConsitently() {
+		if (fetchLiveVehiclesIsThrottled) return;
+
+		const timeSinceLastInteraction = Date.now() - lastUserInteraction;
+		if (timeSinceLastInteraction > 2 * 60 * 1000) { // User is inactive after 2 minutes
+			return;
+		}
+
+		dispatch(fetchLiveVehicles());
+		
+		fetchLiveVehiclesIsThrottled = true;
+		setTimeout(() => {
+			fetchLiveVehiclesIsThrottled = false;
+			fetchLiveVehiclesConsitently();
+		}, 2000);
 	}
 
 	function updateStationsACB(mapView, map, latestZoom) {
@@ -138,6 +172,7 @@ function Map(props) {
 	}
 
 	function mapZoomACB(zoomDelta) {
+		lastUserInteraction = Date.now();
 		const map = mapRef.current?.ol;
 		if (map) {
 			const mapView = map.getView();

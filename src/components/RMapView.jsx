@@ -22,6 +22,24 @@ function getStopStyle(hovered) {
     return hovered ? stopStyleHovered : stopStyle;
 }
 
+const vehicleStyle = new Style({
+    image: new Circle({
+        radius: 4,
+        fill: new Fill({ color: "white" }),
+        stroke: new Stroke({ color: "#e94256", width: 1 }),
+    }),
+});
+const vehicleStyleHovered = new Style({
+    image: new Circle({
+        radius: 6,
+        fill: new Fill({ color: "white" }),
+        stroke: new Stroke({ color: "#e94256", width: 1 }),
+    }),
+});
+function getVehicleStyle(hovered) {
+    return hovered ? vehicleStyleHovered : vehicleStyle;
+}
+
 const quayStyle = new Style({
     image: new Icon({
         src: directionPNG,
@@ -97,6 +115,28 @@ function RMapView(props) {
 		);
 	}
 
+    function renderVehicleBlipCB(vehicle) {
+        function vehicleHoverACB() {
+            props.setVehicleHovered({ id: vehicle.service_journey_id + vehicle.vehicle_id, hovered: true });
+            document.body.style.cursor = "pointer";
+		}
+
+		function vehicleUnhoverACB() {
+			props.setVehicleHovered({ id: vehicle.service_journey_id + vehicle.vehicle_id, hovered: false });
+            document.body.style.cursor = "";
+		}
+
+		return (
+			<RFeature
+				key={vehicle.service_journey_id + vehicle.vehicle_id}
+				geometry={new Point(fromLonLat([vehicle.location.longitude, vehicle.location.latitude]))}
+				style={getVehicleStyle(vehicle?.hovered)}
+				onPointerEnter={vehicleHoverACB}
+				onPointerLeave={vehicleUnhoverACB}
+			/>
+		);
+    }
+
     function renderUserLocationCB() {
             const locationPoint = new Point(fromLonLat([props.userLocation.longitude, props.userLocation.latitude]));
     
@@ -135,6 +175,9 @@ function RMapView(props) {
                     {Object.values(
                         (props.zoom > 16 && props.quays.length != 0) ? props.quays : props.stops
                     ).map(renderStationBlipCB)}
+                    {Object.values(
+                        props.liveVehicles
+                    ).map(renderVehicleBlipCB)}
                 </RLayerVector>
             }
 
