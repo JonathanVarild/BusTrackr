@@ -5,7 +5,7 @@ import { openAccountSetting, setChangedUserInfo, queuePopup } from "../store/int
 
 function AccountSettingsPresenter(props) {
 	const accountSettingOpen = useSelector((state) => state.interface.accountSettingOpen);
-	const userInfo = useSelector((state) => state.interface.userInfo);
+	const userInfo = useSelector((state) => state.interface.authenticate.userInfo);
 	const changedUserInfo = useSelector((state) => state.interface.changedUserInfo);
 	const dispatch = useDispatch();
 

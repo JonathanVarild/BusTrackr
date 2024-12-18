@@ -1,6 +1,6 @@
 import AuthPopup from "../components/AuthPopup";
 
-import { setAuthPopup, updateLoginForm, updateSignupForm } from "../store/interface";
+import { authenticateUser, setAuthPopup, updateLoginForm, updateSignupForm } from "../store/interface";
 import { useSelector, useDispatch } from "react-redux";
 
 function AuthPopupPresenter(props) {
@@ -15,6 +15,7 @@ function AuthPopupPresenter(props) {
 			authPopupForm={authPopupForm}
 			onChangeLoginInput={onChangeLoginInputACB}
 			onChangeSignupInput={onChangeSignupInputACB}
+			onLoginUser={onLoginUserACB}
 		/>
 	);
 
@@ -28,6 +29,10 @@ function AuthPopupPresenter(props) {
 
 	function onChangeSignupInputACB(id, value) {
 		dispatch(updateSignupForm({ [id]: value }));
+	}
+
+	function onLoginUserACB() {
+		dispatch(authenticateUser());
 	}
 }
 

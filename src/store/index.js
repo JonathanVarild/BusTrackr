@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./counter";
 import mapReducer from "./mapData"
-import interfaceReducer from "./interface"
+import interfaceReducer, { logoutMiddlewareFunction } from "./interface"
 
 const store = configureStore({
 	reducer: {
@@ -9,6 +9,7 @@ const store = configureStore({
 		mapData: mapReducer,
 		interface: interfaceReducer,
 	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logoutMiddlewareFunction),
 	devTools: process.env.NODE_ENV !== "production",
 });
 

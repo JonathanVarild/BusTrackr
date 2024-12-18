@@ -26,7 +26,7 @@ import {
 	setShowBusJourneyInfo,
 	setSelectedLiveVehicleId,
 } from "../store/mapData";
-import { queuePopup, updateLastInteraction } from "../store/interface";
+import { makeChangeTest, queuePopup, updateLastInteraction } from "../store/interface";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
@@ -51,18 +51,18 @@ function Map(props) {
 	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
 	const dispatch = useDispatch();
 
-	useEffect(() => { // This should prrobably be cleaned up, but works for now
+	useEffect(() => {
+		// This should prrobably be cleaned up, but works for now
 		const intervalId = setInterval(() => {
 			const timeSinceLastInteraction = Date.now() - lastInteraction;
-			
+
 			if (timeSinceLastInteraction > 2 * 60 * 1000) {
 				dispatch(
 					queuePopup({
 						title: "Inactivity Detected",
-						message:
-							"Servers are expensive, buses will be live again after this popup is closed.",
+						message: "Servers are expensive, buses will be live again after this popup is closed.",
 						type: 0,
-						continueAction: "NoLongerInactive"
+						continueAction: "NoLongerInactive",
 					})
 				);
 				clearInterval(intervalId); // Stop polling when inactive
@@ -70,7 +70,7 @@ function Map(props) {
 				dispatch(fetchLiveVehicles());
 			}
 		}, 2000);
-	
+
 		return () => clearInterval(intervalId); // Cleanup on unmount
 	}, [lastInteraction, dispatch]);
 
@@ -119,16 +119,7 @@ function Map(props) {
 	);
 
 	function testWarningPopup() {
-		dispatch(
-			queuePopup({
-				title: "Delete Account",
-				message:
-					"Are you sure that you want to delete your account? This action will remove all your account information including personal details, favorites, etc. This cannot be undone.",
-				type: 1,
-				continueAction: "DeleteAccount",
-				abortAction: "AbortDeleteAccount",
-			})
-		);
+		dispatch(makeChangeTest());
 	}
 
 	function testInformationPopup() {

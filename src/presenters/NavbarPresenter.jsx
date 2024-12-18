@@ -6,7 +6,7 @@ import { toggleNavigation, openAccountSetting, setAuthPopup } from "../store/int
 function Navbar(props) {
 	const dispatch = useDispatch();
 	const isNavOpen = useSelector((state) => state.interface.navigationOpen);
-	const userInfo = useSelector((state) => state.interface.userInfo);
+	const userInfo = useSelector((state) => state.interface.authenticate.userInfo);
 
 	const toggleNavACB = () => {
 		dispatch(toggleNavigation());
