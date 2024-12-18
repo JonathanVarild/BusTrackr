@@ -2,6 +2,14 @@ import { createSlice, createAsyncThunk, createListenerMiddleware } from "@reduxj
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
+async function fetchResolvedCB(resp) {
+	if (resp.status !== 200) {
+		const error = await resp.json();
+		return Promise.reject(new Error(error.message));
+	}
+	return resp.json();
+}
+
 export const authenticateUser = createAsyncThunk("interface/authenticateUser", async (_, { getState, abort, requestId }) => {
 	const state = getState().interface;
 	const loginForm = state.authPopupForm.login;
@@ -17,13 +25,7 @@ export const authenticateUser = createAsyncThunk("interface/authenticateUser", a
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
 		},
-	}).then(async (resp) => {
-		if (resp.status !== 200) {
-			const error = await resp.json();
-			return Promise.reject(new Error(error.message));
-		}
-		return resp.json();
-	});
+	}).then(fetchResolvedCB);
 });
 
 export const reauthenticateUser = createAsyncThunk("interface/reauthenticateUser", async () => {
@@ -31,15 +33,10 @@ export const reauthenticateUser = createAsyncThunk("interface/reauthenticateUser
 		method: "POST",
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
+			"X-Silence-Unauthorized": "true",
 		},
 		credentials: "include",
-	}).then(async (resp) => {
-		if (resp.status !== 200) {
-			const error = await resp.json();
-			return Promise.reject(new Error(error.message));
-		}
-		return resp.json();
-	});
+	}).then(fetchResolvedCB);
 });
 
 export const logoutUser = createAsyncThunk("interface/logoutUser", async (_, { getState, abort, requestId }) => {
@@ -53,13 +50,7 @@ export const logoutUser = createAsyncThunk("interface/logoutUser", async (_, { g
 			"Content-type": "application/json; charset=UTF-8",
 		},
 		credentials: "include",
-	}).then(async (resp) => {
-		if (resp.status !== 200) {
-			const error = await resp.json();
-			return Promise.reject(new Error(error.message));
-		}
-		return resp.json();
-	});
+	}).then(fetchResolvedCB);
 });
 
 export const makeChangeTest = createAsyncThunk("interface/makeChangeTest", async () => {
@@ -69,13 +60,7 @@ export const makeChangeTest = createAsyncThunk("interface/makeChangeTest", async
 			"Content-type": "application/json; charset=UTF-8",
 		},
 		credentials: "include",
-	}).then(async (resp) => {
-		if (resp.status !== 200) {
-			const error = await resp.json();
-			return Promise.reject(new Error(error.message));
-		}
-		return resp.json();
-	});
+	}).then(fetchResolvedCB);
 });
 
 const interfaceSlice = createSlice({
@@ -238,6 +223,8 @@ const interfaceSlice = createSlice({
 				state.reauthenticate.status = "idle";
 
 				const userData = action.payload.userData;
+
+				if (!userData) return;
 
 				state.authenticate.userInfo = {
 					id: userData.id,
