@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function createLocation(latitude = 59.405002, longitude = 17.9508139) {
 	return { latitude, longitude };
 }
@@ -7,7 +9,7 @@ function createLocation(latitude = 59.405002, longitude = 17.9508139) {
 export const fetchQuays = createAsyncThunk("mapData/fetchQuays", async (_, { getState }) => {
 	const screenBoundary = getState().mapData.screenBoundary;
 
-	return await fetch("https://bustrackr.io/api/quays", {
+	return await fetch(apiUrl + "/api/quays", {
 		method: "POST",
 		body: JSON.stringify({
 			lat_0: screenBoundary.topLeft.latitude,
@@ -24,7 +26,7 @@ export const fetchQuays = createAsyncThunk("mapData/fetchQuays", async (_, { get
 export const fetchStops = createAsyncThunk("mapData/fetchStops", async (_, { getState }) => {
 	const screenBoundary = getState().mapData.screenBoundary;
 
-	return await fetch("https://bustrackr.io/api/stops", {
+	return await fetch(apiUrl + "/api/stops", {
 		method: "POST",
 		body: JSON.stringify({
 			lat_0: screenBoundary.topLeft.latitude,
@@ -41,7 +43,7 @@ export const fetchStops = createAsyncThunk("mapData/fetchStops", async (_, { get
 export const fetchLiveVehicles = createAsyncThunk("mapData/fetchLiveVehicles", async (_, { getState }) => {
 	const screenBoundary = getState().mapData.screenBoundary;
 
-	return await fetch("https://bustrackr.io/api/live", {
+	return await fetch(apiUrl + "/api/live", {
 		method: "POST",
 		body: JSON.stringify({
 			lat_0: screenBoundary.topLeft.latitude,
@@ -56,7 +58,7 @@ export const fetchLiveVehicles = createAsyncThunk("mapData/fetchLiveVehicles", a
 });
 
 export const fetchJourneyDetails = createAsyncThunk("mapData/fetchJourneyDetails", async ({service_journey_id, vehicle_id}) => {
-	return await fetch("https://bustrackr.io/api/journey_details", {
+	return await fetch(apiUrl + "/api/journey_details", {
 		method: "POST",
 		body: JSON.stringify({
 			service_journey_id,

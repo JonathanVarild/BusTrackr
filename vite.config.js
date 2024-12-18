@@ -5,6 +5,13 @@ export default defineConfig({
 	plugins: [reactJsxPlugin()],
 	server: {
 		port: 8080,
+		proxy: {
+			"/api": {
+				target: "http://localhost:5005",
+				changeOrigin: true,
+				secure: false,
+			},
+		},
 	},
 	build: {
 		sourcemap: true,

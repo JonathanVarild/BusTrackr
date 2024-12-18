@@ -2,7 +2,8 @@
     "type": "module",
     "scripts": {
         "start": "vite",
-        "dev": "vite --host",
+        "dev": "vite --mode production --host" ,
+        "local-dev": "vite --mode development --host",
         "build": "vite build",
         "serve": "vite preview"
     },
