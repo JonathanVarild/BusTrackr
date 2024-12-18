@@ -75,7 +75,76 @@
 }
 
 #infoContainer {
-    
+    height: 100%;
+    width: 100%;
+}
+
+#infoTitleContainer {
+    height: var(--element-size);
+}
+
+.lineSpan {
+    border-radius: var(--element-margin);
+    color: var(--smooth-white);
+    padding-left: calc(0.5 * var(--element-margin));
+    padding-right: calc(0.5 * var(--element-margin));
+}
+
+.colorNone { background-color: #969696; }
+.colorRed  { background-color: #e94256; }
+.colorBlue { background-color: #007aff; }
+
+.busInfoConatainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: "area-from area-capacity area-speed"
+                         "area-to   area-operator area-heading";
+    height: calc(2 * var(--element-size)); /* For some reason 100% breaks??? */
+    width: 100%;
+}
+
+#containerFrom     { grid-area: area-from; }
+#containerTo       { grid-area: area-to; }
+#containerCapacity { grid-area: area-capacity; }
+#containerOperator { grid-area: area-operator; }
+#containerSpeed    { grid-area: area-speed; }
+#containerHeading  { grid-area: area-heading; }
+
+.infoContainerOuter {
+    display: flex;
+    gap: var(--element-margin);
+}
+
+.infoIconContainer {
+    opacity: 40%;
+    width: calc(0.66 * var(--element-size));
+    height: calc(0.66 * var(--element-size));
+}
+
+.infoIconClass {
+    color: var(--smooth-black);
+    width: calc(0.66 * var(--element-size));
+    height: calc(0.66 * var(--element-size));
+}
+
+.notInTraficContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(2 * var(--element-size)); /* For some reason 100% breaks??? */
+    width: 100%;
+}
+
+.infoContainerInner {
+    display: flex;
+    align-items: center;
+    gap: calc(0.5 * var(--element-margin));
+    height: calc(0.66 * var(--element-size));
+}
+
+.infoContainerInner > p {
+    font-size: 1.125rem;
 }
 
 @media screen and (min-width: 768px), screen and (orientation: landscape) {

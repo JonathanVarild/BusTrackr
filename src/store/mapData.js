@@ -93,6 +93,7 @@ const mapDataSlice = createSlice({
 			requestId: null,
 			list: {},
 		},
+		selectedLiveVehicleId: null,
 		liveVehicles: {
 			status: "idle",
 			error: null,
@@ -120,6 +121,9 @@ const mapDataSlice = createSlice({
 			} else {
 				state.quays.list[action.payload.id].hovered = action.payload.hovered;
 			}
+		},
+		setSelectedLiveVehicleId: (state, action) => {
+			state.selectedLiveVehicleId = action.payload;
 		},
 		setLiveVehicleHovered: (state, action) => {
 			if (state.liveVehicles.list[action.payload.id]) {
@@ -238,7 +242,18 @@ const mapDataSlice = createSlice({
 	},
 });
 
-export const { updateScreenTopLeft, updateScreenBottomRight, addQuays, setStationHovered, setShowBusJourneyInfo, setLiveVehicleHovered, setZoomLevel, setUserLocation, setInvalidLocation, setAwaitingLocation } =
-	mapDataSlice.actions;
+export const {
+	updateScreenTopLeft,
+	updateScreenBottomRight,
+	addQuays,
+	setStationHovered,
+	setShowBusJourneyInfo,
+	setLiveVehicleHovered,
+	setZoomLevel,
+	setUserLocation,
+	setInvalidLocation,
+	setAwaitingLocation,
+	setSelectedLiveVehicleId
+} =	mapDataSlice.actions;
 
 export default mapDataSlice.reducer;

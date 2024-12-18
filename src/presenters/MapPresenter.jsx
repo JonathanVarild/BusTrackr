@@ -24,6 +24,7 @@ import {
 	setInvalidLocation,
 	setAwaitingLocation,
 	setShowBusJourneyInfo,
+	setSelectedLiveVehicleId,
 } from "../store/mapData";
 import { queuePopup, updateLastInteraction } from "../store/interface";
 
@@ -38,6 +39,7 @@ function Map(props) {
 
 	const stops = useSelector((state) => state.mapData.stops.list);
 	const quays = useSelector((state) => state.mapData.quays.list);
+	const selectedLiveVehicleId = useSelector((state) => state.mapData.selectedLiveVehicleId);
 	const liveVehicles = useSelector((state) => state.mapData.liveVehicles.list);
 	const journeyDetails = useSelector((state) => state.mapData.journeyDetails.details);
 	const journeyDetailsStatus = useSelector((state) => state.mapData.journeyDetails.status);
@@ -98,6 +100,8 @@ function Map(props) {
 				<BusJourneyInfo
 					journeyDetails={journeyDetails}
 					journeyDetailsStatus={journeyDetailsStatus}
+					selectedLiveVehicleId={selectedLiveVehicleId}
+					liveVehicles={liveVehicles}
 					onCloseClick={closeBusInfoACB}
 				/>
 			}
@@ -153,6 +157,8 @@ function Map(props) {
 	}
 
 	function setVehicleClickedACB(payload) {
+		const combined = payload["service_journey_id"] + payload["vehicle_id"]
+		dispatch(setSelectedLiveVehicleId(combined));
 		dispatch(fetchJourneyDetails(payload));
 	}
 
