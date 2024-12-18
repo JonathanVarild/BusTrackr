@@ -9,8 +9,17 @@ import MapDataDebugPresenter from "./presenters/MapDataDebugPresenter";
 import AccountSettingsPresenter from "./presenters/AccountSettingsPresenter";
 import PopupBox from "./presenters/PopupBoxPresenter";
 import AuthPopupPresenter from "./presenters/AuthPopupPresenter";
+import { useDispatch } from "react-redux";
+import { reauthenticateUser } from "./store/interface";
+import { useEffect } from "react";
 
 function App(props) {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(reauthenticateUser());
+	}, [dispatch]);
+
 	return (
 		<>
 			<Navbar />

@@ -78,7 +78,7 @@ function AuthPopup(props) {
 					{props.authPopupForm.login.fault && <div className="input-text warning-text">{props.authPopupForm.login.fault}</div>}
 
 					<div id={styles.authActions}>
-						<button>Login</button>
+						<button onClick={authenticateUserACB}>Login</button>
 						<button onClick={openSignUpACB}>Sign up</button>
 					</div>
 				</div>
@@ -125,6 +125,10 @@ function AuthPopup(props) {
 
 	function openLoginACB() {
 		props.setCurrentView("login");
+	}
+
+	function authenticateUserACB() {
+		props.onLoginUser();
 	}
 }
 
