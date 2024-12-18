@@ -135,9 +135,13 @@ a {
 	font-weight: 400;
 	color: #2f7adf;
 }
+a:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
 
 .spin-icon {
-	animation: spinner 2s cubic-bezier(0.65,0.05,0.36,1) infinite;
+	animation: spinner 2s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
 }
 
 @keyframes spinner {
