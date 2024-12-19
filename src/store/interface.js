@@ -21,6 +21,7 @@ export const authenticateUser = createAsyncThunk("interface/authenticateUser", a
 		body: JSON.stringify({
 			email: loginForm.email,
 			password: loginForm.password,
+			long_expire: loginForm.rememberMe
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
@@ -68,6 +69,7 @@ export const createUserAccount = createAsyncThunk("interface/createUserAccount",
 			password: signupForm.password,
 			terms_of_service: signupForm.termsOfService,
 			data_policy: signupForm.dataPolicy,
+			long_expire: signupForm.rememberMe
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
@@ -97,6 +99,7 @@ const interfaceSlice = createSlice({
 			login: {
 				email: "",
 				password: "",
+				rememberMe: false,
 				fault: "",
 			},
 			signup: {
@@ -107,6 +110,7 @@ const interfaceSlice = createSlice({
 				repeatPassword: "",
 				termsOfService: false,
 				dataPolicy: false,
+				rememberMe: false,
 				fault: "",
 			},
 		},
