@@ -2,11 +2,11 @@ import { RMap, RLayerVector, RFeature, RLayerTile } from "rlayers";
 import { Style, Stroke, Circle, Fill, Icon } from "ol/style";
 import { Point } from "ol/geom";
 import { fromLonLat } from "ol/proj";
-import stopPNG from "../media/stop.png";
-import quayPNG from "../media/quay.png";
-import blackBusPNG from "../media/blackBus.png";
-import blueBusPNG from "../media/blueBus.png";
-import redBusPNG from "../media/redBus.png";
+import stopPNG from "../media/stop.png?as=asset";
+import quayPNG from "../media/quay.png?as=asset";
+import blackBusPNG from "../media/blackBus.png?as=asset";
+import blueBusPNG from "../media/blueBus.png?as=asset";
+import redBusPNG from "../media/redBus.png?as=asset";
 
 const stopStyleFar = new Style({
     image: new Circle({
