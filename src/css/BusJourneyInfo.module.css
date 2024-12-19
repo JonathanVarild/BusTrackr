@@ -3,7 +3,7 @@
     display: flex;
     bottom: calc(var(--element-size) + var(--element-margin));
     margin: var(--element-margin);
-    height: calc(3 * var(--element-size) + 2 * var(--element-margin));
+    height: calc(5 * var(--element-size) + 2 * var(--element-margin));
     width: calc(100% - 2 * var(--element-margin));
     z-index: 998;
 }
@@ -96,10 +96,14 @@
 
 .busInfoConatainer {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-template-areas: "area-from area-capacity area-speed"
-                         "area-to   area-operator area-heading";
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(1fr, 6);
+    grid-template-areas: "area-from"
+                         "area-to"
+                         "area-capacity"
+                         "area-operator"
+                         "area-speed"
+                         "area-heading";
     height: calc(2 * var(--element-size)); /* For some reason 100% breaks??? */
     width: 100%;
 }
@@ -148,6 +152,10 @@
 }
 
 @media screen and (min-width: 768px), screen and (orientation: landscape) {
+    #outerContainer {
+        height: calc(3 * var(--element-size) + 2 * var(--element-margin));
+    }
+
     .justifyContent {
       justify-content: center;
     }
@@ -166,5 +174,13 @@
       display: flex;
       gap: var(--element-margin);
       width: calc(33.33%);
+    }
+
+    .busInfoConatainer {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas: "area-from area-capacity area-speed"
+                             "area-to   area-operator area-heading";
+
     }
   }
