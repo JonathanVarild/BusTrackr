@@ -28,8 +28,8 @@ function NavbarView(props) {
 						</a>
 					</div>
 					<div id={styles.accountLink} className={`${styles.navItem} header-font rounded-corners drop-shadow blurred-background`}>
-						<button onClick={props.onOpenAccountSettings}>
-							<p>Account</p>
+						<button onClick={onClickAccountACB}>
+							<p>{props.userInfo === null ? "Login" : "Account"}</p>
 							<div className={styles.iconContainer}>
 								<IconUser stroke={2} />
 							</div>
@@ -54,6 +54,14 @@ function NavbarView(props) {
 			</div>
 		</header>
 	);
+
+	function onClickAccountACB() {
+		if (props.userInfo === null) {
+			props.onOpenAuthentication();
+		} else {
+			props.onOpenAccountSettings();
+		}
+	}
 }
 
 export default NavbarView;

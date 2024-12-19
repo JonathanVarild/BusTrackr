@@ -163,7 +163,7 @@ function AccountSettings(props) {
 
 		return (
 			<div key={option.id}>
-				<div className={styles.inputHeader}>{option.header}</div>
+				<label htmlFor={option.id}>{option.header}</label>
 				<input
 					type={option.type}
 					value={props.changedUserInfo?.[option.id] || props.userInfo[option.id] || ""}
@@ -171,6 +171,8 @@ function AccountSettings(props) {
 					disabled={option.disabled}
 					maxLength={option.maxLength}
 					autoComplete={option.autoComplete}
+					className="form-input"
+					id={option.id}
 				/>
 			</div>
 		);
@@ -188,8 +190,8 @@ function AccountSettings(props) {
 
 	function renderSecurity() {
 		const options = [
-			{ id: "lastLoginTime", type: "text", header: "Last logged in:", disabled: true, autoComplete: "" },
-			{ id: "lastLoginFrom", type: "text", header: "Last logged in from:", disabled: true, autoComplete: "" },
+			{ id: "lastLoginTime", type: "text", header: "Last logged in:", disabled: true, autoComplete: "off" },
+			{ id: "lastLoginFrom", type: "text", header: "Last logged in from:", disabled: true, autoComplete: "off" },
 			{ id: "oldPassword", type: "password", header: "Old password:", autoComplete: "current-password" },
 			{ id: "newPassword", type: "password", header: "New password:", autoComplete: "new-password" },
 			{ id: "repeatPassword", type: "password", header: "Repeat new password:", autoComplete: "new-password" },
@@ -200,8 +202,8 @@ function AccountSettings(props) {
 
 	function renderAgreements() {
 		const options = [
-			{ id: "termsOfServiceAccepted", type: "text", header: "Terms of service:", disabled: true, autoComplete: "" },
-			{ id: "dataPolicyAccepted", type: "text", header: "Data security policy:", disabled: true, autoComplete: "" },
+			{ id: "termsOfServiceAccepted", type: "text", header: "Terms of service:", disabled: true, autoComplete: "off" },
+			{ id: "dataPolicyAccepted", type: "text", header: "Data security policy:", disabled: true, autoComplete: "off" },
 		];
 
 		return (
@@ -219,14 +221,14 @@ function AccountSettings(props) {
 
 	function renderMyData() {
 		const options = [
-			{ id: "accountCreated", type: "text", header: "Account created:", disabled: true, autoComplete: "" },
-			{ id: "lastReportGenerated", type: "text", header: "Last report generated:", disabled: true, autoComplete: "" },
+			{ id: "accountCreated", type: "text", header: "Account created:", disabled: true, autoComplete: "off" },
+			{ id: "lastReportGenerated", type: "text", header: "Last report generated:", disabled: true, autoComplete: "off" },
 		];
 
 		return (
 			<form>
 				{options.map(renderOptionCB)}
-				<div className={styles.settingText}>
+				<div className="input-text">
 					Generating a data report will give you an overview of all data that we keep which is related to your BusTrackr account. It will not contain internal server
 					logs, system diagnostics, or data that cannot be directly linked to your personal account.
 				</div>
@@ -240,19 +242,19 @@ function AccountSettings(props) {
 	function renderDeleteAcount() {
 		return (
 			<div>
-				<div className={styles.settingText}>
-					<span className={styles.warningText}>Warning:</span> Deleting your account will delete all data which is related to your account and cannot be undone.
+				<div className="input-text">
+					<span className="warning-text">Warning:</span> Deleting your account will delete all data which is related to your account and cannot be undone.
 				</div>
-				<div className={styles.settingText}>Deleted data includes account information, favorites, and account related logs.</div>
-				<div className={styles.settingText}>
+				<div className="input-text">Deleted data includes account information, favorites, and account related logs.</div>
+				<div className="input-text">
 					We may still keep certain logs such as server logs, agreement logs, and security logs to ensure the safety of our services. These logs will be deleted when
 					possible.
 				</div>
-				<div className={styles.settingText}>For full inforation about our data policy, see the link below.</div>
+				<div className="input-text">For full inforation about our data policy, see the link below.</div>
 				<a href="/data-policy" target="blank_">
 					Data security policy
 				</a>
-				<button className={styles.warningText} id={styles.deleteAccountButton} onClick={deleteAccountACB}>
+				<button className="warning-text" id={styles.deleteAccountButton} onClick={deleteAccountACB}>
 					Delete user account
 				</button>
 			</div>

@@ -1,190 +1,161 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
+import RMapView from "../components/RMapView";
 import MapControls from "../components/MapControls";
 import SearchBar from "../components/MapSearchBar";
 import MapShortcuts from "../components/MapShortcuts";
+import BusJourneyInfo from "../components/BusJourneyInfoView";
 
-import { RMap, RLayerVector, RFeature, RLayerTile } from "rlayers";
 import { fromLonLat, toLonLat } from "ol/proj";
-import { Style, Stroke, Circle, Fill, Icon } from "ol/style";
-import { LineString, Point } from "ol/geom";
 import { boundingExtent } from "ol/extent";
 
 import { useSelector, useDispatch } from "react-redux";
-import { increment } from "../store/counter";
 import {
 	updateScreenTopLeft,
 	updateScreenBottomRight,
 	fetchQuays,
 	fetchStops,
+	fetchLiveVehicles,
+	fetchJourneyDetails,
 	setStationHovered,
+	setLiveVehicleHovered,
 	setZoomLevel,
 	setUserLocation,
 	setInvalidLocation,
 	setAwaitingLocation,
+	setShowBusJourneyInfo,
+	setSelectedLiveVehicleId,
 } from "../store/mapData";
-
-import directionPNG from "../media/directions.png";
-import coordinates from "../tmp/lineCords";
+import { makeChangeTest, queuePopup, updateLastInteraction } from "../store/interface";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
 let mapMoveHandlerIsThrottled = false;
+let fetchLiveVehiclesIsThrottled = false;
 const stationMinZoom = 12.3;
 
 function Map(props) {
 	const mapRef = useRef(null);
 
-	const count = useSelector((state) => state.counter.count);
 	const stops = useSelector((state) => state.mapData.stops.list);
 	const quays = useSelector((state) => state.mapData.quays.list);
+	const selectedLiveVehicleId = useSelector((state) => state.mapData.selectedLiveVehicleId);
+	const liveVehicles = useSelector((state) => state.mapData.liveVehicles.list);
+	const journeyDetails = useSelector((state) => state.mapData.journeyDetails.details);
+	const journeyDetailsStatus = useSelector((state) => state.mapData.journeyDetails.status);
+	const showBusJourneyInfo = useSelector((state) => state.mapData.showBusJourneyInfo);
 	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
 	const userLocation = useSelector((state) => state.mapData.userLocation);
 	const invalidLocation = useSelector((state) => state.mapData.invalidLocation);
 	const awaitingLocation = useSelector((state) => state.mapData.awaitingLocation);
+	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
 	const dispatch = useDispatch();
 
-	const lineString = new LineString(coordinates.map((coord) => fromLonLat(coord)));
-	const blipCircle = new Point(fromLonLat(coordinates[count]));
+	useEffect(() => {
+		// This should prrobably be cleaned up, but works for now
+		const intervalId = setInterval(() => {
+			const timeSinceLastInteraction = Date.now() - lastInteraction;
 
-	const lineStyle = new Style({
-		stroke: new Stroke({
-			color: "red",
-			width: 8,
-		}),
-	});
+			if (timeSinceLastInteraction > 2 * 60 * 1000) {
+				dispatch(
+					queuePopup({
+						title: "Inactivity Detected",
+						message: "Servers are expensive, buses will be live again after this popup is closed.",
+						type: 0,
+						continueAction: "NoLongerInactive",
+					})
+				);
+				clearInterval(intervalId); // Stop polling when inactive
+			} else {
+				dispatch(fetchLiveVehicles());
+			}
+		}, 2000);
 
-	const blipStyle = new Style({
-		image: new Circle({
-			radius: 7,
-			fill: new Fill({ color: "red" }),
-			stroke: new Stroke({ color: "darkred", width: 2 }),
-		}),
-	});
+		return () => clearInterval(intervalId); // Cleanup on unmount
+	}, [lastInteraction, dispatch]);
 
 	const extent = boundingExtent([fromLonLat([16.08748, 59.90015]), fromLonLat([19.4616, 58.60894])]);
 
 	return (
 		<>
-			<RMap
-				ref={mapRef}
-				width={"100%"}
-				height={"100vh"}
-				initial={{ center: center, zoom: 11 }}
-				noDefaultControls={true}
-				onPointerDrag={mapMoveACB}
-				onMoveEnd={mapMoveACB}
-				minZoom={10}
+			<RMapView
+				mapRef={mapRef}
+				center={center}
 				extent={extent}
-			>
-				<RLayerTile url={"https://tiles.bustrackr.io/styles/basic/256/{z}/{x}/{y}.webp"} />
+				tileUrl={"https://tiles.bustrackr.io/styles/basic/256/{z}/{x}/{y}.webp"}
+				zoom={zoom}
+				stationMinZoom={stationMinZoom}
+				quays={quays}
+				stops={stops}
+				liveVehicles={liveVehicles}
+				userLocation={userLocation}
+				invalidLocation={invalidLocation}
+				mapMove={mapMoveACB}
+				setStationHovered={setStationHoveredACB}
+				setVehicleHovered={setVehicleHoveredACB}
+				setVehicleClicked={setVehicleClickedACB}
+			/>
 
-				<RLayerVector>
-					<RFeature
-						geometry={lineString}
-						style={lineStyle}
-						onClick={() => {
-							dispatch(increment());
-						}}
-					/>
-					<RFeature geometry={blipCircle} style={blipStyle} />
-				</RLayerVector>
-
-				{zoom > stationMinZoom && <RLayerVector>{Object.values(zoom > 16 && quays.length != 0 ? quays : stops).map(renderStationBlip)}</RLayerVector>}
-
-				{userLocation != null && !invalidLocation && renderUserLocation()}
-			</RMap>
+			{showBusJourneyInfo &&
+				<BusJourneyInfo
+					journeyDetails={journeyDetails}
+					journeyDetailsStatus={journeyDetailsStatus}
+					selectedLiveVehicleId={selectedLiveVehicleId}
+					liveVehicles={liveVehicles}
+					onCloseClick={closeBusInfoACB}
+				/>
+			}
 
 			<SearchBar />
 			<MapControls adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
 			<MapShortcuts
 				enableUserLocation={enableUserLocationACB}
+				openFavorites={testWarningPopup}
+				openTrending={testInformationPopup}
 				invalidLocation={invalidLocation}
 				awaitingLocation={awaitingLocation}
 			/>
 		</>
 	);
 
-	function renderStationBlip(station) {
-		function stationHoverACB() {
-			dispatch(setStationHovered({ id: station.id, hovered: true }));
-			document.body.style.cursor = "pointer";
-		}
+	function testWarningPopup() {
+		dispatch(makeChangeTest());
+	}
 
-		function stationUnhoverACB() {
-			dispatch(setStationHovered({ id: station.id, hovered: false }));
-			document.body.style.cursor = "";
-		}
-
-		function getBlipCB() {
-			if (zoom < 16) {
-				return new Style({
-					image: new Circle({
-						radius: station?.hovered ? 6 : 4,
-						fill: new Fill({ color: "white" }),
-						stroke: new Stroke({ color: "#2e7aee", width: 1 }),
-					}),
-				});
-			} else {
-				return new Style({
-					image: new Icon({
-						src: directionPNG,
-						scale: station?.hovered ? 0.35 : 0.3,
-						anchor: [0.5, 0.5],
-						anchorXUnits: "fraction",
-						anchorYUnits: "fraction",
-					}),
-				});
-			}
-		}
-
-		return (
-			<RFeature
-				key={station.id}
-				geometry={new Point(fromLonLat([station.location.longitude, station.location.latitude]))}
-				style={getBlipCB()}
-				onPointerEnter={stationHoverACB}
-				onPointerLeave={stationUnhoverACB}
-			/>
+	function testInformationPopup() {
+		dispatch(
+			queuePopup({
+				title: "Welcome Back",
+				message: "We haven't seen you in a long time! What do you think of this popup feature that we implemented while you were gone?",
+				type: 0,
+				continueAction: "ClosedWelcomeMessage",
+			})
 		);
 	}
 
-	function renderUserLocation() {
-		const locationPoint = new Point(fromLonLat([userLocation.longitude, userLocation.latitude]));
+	function closeBusInfoACB() {
+		dispatch(setShowBusJourneyInfo(false));
+	}
 
-		return (
-			<RLayerVector>
-				<RFeature
-					geometry={locationPoint}
-					style={
-						new Style({
-							image: new Circle({
-								radius: 8,
-								fill: new Fill({ color: "#2e7aee" }),
-								stroke: new Stroke({ color: "#afc8ed", width: 4 }),
-							}),
-						})
-					}
-				/>
-				{userLocation?.accuracy > 25 && (
-					<RFeature
-						geometry={locationPoint}
-						style={
-							new Style({
-								image: new Circle({
-									radius: (userLocation?.accuracy * 2) / mapRef.current?.ol.getView().getResolution(),
-									fill: new Fill({ color: "rgba(0, 93, 230, 0.2)" }),
-									stroke: new Stroke({ color: "#afc8ed", width: 1 }),
-								}),
-							})
-						}
-					/>
-				)}
-			</RLayerVector>
-		);
+	function setStationHoveredACB(payload) {
+		dispatch(updateLastInteraction());
+		dispatch(setStationHovered(payload));
+	}
+
+	function setVehicleHoveredACB(payload) {
+		dispatch(updateLastInteraction());
+		dispatch(setLiveVehicleHovered(payload));
+	}
+
+	function setVehicleClickedACB(payload) {
+		const combined = payload["service_journey_id"] + payload["vehicle_id"]
+		dispatch(setSelectedLiveVehicleId(combined));
+		dispatch(fetchJourneyDetails(payload));
 	}
 
 	function mapMoveACB() {
+		dispatch(updateLastInteraction());
+
 		if (mapMoveHandlerIsThrottled) return;
 		const map = mapRef.current?.ol;
 		if (!map) return;
@@ -197,6 +168,8 @@ function Map(props) {
 		if (zoom > stationMinZoom) {
 			updateStationsACB(mapView, map, zoom);
 		}
+
+		// fetchLiveVehiclesConsitently();
 
 		mapMoveHandlerIsThrottled = true;
 		setTimeout(() => {
@@ -225,6 +198,8 @@ function Map(props) {
 	}
 
 	function mapZoomACB(zoomDelta) {
+		dispatch(updateLastInteraction());
+
 		const map = mapRef.current?.ol;
 		if (map) {
 			const mapView = map.getView();

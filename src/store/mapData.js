@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const blueBusses = ["1", "2", "3", "4", "6", "172", "173", "175", "176", "177", "178", "179", "471", "474", "670", "676", "677", "873", "875"];
+
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function createLocation(latitude = 59.405002, longitude = 17.9508139) {
 	return { latitude, longitude };
 }
@@ -7,7 +11,7 @@ function createLocation(latitude = 59.405002, longitude = 17.9508139) {
 export const fetchQuays = createAsyncThunk("mapData/fetchQuays", async (_, { getState }) => {
 	const screenBoundary = getState().mapData.screenBoundary;
 
-	return await fetch("https://bustrackr.io/api/quays", {
+	return await fetch(apiUrl + "/api/quays", {
 		method: "POST",
 		body: JSON.stringify({
 			lat_0: screenBoundary.topLeft.latitude,
@@ -24,13 +28,43 @@ export const fetchQuays = createAsyncThunk("mapData/fetchQuays", async (_, { get
 export const fetchStops = createAsyncThunk("mapData/fetchStops", async (_, { getState }) => {
 	const screenBoundary = getState().mapData.screenBoundary;
 
-	return await fetch("https://bustrackr.io/api/stops", {
+	return await fetch(apiUrl + "/api/stops", {
 		method: "POST",
 		body: JSON.stringify({
 			lat_0: screenBoundary.topLeft.latitude,
 			lon_0: screenBoundary.topLeft.longitude,
 			lat_1: screenBoundary.bottomRight.latitude,
 			lon_1: screenBoundary.bottomRight.longitude,
+		}),
+		headers: {
+			"Content-type": "application/json; charset=UTF-8",
+		},
+	}).then((resp) => resp.json());
+});
+
+export const fetchLiveVehicles = createAsyncThunk("mapData/fetchLiveVehicles", async (_, { getState }) => {
+	const screenBoundary = getState().mapData.screenBoundary;
+
+	return await fetch(apiUrl + "/api/live", {
+		method: "POST",
+		body: JSON.stringify({
+			lat_0: screenBoundary.topLeft.latitude,
+			lon_0: screenBoundary.topLeft.longitude,
+			lat_1: screenBoundary.bottomRight.latitude,
+			lon_1: screenBoundary.bottomRight.longitude,
+		}),
+		headers: {
+			"Content-type": "application/json; charset=UTF-8",
+		},
+	}).then((resp) => resp.json());
+});
+
+export const fetchJourneyDetails = createAsyncThunk("mapData/fetchJourneyDetails", async ({service_journey_id, vehicle_id}) => {
+	return await fetch(apiUrl + "/api/journey_details", {
+		method: "POST",
+		body: JSON.stringify({
+			service_journey_id,
+			vehicle_id,
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
@@ -61,6 +95,20 @@ const mapDataSlice = createSlice({
 			requestId: null,
 			list: {},
 		},
+		selectedLiveVehicleId: null,
+		liveVehicles: {
+			status: "idle",
+			error: null,
+			requestId: null,
+			list: {},
+		},
+		showBusJourneyInfo: false,
+		journeyDetails: {
+			status: "idle",
+			error: null,
+			requestId: null,
+			details: {}
+		},
 	},
 	reducers: {
 		updateScreenTopLeft: (state, action) => {
@@ -75,6 +123,19 @@ const mapDataSlice = createSlice({
 			} else {
 				state.quays.list[action.payload.id].hovered = action.payload.hovered;
 			}
+		},
+		setSelectedLiveVehicleId: (state, action) => {
+			state.selectedLiveVehicleId = action.payload;
+		},
+		setLiveVehicleHovered: (state, action) => {
+			if (state.liveVehicles.list[action.payload.id]) {
+				state.liveVehicles.list[action.payload.id].hovered = action.payload.hovered;
+			} else {
+				state.liveVehicles.list[action.payload.id].hovered = action.payload.hovered;
+			}
+		},
+		setShowBusJourneyInfo: (state, action) => {
+			state.showBusJourneyInfo = action.payload;
 		},
 		setZoomLevel: (state, action) => {
 			state.screenBoundary.zoom = action.payload;
@@ -137,10 +198,75 @@ const mapDataSlice = createSlice({
 				state.stops.status = "failed";
 				state.stops.error = action.error.message;
 			});
+
+		builder
+			.addCase(fetchLiveVehicles.pending, (state, action) => {
+				state.liveVehicles.status = "loading";
+				state.liveVehicles.requestId = action.meta.requestId;
+			})
+			.addCase(fetchLiveVehicles.fulfilled, (state, action) => {
+				if (state.liveVehicles.requestId === action.meta.requestId) {
+					state.liveVehicles.status = "idle";
+					state.liveVehicles.requestId = null;
+
+					const newLiveVehicles = action.payload.list.map((liveVehicle) => {
+						const existingVehicle = state.liveVehicles.list[liveVehicle.service_journey_id + liveVehicle.vehicle_id];
+						return {
+						...liveVehicle,
+						location: createLocation(parseFloat(liveVehicle.location.lat), parseFloat(liveVehicle.location.lon)),
+						routeColor: existingVehicle?.routeColor ?? "unknown"
+					}});
+
+					state.liveVehicles.list = Object.fromEntries(newLiveVehicles.map((liveVehicle) => [liveVehicle.service_journey_id + liveVehicle.vehicle_id, liveVehicle]));
+					
+				}
+			})
+			.addCase(fetchLiveVehicles.rejected, (state, action) => {
+				state.liveVehicles.status = "failed";
+				state.liveVehicles.error = action.error.message;
+			});
+
+		builder
+			.addCase(fetchJourneyDetails.pending, (state, action) => {
+				state.journeyDetails.status = "loading";
+				state.journeyDetails.requestId = action.meta.requestId;
+				state.showBusJourneyInfo = true;
+			})
+			.addCase(fetchJourneyDetails.fulfilled, (state, action) => {
+				if (state.journeyDetails.requestId === action.meta.requestId) {
+					state.journeyDetails.status = "idle";
+					state.journeyDetails.requestId = null;
+
+					state.journeyDetails.details = action.payload;
+
+					if (state.liveVehicles.list[state.selectedLiveVehicleId] !== undefined) {
+						if (blueBusses.includes(state.journeyDetails.details.line)) {
+							state.liveVehicles.list[state.selectedLiveVehicleId].routeColor = "blue";
+						} else if (state.journeyDetails.details.line !== undefined) {
+							state.liveVehicles.list[state.selectedLiveVehicleId].routeColor = "red";					
+						}
+					}
+				}
+			})
+			.addCase(fetchJourneyDetails.rejected, (state, action) => {
+				state.journeyDetails.status = "failed";
+				state.journeyDetails.error = action.error.message;
+			});
 	},
 });
 
-export const { updateScreenTopLeft, updateScreenBottomRight, addQuays, setStationHovered, setZoomLevel, setUserLocation, setInvalidLocation, setAwaitingLocation } =
-	mapDataSlice.actions;
+export const {
+	updateScreenTopLeft,
+	updateScreenBottomRight,
+	addQuays,
+	setStationHovered,
+	setShowBusJourneyInfo,
+	setLiveVehicleHovered,
+	setZoomLevel,
+	setUserLocation,
+	setInvalidLocation,
+	setAwaitingLocation,
+	setSelectedLiveVehicleId
+} =	mapDataSlice.actions;
 
 export default mapDataSlice.reducer;
