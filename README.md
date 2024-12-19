@@ -10,6 +10,10 @@ BusTrackr is app created by [Jonathan Värild](mailto:varild@kth.se), [Lukas Nor
 - Controls for zooming and user location.
 - Controls for showing favorites, trending, and shuffle.
 - Input for search bar.
+- Live location of Stockholm local transport buses.
+- Bus details when clicking any bus on the map.
+- Blending between quays, stops, and stop groups depending on map zoom
+- Create a user account, log in, change account settings, etc.
 - Backend API ([BusTrackr-Server](https://github.com/Vuroz/BusTrackr-Server), not part of grading 🥲😵)
     - Endpoint for returning quays based on coordinate bounds.
     - Endpoint for returning stops based on coordinate bounds.
@@ -18,15 +22,11 @@ BusTrackr is app created by [Jonathan Värild](mailto:varild@kth.se), [Lukas Nor
         - Based on a list of IDs.
 
 ## ⏱️ Planned features
-- Showing bus live location
-- Blending between quays, stops, and stop groups depending on map zoom
 - Displaying information about stops when clicked
 - Showing a ranking of the most looked at & liked routes
 - Ability to "like" routes
 - Ability to "shuffle" a random bus
 - Making searches based on stop locations or line number.
-- Fetching bus details for a specific bus.
-- User accounts.
 - Global statistics such as online users.
 - The other routes
 
