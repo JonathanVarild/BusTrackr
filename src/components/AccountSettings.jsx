@@ -109,10 +109,12 @@ function AccountSettings(props) {
 	}
 
 	function renderActionButton() {
-		function onSaveACB() {}
-
 		function onRevertACB() {
 			props.reverseChanges();
+		}
+
+		function onSaveACB() {
+			props.saveAccountChanges();
 		}
 
 		if (props.changedUserInfo !== null) {
