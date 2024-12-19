@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const blueBusses = ["1", "2", "3", "4", "6", "172", "173", "175", "176", "177", "178", "179", "471", "474", "670", "676", "677", "873", "875"];
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function createLocation(latitude = 59.405002, longitude = 17.9508139) {
@@ -207,10 +209,13 @@ const mapDataSlice = createSlice({
 					state.liveVehicles.status = "idle";
 					state.liveVehicles.requestId = null;
 
-					const newLiveVehicles = action.payload.list.map((liveVehicles) => ({
-						...liveVehicles,
-						location: createLocation(parseFloat(liveVehicles.location.lat), parseFloat(liveVehicles.location.lon)),
-					}));
+					const newLiveVehicles = action.payload.list.map((liveVehicle) => {
+						const existingVehicle = state.liveVehicles.list[liveVehicle.service_journey_id + liveVehicle.vehicle_id];
+						return {
+						...liveVehicle,
+						location: createLocation(parseFloat(liveVehicle.location.lat), parseFloat(liveVehicle.location.lon)),
+						routeColor: existingVehicle?.routeColor ?? "unknown"
+					}});
 
 					state.liveVehicles.list = Object.fromEntries(newLiveVehicles.map((liveVehicle) => [liveVehicle.service_journey_id + liveVehicle.vehicle_id, liveVehicle]));
 					
@@ -233,6 +238,14 @@ const mapDataSlice = createSlice({
 					state.journeyDetails.requestId = null;
 
 					state.journeyDetails.details = action.payload;
+
+					if (state.liveVehicles.list[state.selectedLiveVehicleId] !== undefined) {
+						if (blueBusses.includes(state.journeyDetails.details.line)) {
+							state.liveVehicles.list[state.selectedLiveVehicleId].routeColor = "blue";
+						} else if (state.journeyDetails.details.line !== undefined) {
+							state.liveVehicles.list[state.selectedLiveVehicleId].routeColor = "red";					
+						}
+					}
 				}
 			})
 			.addCase(fetchJourneyDetails.rejected, (state, action) => {

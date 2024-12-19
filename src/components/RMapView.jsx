@@ -3,47 +3,101 @@ import { Style, Stroke, Circle, Fill, Icon } from "ol/style";
 import { Point } from "ol/geom";
 import { fromLonLat } from "ol/proj";
 import directionPNG from "../media/directions.png";
+import stopPNG from "../media/stop.png";
+import quayPNG from "../media/quay.png";
+import blackBusPNG from "../media/blackBus.png";
+import blueBusPNG from "../media/blueBus.png";
+import redBusPNG from "../media/redBus.png";
 
-const stopStyle = new Style({
+const stopStyleFar = new Style({
     image: new Circle({
-        radius: 4,
-        fill: new Fill({ color: "white" }),
-        stroke: new Stroke({ color: "#2e7aee", width: 1 }),
+        radius: 2,
+        fill: new Fill({ color: "#eda68e" }),
+    }),
+});
+const stopStyle = new Style({
+    image: new Icon({
+        src: stopPNG,
+        scale: 0.25,
+        anchor: [0.5, 0.5],
+        anchorXUnits: "fraction",
+        anchorYUnits: "fraction",
     }),
 });
 const stopStyleHovered = new Style({
-    image: new Circle({
-        radius: 6,
-        fill: new Fill({ color: "white" }),
-        stroke: new Stroke({ color: "#2e7aee", width: 1 }),
+    image: new Icon({
+        src: stopPNG,
+        scale: 0.3,
+        anchor: [0.5, 0.5],
+        anchorXUnits: "fraction",
+        anchorYUnits: "fraction",
     }),
 });
-function getStopStyle(hovered) {
-    return hovered ? stopStyleHovered : stopStyle;
-}
 
 const vehicleStyle = new Style({
-    image: new Circle({
-        radius: 4,
-        fill: new Fill({ color: "white" }),
-        stroke: new Stroke({ color: "#e94256", width: 1 }),
+    image: new Icon({
+        src: blackBusPNG,
+        scale: 0.25,
+        anchor: [0.5, 0.5],
+        anchorXUnits: "fraction",
+        anchorYUnits: "fraction",
     }),
 });
 const vehicleStyleHovered = new Style({
-    image: new Circle({
-        radius: 6,
-        fill: new Fill({ color: "white" }),
-        stroke: new Stroke({ color: "#e94256", width: 1 }),
+    image: new Icon({
+        src: blackBusPNG,
+        scale: 0.3,
+        anchor: [0.5, 0.5],
+        anchorXUnits: "fraction",
+        anchorYUnits: "fraction",
     }),
 });
-function getVehicleStyle(hovered) {
+const vehicleStyleBlue = new Style({
+    image: new Icon({
+        src: blueBusPNG,
+        scale: 0.25,
+        anchor: [0.5, 0.5],
+        anchorXUnits: "fraction",
+        anchorYUnits: "fraction",
+    }),
+});
+const vehicleStyleBlueHovered = new Style({
+    image: new Icon({
+        src: blueBusPNG,
+        scale: 0.3,
+        anchor: [0.5, 0.5],
+        anchorXUnits: "fraction",
+        anchorYUnits: "fraction",
+    }),
+});
+const vehicleStyleRed = new Style({
+    image: new Icon({
+        src: redBusPNG,
+        scale: 0.25,
+        anchor: [0.5, 0.5],
+        anchorXUnits: "fraction",
+        anchorYUnits: "fraction",
+    }),
+});
+const vehicleStyleRedHovered = new Style({
+    image: new Icon({
+        src: redBusPNG,
+        scale: 0.3,
+        anchor: [0.5, 0.5],
+        anchorXUnits: "fraction",
+        anchorYUnits: "fraction",
+    }),
+});
+function getVehicleStyle(hovered, color) {
+    if (color === "blue") return hovered ? vehicleStyleBlueHovered : vehicleStyleBlue;
+    if (color === "red") return hovered ? vehicleStyleRedHovered : vehicleStyleRed;
     return hovered ? vehicleStyleHovered : vehicleStyle;
 }
 
 const quayStyle = new Style({
     image: new Icon({
-        src: directionPNG,
-        scale: 0.3,
+        src: quayPNG,
+        scale: 0.25,
         anchor: [0.5, 0.5],
         anchorXUnits: "fraction",
         anchorYUnits: "fraction",
@@ -51,8 +105,8 @@ const quayStyle = new Style({
 });
 const quayStyleHovered = new Style({
     image: new Icon({
-        src: directionPNG,
-        scale: 0.35,
+        src: quayPNG,
+        scale: 0.3,
         anchor: [0.5, 0.5],
         anchorXUnits: "fraction",
         anchorYUnits: "fraction",
@@ -81,6 +135,10 @@ function getLocationErrorStyle(location, mapRef) {
 }
 
 function RMapView(props) {
+    function getStopStyle(hovered) {
+        return hovered ? stopStyleHovered : (props.zoom > 14.5 ? stopStyle : stopStyleFar);
+    }
+
     function mapMoveACB() {
         props.mapMove()
     }
@@ -134,7 +192,7 @@ function RMapView(props) {
 			<RFeature
 				key={vehicle.service_journey_id + vehicle.vehicle_id}
 				geometry={new Point(fromLonLat([vehicle.location.longitude, vehicle.location.latitude]))}
-				style={getVehicleStyle(vehicle?.hovered)}
+				style={getVehicleStyle(vehicle?.hovered, vehicle?.routeColor)}
 				onPointerEnter={vehicleHoverACB}
 				onPointerLeave={vehicleUnhoverACB}
                 onClick={vehicleClickACB}
