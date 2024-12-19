@@ -2,7 +2,6 @@ import { RMap, RLayerVector, RFeature, RLayerTile } from "rlayers";
 import { Style, Stroke, Circle, Fill, Icon } from "ol/style";
 import { Point } from "ol/geom";
 import { fromLonLat } from "ol/proj";
-import directionPNG from "../media/directions.png";
 import stopPNG from "../media/stop.png";
 import quayPNG from "../media/quay.png";
 import blackBusPNG from "../media/blackBus.png";
