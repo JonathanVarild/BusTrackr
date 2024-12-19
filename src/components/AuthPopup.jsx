@@ -55,15 +55,15 @@ function AuthPopup(props) {
 		return (
 			<div key={input.id}>
 				<label htmlFor={input.id}>{input.title}</label>
-				<input type={input.type} id={input.id} className="form-input" autoComplete={input.autoComplete} onChange={onChangeACB} value={value} />
+				<input type={input.type} id={input.id} className="form-input" autoComplete={input.autoComplete} maxLength={input.maxLength} onChange={onChangeACB} value={value} />
 			</div>
 		);
 	}
 
 	function renderLoginForm() {
 		const inputs = [
-			{ state: "email", id: "email", title: "Email:", type: "text", autoComplete: "email" },
-			{ state: "password", id: "password", title: "Password:", type: "password", autoComplete: "password" },
+			{ state: "email", id: "email", title: "Email:", type: "text", autoComplete: "email", maxLength: 120 },
+			{ state: "password", id: "password", title: "Password:", type: "password", autoComplete: "password", maxLength: 120 },
 		];
 
 		return (
@@ -75,7 +75,7 @@ function AuthPopup(props) {
 				<div id={styles.loginForm} className={styles.contentContainer}>
 					{inputs.map(renderInputCB)}
 
-					{props.authPopupForm.login.fault && <div className="input-text warning-text">{props.authPopupForm.login.fault}</div>}
+					{props.loginFault && <div className="input-text warning-text">{props.loginFault}</div>}
 
 					<div id={styles.authActions}>
 						<button onClick={authenticateUserACB}>Login</button>
@@ -88,10 +88,11 @@ function AuthPopup(props) {
 
 	function renderSignupForm() {
 		const inputs = [
-			{ state: "username", id: "new-username", title: "Username:", type: "text", autoComplete: "new-username", isSignUp: true },
-			{ state: "email", id: "new-email", title: "Email:", type: "text", autoComplete: "new-email", isSignUp: true },
-			{ state: "password", id: "password-new", title: "Password:", type: "password", autoComplete: "new-password", isSignUp: true },
-			{ state: "repeatPassword", id: "password-repeat", title: "Repeat password:", type: "password", autoComplete: "new-password", isSignUp: true },
+			{ state: "username", id: "new-username", title: "Username:", type: "text", autoComplete: "new-username", maxLength: 20, isSignUp: true },
+			{ state: "email", id: "new-email", title: "Email:", type: "text", autoComplete: "new-email", maxLength: 120, isSignUp: true },
+			{ state: "dateOfBirth", id: "dateOfBirth", title: "Date of birth:", type: "date", autoComplete: "new-dateOfBirth", isSignUp: true },
+			{ state: "password", id: "password-new", title: "Password:", type: "password", autoComplete: "new-password", maxLength: 120, isSignUp: true },
+			{ state: "repeatPassword", id: "password-repeat", title: "Repeat password:", type: "password", autoComplete: "new-password", maxLength: 120, isSignUp: true },
 			{ state: "termsOfService", id: "termsOfService", linkText: "Terms of Service", href: "/terms-of-service", type: "checkbox", isSignUp: true },
 			{ state: "dataPolicy", id: "dataPolicy", linkText: "Data Policy", href: "/data-policy", type: "checkbox", isSignUp: true, bottomMargin: true },
 		];
@@ -105,9 +106,9 @@ function AuthPopup(props) {
 				<div id={styles.loginForm} className={styles.contentContainer}>
 					{inputs.map(renderInputCB)}
 
-					{props.authPopupForm.signup.fault && <div className="input-text warning-text">{props.authPopupForm.signup.fault}</div>}
+					{props.signupFault && <div className="input-text warning-text">{props.signupFault}</div>}
 					<div id={styles.authActions}>
-						<button>Create account</button>
+						<button onClick={createUserACB}>Create account</button>
 						<button onClick={openLoginACB}>Use existing account</button>
 					</div>
 				</div>
@@ -129,6 +130,10 @@ function AuthPopup(props) {
 
 	function authenticateUserACB() {
 		props.onLoginUser();
+	}
+
+	function createUserACB() {
+		props.onCreateUser();
 	}
 }
 
