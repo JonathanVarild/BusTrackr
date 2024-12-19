@@ -3,10 +3,6 @@ import reactJsxPlugin from "@vitejs/plugin-react";
 
 export default defineConfig({
 	plugins: [reactJsxPlugin()],
-	assetsInclude: [
-		'**/*.png',
-		'**/*.ico'
-	],
 	server: {
 		port: 8080,
 		proxy: {
@@ -20,6 +16,7 @@ export default defineConfig({
 	build: {
 		sourcemap: true,
 		minify: false,
+		assetsInlineLimit: 0,
 	},
 	resolve: {
 		alias: {
