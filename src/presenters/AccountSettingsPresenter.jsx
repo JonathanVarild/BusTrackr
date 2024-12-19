@@ -1,7 +1,7 @@
 import AccountSettings from "../components/AccountSettings";
 
 import { useSelector, useDispatch } from "react-redux";
-import { openAccountSetting, setChangedUserInfo, queuePopup } from "../store/interface";
+import { openAccountSetting, setChangedUserInfo, queuePopup, updateUserAccount } from "../store/interface";
 
 function AccountSettingsPresenter(props) {
 	const accountSettingOpen = useSelector((state) => state.interface.accountSettingOpen);
@@ -20,6 +20,7 @@ function AccountSettingsPresenter(props) {
 			showUnsavedWarning={showUnsavedWarningACB}
 			showDeleteAccountWarning={showDeleteAccountWarningACB}
 			logout={logoutUserACB}
+			saveAccountChanges={saveAccountChangesACB}
 		/>
 	);
 
@@ -63,6 +64,10 @@ function AccountSettingsPresenter(props) {
 				abortAction: "AbortDeleteAccount",
 			})
 		);
+	}
+
+	function saveAccountChangesACB() {
+		dispatch(updateUserAccount())
 	}
 
 	function logoutUserACB() {

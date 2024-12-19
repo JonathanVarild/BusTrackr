@@ -42,12 +42,7 @@ function AuthPopup(props) {
 			return (
 				<div key={input.id} className={input.bottomMargin && styles.inputMargin}>
 					<input type={input.type} id={input.id} className="input-checkmark" autoComplete={input.autoComplete} onChange={onChangeACB} checked={value} />
-					<label htmlFor={input.id}>
-						I accept the{" "}
-						<a href={input.href} target="blank_">
-							{input.linkText}
-						</a>
-					</label>
+					<label htmlFor={input.id}>{input.content || input.renderContent()}</label>
 				</div>
 			);
 		}
@@ -64,6 +59,7 @@ function AuthPopup(props) {
 		const inputs = [
 			{ state: "email", id: "email", title: "Email:", type: "text", autoComplete: "email", maxLength: 120 },
 			{ state: "password", id: "password", title: "Password:", type: "password", autoComplete: "password", maxLength: 120 },
+			{ state: "rememberMe", id: "rememberMe", content: "Keep me logged in longer", type: "checkbox", bottomMargin: true },
 		];
 
 		return (
@@ -87,14 +83,37 @@ function AuthPopup(props) {
 	}
 
 	function renderSignupForm() {
+		function renderTermsOfService() {
+			return (
+				<>
+					I accept the{" "}
+					<a href="/terms-of-service" target="blank_">
+						{"Terms of Service"}
+					</a>
+				</>
+			);
+		}
+
+		function renderDataPolicy() {
+			return (
+				<>
+					I accept the{" "}
+					<a href="/data-policy" target="blank_">
+						{"Data Policy"}
+					</a>
+				</>
+			);
+		}
+
 		const inputs = [
 			{ state: "username", id: "new-username", title: "Username:", type: "text", autoComplete: "new-username", maxLength: 20, isSignUp: true },
 			{ state: "email", id: "new-email", title: "Email:", type: "text", autoComplete: "new-email", maxLength: 120, isSignUp: true },
 			{ state: "dateOfBirth", id: "dateOfBirth", title: "Date of birth:", type: "date", autoComplete: "new-dateOfBirth", isSignUp: true },
 			{ state: "password", id: "password-new", title: "Password:", type: "password", autoComplete: "new-password", maxLength: 120, isSignUp: true },
 			{ state: "repeatPassword", id: "password-repeat", title: "Repeat password:", type: "password", autoComplete: "new-password", maxLength: 120, isSignUp: true },
-			{ state: "termsOfService", id: "termsOfService", linkText: "Terms of Service", href: "/terms-of-service", type: "checkbox", isSignUp: true },
-			{ state: "dataPolicy", id: "dataPolicy", linkText: "Data Policy", href: "/data-policy", type: "checkbox", isSignUp: true, bottomMargin: true },
+			{ state: "termsOfService", id: "termsOfService", renderContent: renderDataPolicy, type: "checkbox", isSignUp: true },
+			{ state: "dataPolicy", id: "dataPolicy", renderContent: renderTermsOfService, type: "checkbox", isSignUp: true, bottomMargin: true },
+			{ state: "rememberMe", id: "rememberMe", content: "Keep me logged in longer", type: "checkbox", isSignUp: true, bottomMargin: true },
 		];
 
 		return (
