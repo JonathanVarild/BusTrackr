@@ -53,6 +53,28 @@ export const logoutUser = createAsyncThunk("interface/logoutUser", async (_, { g
 	}).then(fetchResolvedCB);
 });
 
+export const createUserAccount = createAsyncThunk("interface/createUserAccount", async (_, { getState, abort, requestId }) => {
+	const state = getState().interface;
+	const signupForm = state.authPopupForm.signup;
+
+	if (state.createUser.requestId !== requestId) return abort("Request already in progress.");
+
+	return await fetch(apiUrl + "/api/register", {
+		method: "POST",
+		body: JSON.stringify({
+			username: signupForm.username,
+			email: signupForm.email,
+			date_of_birth: signupForm.dateOfBirth,
+			password: signupForm.password,
+			terms_of_service: signupForm.termsOfService,
+			data_policy: signupForm.dataPolicy,
+		}),
+		headers: {
+			"Content-type": "application/json; charset=UTF-8",
+		},
+	}).then(fetchResolvedCB);
+});
+
 export const makeChangeTest = createAsyncThunk("interface/makeChangeTest", async () => {
 	return await fetch(apiUrl + "/api/make-change", {
 		method: "POST",
@@ -80,6 +102,7 @@ const interfaceSlice = createSlice({
 			signup: {
 				username: "",
 				email: "",
+				dateOfBirth: "2000-01-01",
 				password: "",
 				repeatPassword: "",
 				termsOfService: false,
@@ -99,6 +122,11 @@ const interfaceSlice = createSlice({
 			error: null,
 		},
 		logout: {
+			status: "idle",
+			requestId: null,
+			error: null,
+		},
+		createUser: {
 			status: "idle",
 			requestId: null,
 			error: null,
@@ -286,6 +314,55 @@ const interfaceSlice = createSlice({
 			.addCase(makeChangeTest.rejected, (state, action) => {
 				state.makeChange.status = "failed";
 				state.makeChange.error = action.error.message;
+			});
+
+		builder
+			.addCase(createUserAccount.pending, (state, action) => {
+				if (state.createUser.requestId === null) {
+					state.createUser.status = "loading";
+					state.createUser.requestId = action.meta.requestId;
+					state.authPopupForm.signup.fault = "";
+				}
+			})
+			.addCase(createUserAccount.fulfilled, (state, action) => {
+				if (state.createUser.requestId === action.meta.requestId) {
+					state.createUser.status = "idle";
+					state.createUser.requestId = null;
+
+					state.authPopup = null;
+
+					const userData = action.payload.userData;
+
+					if (!userData) return;
+
+					state.authenticate.userInfo = {
+						id: userData.id,
+						username: userData.username,
+						email: userData.email,
+						dateOfBirth: userData.date_of_birth,
+						lastLoginTime: "YYYY-MM-DD HH:MM:SS",
+						lastLoginFrom: "192.168.1.1",
+						termsOfServiceAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
+						dataPolicyAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
+						accountCreated: "YYYY-MM-DD HH:MM:SS",
+						registrationDate: new Date(userData.registration_date).toISOString().replace("T", " ").substring(0, 19),
+						lastReportGenerated: "YYYY-MM-DD HH:MM:SS",
+					};
+
+					state.queuedPopups.push({
+						title: "Account Created",
+						message: "You have successfully created an account and been logged in. You can now make use of more features.",
+						type: 0,
+					});
+				}
+			})
+			.addCase(createUserAccount.rejected, (state, action) => {
+				if (state.createUser.requestId === action.meta.requestId) {
+					state.createUser.status = "failed";
+					state.createUser.requestId = null;
+					state.createUser.error = action.error.message;
+					state.authPopupForm.signup.fault = action.error.message;;
+				}
 			});
 	},
 });
