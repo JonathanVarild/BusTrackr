@@ -42,26 +42,26 @@ function AuthPopup(props) {
 
 		if (input.type === "checkbox") {
 			return (
-				<div key={input.id} className={input.bottomMargin && styles.inputMargin}>
+				<label key={input.id} className={input.noBottomMargin && styles.noBottomMargin}>
 					<input type={input.type} name={input.id} className="input-checkmark" autoComplete={input.autoComplete} onChange={onChangeACB} checked={value} />
-					<label htmlFor={input.id}>{input.content || input.renderContent()}</label>
-				</div>
+					{input.content || input.renderContent()}
+				</label>
 			);
 		}
 
 		return (
-			<div key={input.id}>
-				<label htmlFor={input.id}>{input.title}</label>
+			<label key={input.id} htmlFor={input.id}>
+				{input.title}
 				<input type={input.type} id={input.id} className="form-input" autoComplete={input.autoComplete} maxLength={input.maxLength} onChange={onChangeACB} value={value} />
-			</div>
+			</label>
 		);
 	}
 
 	function renderLoginForm() {
 		const inputs = [
 			{ state: "email", id: "email", title: "Email:", type: "text", autoComplete: "email", maxLength: 120 },
-			{ state: "password", id: "password", title: "Password:", type: "password", autoComplete: "password", maxLength: 120 },
-			{ state: "rememberMe", id: "rememberMe", content: "Keep me logged in longer", type: "checkbox", bottomMargin: true },
+			{ state: "password", id: "password", title: "Password:", type: "password", autoComplete: "current-password", maxLength: 120 },
+			{ state: "rememberMe", id: "rememberMe", content: "Keep me logged in longer", type: "checkbox" },
 		];
 
 		return (
@@ -113,14 +113,14 @@ function AuthPopup(props) {
 		}
 
 		const inputs = [
-			{ state: "username", id: "new-username", title: "Username:", type: "text", autoComplete: "new-username", maxLength: 20, isSignUp: true },
-			{ state: "email", id: "new-email", title: "Email:", type: "text", autoComplete: "new-email", maxLength: 120, isSignUp: true },
-			{ state: "dateOfBirth", id: "dateOfBirth", title: "Date of birth:", type: "date", autoComplete: "new-dateOfBirth", isSignUp: true },
+			{ state: "username", id: "new-username", title: "Username:", type: "text", autoComplete: "username", maxLength: 20, isSignUp: true },
+			{ state: "email", id: "new-email", title: "Email:", type: "text", autoComplete: "email", maxLength: 120, isSignUp: true },
+			{ state: "dateOfBirth", id: "dateOfBirth", title: "Date of birth:", type: "date", autoComplete: "bday", isSignUp: true },
 			{ state: "password", id: "password-new", title: "Password:", type: "password", autoComplete: "new-password", maxLength: 120, isSignUp: true },
 			{ state: "repeatPassword", id: "password-repeat", title: "Repeat password:", type: "password", autoComplete: "new-password", maxLength: 120, isSignUp: true },
-			{ state: "termsOfService", id: "termsOfService", renderContent: renderDataPolicy, type: "checkbox", isSignUp: true },
-			{ state: "dataPolicy", id: "dataPolicy", renderContent: renderTermsOfService, type: "checkbox", isSignUp: true, bottomMargin: true },
-			{ state: "rememberMe", id: "rememberMe", content: "Keep me logged in longer", type: "checkbox", isSignUp: true, bottomMargin: true },
+			{ state: "termsOfService", id: "termsOfService", renderContent: renderTermsOfService, type: "checkbox", noBottomMargin: true, isSignUp: true },
+			{ state: "dataPolicy", id: "dataPolicy", renderContent: renderDataPolicy, type: "checkbox", isSignUp: true },
+			{ state: "rememberMe", id: "rememberMe", content: "Keep me logged in longer", type: "checkbox", isSignUp: true },
 		];
 
 		return (

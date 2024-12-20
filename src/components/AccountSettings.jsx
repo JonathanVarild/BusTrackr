@@ -168,8 +168,8 @@ function AccountSettings(props) {
 		}
 
 		return (
-			<div key={option.id}>
-				<label htmlFor={option.id}>{option.header}</label>
+			<label key={option.id}>
+				{option.header}
 				<input
 					type={option.type}
 					value={props.changedUserInfo?.[option.id] || props.userInfo[option.id] || ""}
@@ -180,7 +180,7 @@ function AccountSettings(props) {
 					className="form-input"
 					name={option.id}
 				/>
-			</div>
+			</label>
 		);
 	}
 
@@ -188,7 +188,7 @@ function AccountSettings(props) {
 		const options = [
 			{ id: "username", type: "text", header: "Username:", maxLength: 20, autoComplete: "username" },
 			{ id: "email", type: "text", header: "Email:", maxLength: 120, autoComplete: "email" },
-			{ id: "dateOfBirth", type: "date", header: "Date of birth:", autoComplete: "dateOfBirth" },
+			{ id: "dateOfBirth", type: "date", header: "Date of birth:", autoComplete: "bday" },
 		];
 
 		return <form>{options.map(renderOptionCB)}</form>;

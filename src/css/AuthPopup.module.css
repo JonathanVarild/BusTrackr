@@ -71,8 +71,8 @@
 	position: relative;
 }
 
-.inputMargin {
-    margin-bottom: 1.5rem;
+.noBottomMargin {
+    margin-bottom: 0;
 }
 
 #authActions button {
