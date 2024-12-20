@@ -26,6 +26,11 @@
     opacity: 0.85;
 }
 
+#authWindow button:disabled {
+	opacity: 0.4;
+	cursor: unset;
+}
+
 .header button {
 	display: flex;
 	align-items: center;
@@ -63,6 +68,7 @@
 
 .contentContainer {
 	color: var(--smooth-black-transparent);
+	position: relative;
 }
 
 .inputMargin {
@@ -79,6 +85,25 @@
 #authActions button:first-child {
 	background-color: var(--smooth-black-transparent);
 	color: white;
+}
+
+.spinnerContainer {
+	background-color: white;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.spinnerContainer svg {
+	color: var(--smooth-black-transparent-80);
+	width: 5rem;
+	height: 5rem;
+	margin: 4rem;
 }
 
 @media screen and (min-width: 768px) {

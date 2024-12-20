@@ -1,18 +1,20 @@
-import { IconChevronLeft, IconUserScan, IconUserPlus, IconX } from "@tabler/icons-react";
+import { IconChevronLeft, IconUserScan, IconUserPlus, IconX, IconRefresh } from "@tabler/icons-react";
 import styles from "../css/AuthPopup.module.css";
 
 function AuthPopup(props) {
 	if (props.currentView === null) return;
 
+	const loading = props.loginLoading || props.signupLoading;
+
 	return (
 		<div id={styles.authPopupBackground}>
 			<div id={styles.authWindow} className="rounded-corners drop-shadow">
 				<div className={styles.header}>
-					<button onClick={closeAuthWindowACB} id={styles.mobileBackButton}>
+					<button onClick={closeAuthWindowACB} id={styles.mobileBackButton} disabled={loading}>
 						<IconChevronLeft stroke={2} />
 						Exit
 					</button>
-					<button onClick={closeAuthWindowACB} id={styles.desktopBackButton}>
+					<button onClick={closeAuthWindowACB} id={styles.desktopBackButton} disabled={loading}>
 						<IconX stroke={2} />
 					</button>
 				</div>
@@ -81,6 +83,7 @@ function AuthPopup(props) {
 							Sign up
 						</button>
 					</div>
+					{props.loginLoading && renderLoadingSpinner()}
 				</form>
 			</>
 		);
@@ -138,8 +141,17 @@ function AuthPopup(props) {
 							Use existing account
 						</button>
 					</div>
+					{props.signupLoading && renderLoadingSpinner()}
 				</form>
 			</>
+		);
+	}
+
+	function renderLoadingSpinner() {
+		return (
+			<div className={styles.spinnerContainer}>
+				<IconRefresh stroke={2} className="spin-icon" />
+			</div>
 		);
 	}
 

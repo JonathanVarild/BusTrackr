@@ -6,8 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 function AuthPopupPresenter(props) {
 	const currentView = useSelector((state) => state.interface.authPopup);
 	const authPopupForm = useSelector((state) => state.interface.authPopupForm);
-	const loginFault = useSelector((state) => state.interface.authenticate.error);
-	const signupFault = useSelector((state) => state.interface.createUser.error);
+	const loginStatus = useSelector((state) => state.interface.authenticate.status);
+	const signupStatus = useSelector((state) => state.interface.createUser.status);
 	const dispatch = useDispatch();
 
 	return (
@@ -21,6 +21,8 @@ function AuthPopupPresenter(props) {
 			onCreateUser={onCreateUserACB}
 			loginFault={authPopupForm.login.fault}
 			signupFault={authPopupForm.signup.fault}
+			loginLoading={loginStatus === "loading"}
+			signupLoading={signupStatus === "loading"}
 		/>
 	);
 
@@ -66,7 +68,6 @@ function AuthPopupPresenter(props) {
 			dispatch(updateSignupForm({ fault: "You must accept the Terms of Service and Data Policy." }));
 			return;
 		}
-		
 
 		dispatch(createUserAccount());
 	}
