@@ -10,6 +10,33 @@ async function fetchResolvedCB(resp) {
 	return resp.json();
 }
 
+function parseUserData(action, state) {
+	const userData = action.payload.userData;
+	const agreementsData = action.payload.agreements;
+	const latestReport = action.payload.latest_report;
+
+	if (!userData || !agreementsData) return;
+
+	state.authenticate.userInfo = {
+		id: userData.id,
+		username: userData.username,
+		email: userData.email,
+		dateOfBirth: userData.date_of_birth,
+		lastLoginTime: userData.latest_login ? parseStringTime(userData.latest_login.timestamp) : "Never",
+		lastLoginFrom: userData.latest_login ? userData.latest_login.ip : "None",
+		termsOfServiceAccepted: agreementsData.terms_of_service
+			? `Accepted ${parseStringTime(agreementsData.terms_of_service.timestamp)} from ${agreementsData.terms_of_service.ip}`
+			: "Never",
+		dataPolicyAccepted: agreementsData.data_policy ? `Accepted ${parseStringTime(agreementsData.data_policy.timestamp)} from ${agreementsData.data_policy.ip}` : "Never",
+		accountCreated: parseStringTime(userData.registration_date),
+		lastReportGenerated: latestReport ? `Generated ${parseStringTime(latestReport.timestamp)} from ${latestReport.ip}` : "Never",
+	};
+}
+
+function parseStringTime(stringTime) {
+	return new Date(stringTime + "Z").toLocaleString("sv-SE").replace(",", "");
+}
+
 export const authenticateUser = createAsyncThunk("interface/authenticateUser", async (_, { getState, abort, requestId }) => {
 	const state = getState().interface;
 	const loginForm = state.authPopupForm.login;
@@ -263,21 +290,7 @@ const interfaceSlice = createSlice({
 
 					state.authPopup = null;
 
-					const userData = action.payload.userData;
-
-					state.authenticate.userInfo = {
-						id: userData.id,
-						username: userData.username,
-						email: userData.email,
-						dateOfBirth: userData.date_of_birth,
-						lastLoginTime: "YYYY-MM-DD HH:MM:SS",
-						lastLoginFrom: "192.168.1.1",
-						termsOfServiceAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-						dataPolicyAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-						accountCreated: "YYYY-MM-DD HH:MM:SS",
-						registrationDate: new Date(userData.registration_date).toISOString().replace("T", " ").substring(0, 19),
-						lastReportGenerated: "YYYY-MM-DD HH:MM:SS",
-					};
+					parseUserData(action, state);
 
 					state.queuedPopups.push({
 						title: "Login Successful",
@@ -301,24 +314,7 @@ const interfaceSlice = createSlice({
 			})
 			.addCase(reauthenticateUser.fulfilled, (state, action) => {
 				state.reauthenticate.status = "idle";
-
-				const userData = action.payload.userData;
-
-				if (!userData) return;
-
-				state.authenticate.userInfo = {
-					id: userData.id,
-					username: userData.username,
-					email: userData.email,
-					dateOfBirth: userData.date_of_birth,
-					lastLoginTime: "YYYY-MM-DD HH:MM:SS",
-					lastLoginFrom: "192.168.1.1",
-					termsOfServiceAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-					dataPolicyAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-					accountCreated: "YYYY-MM-DD HH:MM:SS",
-					registrationDate: new Date(userData.registration_date).toISOString().replace("T", " ").substring(0, 19),
-					lastReportGenerated: "YYYY-MM-DD HH:MM:SS",
-				};
+				parseUserData(action, state);
 			})
 			.addCase(reauthenticateUser.rejected, (state, action) => {
 				state.reauthenticate.status = "failed";
@@ -383,23 +379,7 @@ const interfaceSlice = createSlice({
 
 					state.authPopup = null;
 
-					const userData = action.payload.userData;
-
-					if (!userData) return;
-
-					state.authenticate.userInfo = {
-						id: userData.id,
-						username: userData.username,
-						email: userData.email,
-						dateOfBirth: userData.date_of_birth,
-						lastLoginTime: "YYYY-MM-DD HH:MM:SS",
-						lastLoginFrom: "192.168.1.1",
-						termsOfServiceAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-						dataPolicyAccepted: "Accepted YYYY-MM-DD HH:MM:SS from 192.168.1.1",
-						accountCreated: "YYYY-MM-DD HH:MM:SS",
-						registrationDate: new Date(userData.registration_date).toISOString().replace("T", " ").substring(0, 19),
-						lastReportGenerated: "YYYY-MM-DD HH:MM:SS",
-					};
+					parseUserData(action, state);
 
 					state.queuedPopups.push({
 						title: "Account Created",
