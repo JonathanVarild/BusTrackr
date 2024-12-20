@@ -41,7 +41,7 @@ function AuthPopup(props) {
 		if (input.type === "checkbox") {
 			return (
 				<div key={input.id} className={input.bottomMargin && styles.inputMargin}>
-					<input type={input.type} id={input.id} className="input-checkmark" autoComplete={input.autoComplete} onChange={onChangeACB} checked={value} />
+					<input type={input.type} name={input.id} className="input-checkmark" autoComplete={input.autoComplete} onChange={onChangeACB} checked={value} />
 					<label htmlFor={input.id}>{input.content || input.renderContent()}</label>
 				</div>
 			);
@@ -68,16 +68,20 @@ function AuthPopup(props) {
 					<IconUserScan stroke={1.2} />
 					Account Login
 				</div>
-				<div id={styles.loginForm} className={styles.contentContainer}>
+				<form id={styles.loginForm} className={styles.contentContainer}>
 					{inputs.map(renderInputCB)}
 
 					{props.loginFault && <div className="input-text warning-text">{props.loginFault}</div>}
 
 					<div id={styles.authActions}>
-						<button onClick={authenticateUserACB}>Login</button>
-						<button onClick={openSignUpACB}>Sign up</button>
+						<button onClick={authenticateUserACB} type="button">
+							Login
+						</button>
+						<button onClick={openSignUpACB} type="button">
+							Sign up
+						</button>
 					</div>
-				</div>
+				</form>
 			</>
 		);
 	}
@@ -122,15 +126,19 @@ function AuthPopup(props) {
 					<IconUserPlus stroke={1.2} />
 					Create Account
 				</div>
-				<div id={styles.loginForm} className={styles.contentContainer}>
+				<form id={styles.loginForm} className={styles.contentContainer}>
 					{inputs.map(renderInputCB)}
 
 					{props.signupFault && <div className="input-text warning-text">{props.signupFault}</div>}
 					<div id={styles.authActions}>
-						<button onClick={createUserACB}>Create account</button>
-						<button onClick={openLoginACB}>Use existing account</button>
+						<button onClick={createUserACB} type="button">
+							Create account
+						</button>
+						<button onClick={openLoginACB} type="button">
+							Use existing account
+						</button>
 					</div>
-				</div>
+				</form>
 			</>
 		);
 	}

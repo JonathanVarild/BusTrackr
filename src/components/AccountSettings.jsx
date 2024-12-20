@@ -178,7 +178,7 @@ function AccountSettings(props) {
 					maxLength={option.maxLength}
 					autoComplete={option.autoComplete}
 					className="form-input"
-					id={option.id}
+					name={option.id}
 				/>
 			</div>
 		);
