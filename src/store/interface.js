@@ -21,7 +21,7 @@ export const authenticateUser = createAsyncThunk("interface/authenticateUser", a
 		body: JSON.stringify({
 			email: loginForm.email,
 			password: loginForm.password,
-			long_expire: loginForm.rememberMe
+			long_expire: loginForm.rememberMe,
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
@@ -69,7 +69,7 @@ export const createUserAccount = createAsyncThunk("interface/createUserAccount",
 			password: signupForm.password,
 			terms_of_service: signupForm.termsOfService,
 			data_policy: signupForm.dataPolicy,
-			long_expire: signupForm.rememberMe
+			long_expire: signupForm.rememberMe,
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
@@ -77,10 +77,9 @@ export const createUserAccount = createAsyncThunk("interface/createUserAccount",
 	}).then(fetchResolvedCB);
 });
 
-
 export const updateUserAccount = createAsyncThunk("interface/updateUserAccount", async (_, { getState, abort, requestId }) => {
 	const state = getState().interface;
-	const currentUserInfo = state.authenticate.userInfo
+	const currentUserInfo = state.authenticate.userInfo;
 	const changedUserInfo = state.changedUserInfo;
 
 	if (state.updateAccount.requestId !== requestId) return abort("Request already in progress.");
@@ -98,8 +97,23 @@ export const updateUserAccount = createAsyncThunk("interface/updateUserAccount",
 	}).then(fetchResolvedCB);
 });
 
+export const updateUserPassword = createAsyncThunk("interface/updateUserPassword", async (_, { getState, abort, requestId }) => {
+	const state = getState().interface;
+	const changedUserInfo = state.changedUserInfo;
 
+	if (state.updatePassword.requestId !== requestId) return abort("Request already in progress.");
 
+	return await fetch(apiUrl + "/api/update-password", {
+		method: "POST",
+		body: JSON.stringify({
+			old_password: changedUserInfo?.oldPassword || "",
+			new_password: changedUserInfo?.newPassword || "",
+		}),
+		headers: {
+			"Content-type": "application/json; charset=UTF-8",
+		},
+	}).then(fetchResolvedCB);
+});
 
 export const makeChangeTest = createAsyncThunk("interface/makeChangeTest", async () => {
 	return await fetch(apiUrl + "/api/make-change", {
@@ -160,6 +174,11 @@ const interfaceSlice = createSlice({
 			error: null,
 		},
 		updateAccount: {
+			status: "idle",
+			requestId: null,
+			error: null,
+		},
+		updatePassword: {
 			status: "idle",
 			requestId: null,
 			error: null,
@@ -394,11 +413,11 @@ const interfaceSlice = createSlice({
 					state.createUser.status = "failed";
 					state.createUser.requestId = null;
 					state.createUser.error = action.error.message;
-					state.authPopupForm.signup.fault = action.error.message;;
+					state.authPopupForm.signup.fault = action.error.message;
 				}
 			});
 
-			builder
+		builder
 			.addCase(updateUserAccount.pending, (state, action) => {
 				if (state.updateAccount.requestId === null) {
 					state.updateAccount.status = "loading";
@@ -410,11 +429,11 @@ const interfaceSlice = createSlice({
 					state.updateAccount.status = "idle";
 					state.updateAccount.requestId = null;
 
-					state.authenticate.userInfo.username = state.changedUserInfo.username || state.authenticate.userInfo.username
-					state.authenticate.userInfo.email = state.changedUserInfo.email || state.authenticate.userInfo.email
-					state.authenticate.userInfo.dateOfBirth = state.changedUserInfo.dateOfBirth || state.authenticate.userInfo.dateOfBirth
+					state.authenticate.userInfo.username = state.changedUserInfo.username || state.authenticate.userInfo.username;
+					state.authenticate.userInfo.email = state.changedUserInfo.email || state.authenticate.userInfo.email;
+					state.authenticate.userInfo.dateOfBirth = state.changedUserInfo.dateOfBirth || state.authenticate.userInfo.dateOfBirth;
 
-					state.changedUserInfo = null
+					state.changedUserInfo = null;
 
 					state.queuedPopups.push({
 						title: "Successfully updated account",
@@ -430,7 +449,42 @@ const interfaceSlice = createSlice({
 					state.updateAccount.error = action.error.message;
 
 					state.queuedPopups.push({
-						title: "Failed to updated account",
+						title: "Failed to update account",
+						message: action.error.message,
+						type: 0,
+					});
+				}
+			});
+
+		builder
+			.addCase(updateUserPassword.pending, (state, action) => {
+				if (state.updatePassword.requestId === null) {
+					state.updatePassword.status = "loading";
+					state.updatePassword.requestId = action.meta.requestId;
+				}
+			})
+			.addCase(updateUserPassword.fulfilled, (state, action) => {
+				if (state.updatePassword.requestId === action.meta.requestId) {
+					state.updatePassword.status = "idle";
+					state.updatePassword.requestId = null;
+
+					state.changedUserInfo = null;
+
+					state.queuedPopups.push({
+						title: "Successfully updated account",
+						message: action.payload.message,
+						type: 0,
+					});
+				}
+			})
+			.addCase(updateUserPassword.rejected, (state, action) => {
+				if (state.updatePassword.requestId === action.meta.requestId) {
+					state.updatePassword.status = "failed";
+					state.updatePassword.requestId = null;
+					state.updatePassword.error = action.error.message;
+
+					state.queuedPopups.push({
+						title: "Failed to update password",
 						message: action.error.message,
 						type: 0,
 					});

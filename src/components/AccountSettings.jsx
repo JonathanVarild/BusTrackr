@@ -114,7 +114,11 @@ function AccountSettings(props) {
 		}
 
 		function onSaveACB() {
-			props.saveAccountChanges();
+			if (props.settingOpen === "menu" || props.settingOpen === "details") {
+				props.saveAccountChanges();
+			} else if (props.settingOpen === "security") {
+				props.updateAccountPassword();
+			}
 		}
 
 		if (props.changedUserInfo !== null) {

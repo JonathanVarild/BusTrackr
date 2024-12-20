@@ -1,7 +1,7 @@
 import AccountSettings from "../components/AccountSettings";
 
 import { useSelector, useDispatch } from "react-redux";
-import { openAccountSetting, setChangedUserInfo, queuePopup, updateUserAccount } from "../store/interface";
+import { openAccountSetting, setChangedUserInfo, queuePopup, updateUserAccount, updateUserPassword } from "../store/interface";
 
 function AccountSettingsPresenter(props) {
 	const accountSettingOpen = useSelector((state) => state.interface.accountSettingOpen);
@@ -21,6 +21,7 @@ function AccountSettingsPresenter(props) {
 			showDeleteAccountWarning={showDeleteAccountWarningACB}
 			logout={logoutUserACB}
 			saveAccountChanges={saveAccountChangesACB}
+			updateAccountPassword={updateAccountPasswordACB}
 		/>
 	);
 
@@ -67,15 +68,51 @@ function AccountSettingsPresenter(props) {
 	}
 
 	function saveAccountChangesACB() {
-		dispatch(updateUserAccount())
+		dispatch(updateUserAccount());
+	}
+
+	function updateAccountPasswordACB() {
+		if (!changedUserInfo.oldPassword) {
+			dispatch(
+				queuePopup({
+					title: "Failed to update password",
+					message: "Please enter your current password.",
+					type: 0,
+				})
+			);
+			return;
+		}
+
+		if (!changedUserInfo.newPassword) {
+			dispatch(
+				queuePopup({
+					title: "Failed to update password",
+					message: "Please enter a new password.",
+					type: 0,
+				})
+			);
+			return;
+		}
+
+		if (!changedUserInfo.repeatPassword || changedUserInfo.newPassword != changedUserInfo.repeatPassword) {
+			dispatch(
+				queuePopup({
+					title: "Failed to update password",
+					message: "New password does not match with repeated password.",
+					type: 0,
+				})
+			);
+			return;
+		}
+
+		dispatch(updateUserPassword());
 	}
 
 	function logoutUserACB() {
 		dispatch(
 			queuePopup({
 				title: "Sign out",
-				message:
-					"Are you sure that you want to sign out from your user account?",
+				message: "Are you sure that you want to sign out from your user account?",
 				type: 1,
 				continueAction: "LogoutUser",
 			})
