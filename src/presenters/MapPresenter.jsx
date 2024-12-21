@@ -174,7 +174,7 @@ function Map(props) {
 			updateStationsACB(mapView, map, zoom);
 		}
 
-		// fetchLiveVehiclesConsitently();
+		dispatch(fetchLiveVehicles()); // Always fetch buses after movement of map
 
 		mapMoveHandlerIsThrottled = true;
 		setTimeout(() => {
