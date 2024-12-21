@@ -11,7 +11,7 @@
 	display: flex;
 	align-items: center;
     flex-direction: row;
-	height: calc(var(--element-size) - 0.75 * var(--element-margin));;
+	height: calc(var(--element-size) - 0.75 * var(--element-margin));
 	border-radius: calc(1.25 * var(--element-margin));
 	padding-left: calc(0.5 * var(--element-margin));
 	padding-right: calc(0.5 * var(--element-margin));

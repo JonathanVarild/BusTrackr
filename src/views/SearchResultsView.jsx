@@ -58,10 +58,11 @@ function SearchResultsView(props) {
             <div
             key={index}
             className={styles.resultRow}>
-                <span className={`${styles.busDisplay} ${getBusColorStyle(result.line)}`}>
+                <h3 className={`${styles.busDisplay} ${getBusColorStyle(result.line)}`}>
                     <span className={styles.lineDisp}>{result.line}</span>
                     <span className={styles.displaySim}>{result.destination}</span>
-                </span> <p>stops at {result.stop_name}</p>
+                </h3>
+                <p>stops at {result.stop_name}</p>
             </div>
         )
     }
@@ -69,7 +70,7 @@ function SearchResultsView(props) {
     function contentCB() {
         return (
             <div id={styles.resultsContainer}>
-                {props.searchResults.results.map(renderBusResult)}
+                {props.searchResults?.results?.map(renderBusResult)}
             </div>
         )
     }

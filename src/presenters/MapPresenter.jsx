@@ -164,6 +164,7 @@ function Map(props) {
         dispatch(setLastClickedType(lastClickedTypes.SEARCH));
         dispatch(setShowBoxWidget(true));
         dispatch(setSearchQuery(query));
+        if (query.length < 3) return;
 		dispatch(fetchSearchResult({query, page}));
 	}
 
