@@ -1,0 +1,46 @@
+.dataReportPage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.reportInfo {
+    width: 100%;
+    max-width: 30rem;
+    text-align: center;
+    margin-bottom: var(--element-margin);
+    color: var(--smooth-black-transparent);
+    font-weight: 600;
+}
+
+.dataReportPage h1 {
+    color: var(--smooth-black-transparent-80);
+    font-size: 2rem;
+}
+
+.dataReportPage h2 {
+    color: var(--smooth-black-transparent);
+}
+
+.dataReportPage table {
+    border: 1px solid var(--smooth-black-transparent-80);
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 30rem;
+    margin-bottom: 2rem;
+}
+
+.dataReportPage table th,
+.dataReportPage table td {
+    border: 1px solid var(--smooth-black-transparent-80);
+    padding: var(--element-margin);
+}
+
+.dataReportPage table th {
+    background-color: var(--smooth-black-transparent-20);
+}
+
+.dataReportPage table tr:nth-child(even) {
+    background-color: var(--smooth-black-transparent-10);
+}

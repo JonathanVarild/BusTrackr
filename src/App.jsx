@@ -6,11 +6,12 @@ import { reauthenticateUser } from "./store/interface/authentication";
 
 import Navbar from "./presenters/NavbarPresenter";
 import Map from "./presenters/MapPresenter";
-import About from "./presenters/About";
+import About from "./presenters/AboutPresenter";
 import Attribution from "./presenters/AttributionPresenter";
 import AccountSettingsPresenter from "./presenters/AccountSettingsPresenter";
 import PopupBox from "./presenters/PopupBoxPresenter";
 import AuthPopupPresenter from "./presenters/AuthPopupPresenter";
+import DataReport from "./presenters/DataReportPresenter";
 
 import "./css/global.css";
 
@@ -29,6 +30,7 @@ function App() {
 					<Route index element={<Map />} />
 					<Route path="about" element={<About />} />
 					<Route path="attribution" element={<Attribution />} />
+					<Route path="data-report" element={<DataReport />} />
 				</Routes>
 			</BrowserRouter>
 			<AccountSettingsPresenter />
