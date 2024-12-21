@@ -21,7 +21,9 @@ import {
 	setAwaitingLocation,
 	setShowBusJourneyInfo,
 	setSelectedLiveVehicleId,
+	setLastClickedType,
 } from "../store/mapData";
+import { lastClickedTypes } from "../store/mapData/utilities";
 import { fetchQuays } from "../store/mapData/fetchQuays";
 import { fetchStops } from "../store/mapData/fetchStops";
 import { fetchLiveVehicles } from "../store/mapData/liveVehicles";
@@ -49,6 +51,7 @@ function Map(props) {
 	const invalidLocation = useSelector((state) => state.mapData.invalidLocation);
 	const awaitingLocation = useSelector((state) => state.mapData.awaitingLocation);
 	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
+	const lastClickedType = useSelector((state) => state.mapData.lastClickedType);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -96,16 +99,7 @@ function Map(props) {
 				setVehicleClicked={setVehicleClickedACB}
 			/>
 
-			{showBusJourneyInfo && (
-				<BusJourneyInfo
-					journeyDetails={journeyDetails}
-					journeyDetailsStatus={journeyDetailsStatus}
-					selectedLiveVehicleId={selectedLiveVehicleId}
-					liveVehicles={liveVehicles}
-					onCloseClick={closeBusInfoACB}
-					onFavoriteClick={closeBusInfoACB} /* This should be the favorite function in the future */
-				/>
-			)}
+			{renderCorrectBoxWidgetCB()}
 
 			<SearchBarView />
 			<MapControlsView adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
@@ -118,6 +112,26 @@ function Map(props) {
 			/>
 		</>
 	);
+
+	function renderCorrectBoxWidgetCB() {
+		switch (lastClickedType) {
+			case lastClickedTypes.VEHICLE:
+				return (
+					showBusJourneyInfo && (
+						<BusJourneyInfo
+							journeyDetails={journeyDetails}
+							journeyDetailsStatus={journeyDetailsStatus}
+							selectedLiveVehicleId={selectedLiveVehicleId}
+							liveVehicles={liveVehicles}
+							onCloseClick={closeBusInfoACB}
+							onFavoriteClick={closeBusInfoACB} /* This should be the favorite function in the future */
+						/>
+					)
+				)
+			default:
+				return <></>
+		}
+	}
 
 	function openFavoritesACB() {}
 
@@ -138,6 +152,7 @@ function Map(props) {
 	}
 
 	function setVehicleClickedACB(payload) {
+		dispatch(setLastClickedType(lastClickedTypes.VEHICLE));
 		const combined = payload["service_journey_id"] + payload["vehicle_id"];
 		dispatch(setSelectedLiveVehicleId(combined));
 		dispatch(fetchJourneyDetails(payload));
