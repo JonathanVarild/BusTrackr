@@ -1,7 +1,8 @@
 import styles from "../css/AccountSettings.module.css";
 import { IconUser, IconLock, IconContract, IconDatabase, IconDatabaseX, IconSettings, IconChevronLeft, IconLogout } from "@tabler/icons-react";
+import LoadingSpinnerView from "./LoadingSpinnerView";
 
-function AccountSettings(props) {
+function AccountSettingsView(props) {
 	const settingsNavTop = [
 		{ id: "details", icon: <IconUser stroke={2} />, text: "Account details", renderFunction: renderAccountDetails },
 		{ id: "security", icon: <IconLock stroke={2} />, text: "Security", renderFunction: renderSecurity },
@@ -58,7 +59,7 @@ function AccountSettings(props) {
 						<div className={styles.settingPageTitle}>{item.text}</div>
 					</div>
 					<div className={styles.settingsContainer}>
-						{item.renderFunction()}
+						{props.isLoading ? <LoadingSpinnerView /> : item.renderFunction()}
 						<div className={styles.actionButtonContainer}>{renderActionButton()}</div>
 					</div>
 				</div>
@@ -80,7 +81,7 @@ function AccountSettings(props) {
 						<div className={styles.settingPageTitle}>{item.text}</div>
 					</div>
 					<div className={styles.settingsContainer}>
-						{item.renderFunction()}
+						{props.isLoading ? <LoadingSpinnerView /> : item.renderFunction()}
 						<div className={styles.actionButtonContainer}>{renderActionButton()}</div>
 					</div>
 				</div>
@@ -108,14 +109,20 @@ function AccountSettings(props) {
 		return setting.id === props.settingOpen;
 	}
 
-	function renderActionButton() {
-		function onRevertACB() {
-			props.reverseChanges();
-		}
+	function onRevertACB() {
+		props.reverseChanges();
+	}
 
-		function onSaveACB() {
+	function onSaveACB() {
+		if (props.settingOpen === "menu" || props.settingOpen === "details") {
 			props.saveAccountChanges();
+		} else if (props.settingOpen === "security") {
+			props.updateAccountPassword();
 		}
+	}
+
+	function renderActionButton() {
+		if (props.isLoading) return <></>;
 
 		if (props.changedUserInfo !== null) {
 			return (
@@ -164,8 +171,8 @@ function AccountSettings(props) {
 		}
 
 		return (
-			<div key={option.id}>
-				<label htmlFor={option.id}>{option.header}</label>
+			<label key={option.id}>
+				{option.header}
 				<input
 					type={option.type}
 					value={props.changedUserInfo?.[option.id] || props.userInfo[option.id] || ""}
@@ -174,9 +181,9 @@ function AccountSettings(props) {
 					maxLength={option.maxLength}
 					autoComplete={option.autoComplete}
 					className="form-input"
-					id={option.id}
+					name={option.id}
 				/>
-			</div>
+			</label>
 		);
 	}
 
@@ -184,7 +191,7 @@ function AccountSettings(props) {
 		const options = [
 			{ id: "username", type: "text", header: "Username:", maxLength: 20, autoComplete: "username" },
 			{ id: "email", type: "text", header: "Email:", maxLength: 120, autoComplete: "email" },
-			{ id: "dateOfBirth", type: "date", header: "Date of birth:", autoComplete: "dateOfBirth" },
+			{ id: "dateOfBirth", type: "date", header: "Date of birth:", autoComplete: "bday" },
 		];
 
 		return <form>{options.map(renderOptionCB)}</form>;
@@ -272,4 +279,4 @@ function AccountSettings(props) {
 	}
 }
 
-export default AccountSettings;
+export default AccountSettingsView;

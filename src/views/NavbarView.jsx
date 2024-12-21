@@ -1,7 +1,7 @@
 import styles from "../css/Navbar.module.css";
 import { IconMenu2, IconX, IconUser, IconMap, IconSparkles, IconInfoCircle } from "@tabler/icons-react";
 import logo from "../media/logo.png";
-import ButtonWidget from "./ButtonWidgetView";
+import ButtonWidgetView from "./ButtonWidgetView";
 
 function NavbarView(props) {
 	return (
@@ -46,9 +46,9 @@ function NavbarView(props) {
 				</nav>
 				<div className={`${styles.closeContainer}`}>
 					{props.isNavOpen ? (
-						<ButtonWidget iconElement={<IconX stroke={2} />} onClick={props.onToggleNav} />
+						<ButtonWidgetView iconElement={<IconX stroke={2} />} onClick={props.onToggleNav} />
 					) : (
-						<ButtonWidget iconElement={<IconMenu2 stroke={2} />} onClick={props.onToggleNav} />
+						<ButtonWidgetView iconElement={<IconMenu2 stroke={2} />} onClick={props.onToggleNav} />
 					)}
 				</div>
 			</div>

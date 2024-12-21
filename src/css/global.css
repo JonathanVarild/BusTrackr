@@ -92,14 +92,19 @@ button {
 	padding: var(--element-margin);
 	border-radius: 5px;
 	border: 1px solid var(--smooth-black-transparent-20);
-	margin-bottom: 1.5rem;
 	font-weight: 600;
+	color: var(--smooth-black-transparent-80);
+}
+
+.form-input:disabled {
 	color: var(--smooth-black-transparent-80);
 }
 
 label {
 	font-weight: 600;
 	line-height: 1.8rem;
+	margin-bottom: 1.5rem;
+	display: block;
 }
 
 .input-text {
@@ -142,6 +147,11 @@ a:hover {
 
 .spin-icon {
 	animation: spinner 2s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
+}
+
+section {
+	padding: var(--element-margin);
+	padding-top: calc(var(--element-size) + var(--element-margin) * 2 + 1rem);
 }
 
 @keyframes spinner {

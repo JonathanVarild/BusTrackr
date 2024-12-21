@@ -1,4 +1,4 @@
-import NavbarView from "../components/NavbarView";
+import NavbarView from "../views/NavbarView";
 
 import { useSelector, useDispatch } from "react-redux";
 import { toggleNavigation, openAccountSetting, setAuthPopup } from "../store/interface";

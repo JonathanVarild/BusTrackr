@@ -61,7 +61,7 @@
     color: var(--smooth-black-transparent);
     font-size: calc(0.4 * var(--element-size));
     padding: var(--element-margin);
-
+    font-weight: 600;
     display: flex;
     justify-content: flex-end;
     align-items: center;

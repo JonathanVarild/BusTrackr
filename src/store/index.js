@@ -1,11 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counter";
-import mapReducer from "./mapData"
-import interfaceReducer, { logoutMiddlewareFunction } from "./interface"
+import mapReducer from "./mapData";
+import interfaceReducer from "./interface";
+import { logoutMiddlewareFunction } from "./interface";
 
 const store = configureStore({
 	reducer: {
-		counter: counterReducer,
 		mapData: mapReducer,
 		interface: interfaceReducer,
 	},

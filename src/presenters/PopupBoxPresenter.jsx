@@ -1,4 +1,4 @@
-import PopupBoxView from "../components/PopupBox";
+import PopupBoxView from "../views/PopupBoxView";
 import { useSelector, useDispatch } from "react-redux";
 import { dequeuePopup } from "../store/interface";
 
