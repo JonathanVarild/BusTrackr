@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import mapReducer from "./mapData"
-import interfaceReducer, { logoutMiddlewareFunction } from "./interface"
+import mapReducer from "./mapData";
+import interfaceReducer from "./interface";
+import { logoutMiddlewareFunction } from "./interface";
 
 const store = configureStore({
 	reducer: {

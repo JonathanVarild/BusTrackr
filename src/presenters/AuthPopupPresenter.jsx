@@ -1,6 +1,9 @@
 import AuthPopupView from "../views/AuthPopupView";
 
-import { authenticateUser, createUserAccount, setAuthPopup, updateLoginForm, updateSignupForm } from "../store/interface";
+import { setAuthPopup, updateLoginForm, updateSignupForm } from "../store/interface";
+import { authenticateUser } from "../store/interface/authentication";
+import { createUserAccount } from "../store/interface/createAccount";
+
 import { useSelector, useDispatch } from "react-redux";
 
 function AuthPopupPresenter(props) {

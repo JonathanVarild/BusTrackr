@@ -13,10 +13,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 	updateScreenTopLeft,
 	updateScreenBottomRight,
-	fetchQuays,
-	fetchStops,
-	fetchLiveVehicles,
-	fetchJourneyDetails,
 	setStationHovered,
 	setLiveVehicleHovered,
 	setZoomLevel,
@@ -26,7 +22,11 @@ import {
 	setShowBusJourneyInfo,
 	setSelectedLiveVehicleId,
 } from "../store/mapData";
-import { makeChangeTest, queuePopup, updateLastInteraction } from "../store/interface";
+import { fetchQuays } from "../store/mapData/fetchQuays";
+import { fetchStops } from "../store/mapData/fetchStops";
+import { fetchLiveVehicles } from "../store/mapData/liveVehicles";
+import { fetchJourneyDetails } from "../store/mapData/journeyDetails";
+import { queuePopup, updateLastInteraction } from "../store/interface";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
@@ -110,28 +110,17 @@ function Map(props) {
 			<MapControlsView adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
 			<MapShortcutsView
 				enableUserLocation={enableUserLocationACB}
-				openFavorites={testWarningPopup}
-				openTrending={testInformationPopup}
+				openFavorites={openFavoritesACB}
+				openTrending={openTrendingACB}
 				invalidLocation={invalidLocation}
 				awaitingLocation={awaitingLocation}
 			/>
 		</>
 	);
 
-	function testWarningPopup() {
-		dispatch(makeChangeTest());
-	}
+	function openFavoritesACB() {}
 
-	function testInformationPopup() {
-		dispatch(
-			queuePopup({
-				title: "Welcome Back",
-				message: "We haven't seen you in a long time! What do you think of this popup feature that we implemented while you were gone?",
-				type: 0,
-				continueAction: "ClosedWelcomeMessage",
-			})
-		);
-	}
+	function openTrendingACB() {}
 
 	function closeBusInfoACB() {
 		dispatch(setShowBusJourneyInfo(false));

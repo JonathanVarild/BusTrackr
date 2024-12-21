@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { reauthenticateUser } from "./store/interface";
+import { reauthenticateUser } from "./store/interface/authentication";
 
 import Navbar from "./presenters/NavbarPresenter";
 import Map from "./presenters/MapPresenter";
