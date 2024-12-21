@@ -145,6 +145,17 @@ a:hover {
 	cursor: pointer;
 }
 
+ul {
+	padding: 0;
+	margin: 0;
+	padding-inline-start: 20px;
+	list-style-position: inside;
+  }
+  
+ul li {
+	margin-bottom: 10px;
+}
+
 .spin-icon {
 	animation: spinner 2s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
 }
