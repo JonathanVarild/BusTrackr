@@ -24,8 +24,6 @@ function App() {
 		dispatch(reauthenticateUser());
 	}, [dispatch]);
 
-	console.log(reauthStatus);
-
 	return (
 		<>
 			<Navbar />

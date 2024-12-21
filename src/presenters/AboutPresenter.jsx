@@ -1,5 +1,7 @@
+import AboutView from "../views/AboutView";
+
 function About(props) {
-	return <div>This is the about page.</div>;
+	return <AboutView />;
 }
 
 export default About;
