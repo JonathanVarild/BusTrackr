@@ -9,6 +9,9 @@ function AccountSettingsPresenter(props) {
 	const accountSettingOpen = useSelector((state) => state.interface.accountSettingOpen);
 	const userInfo = useSelector((state) => state.interface.authenticate.userInfo);
 	const changedUserInfo = useSelector((state) => state.interface.changedUserInfo);
+	const updateAccountStatus = useSelector((state) => state.interface.updateAccount.status);
+	const updatePasswordStatus = useSelector((state) => state.interface.updatePassword.status);
+
 	const dispatch = useDispatch();
 
 	return (
@@ -24,6 +27,7 @@ function AccountSettingsPresenter(props) {
 			logout={logoutUserACB}
 			saveAccountChanges={saveAccountChangesACB}
 			updateAccountPassword={updateAccountPasswordACB}
+			isLoading={updateAccountStatus === "loading" || updatePasswordStatus === "loading"}
 		/>
 	);
 

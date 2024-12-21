@@ -87,25 +87,6 @@
 	color: white;
 }
 
-.spinnerContainer {
-	background-color: white;
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.spinnerContainer svg {
-	color: var(--smooth-black-transparent-80);
-	width: 5rem;
-	height: 5rem;
-	margin: 4rem;
-}
-
 @media screen and (min-width: 768px) {
 	#authWindow {
 		width: 90%;

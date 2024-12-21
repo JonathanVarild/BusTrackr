@@ -1,5 +1,6 @@
-import { IconChevronLeft, IconUserScan, IconUserPlus, IconX, IconRefresh } from "@tabler/icons-react";
+import { IconChevronLeft, IconUserScan, IconUserPlus, IconX } from "@tabler/icons-react";
 import styles from "../css/AuthPopup.module.css";
+import LoadingSpinnerView from "./LoadingSpinnerView";
 
 function AuthPopupView(props) {
 	if (props.currentView === null) return;
@@ -83,7 +84,7 @@ function AuthPopupView(props) {
 							Sign up
 						</button>
 					</div>
-					{props.loginLoading && renderLoadingSpinner()}
+					{props.loginLoading && <LoadingSpinnerView />}
 				</form>
 			</>
 		);
@@ -141,17 +142,9 @@ function AuthPopupView(props) {
 							Use existing account
 						</button>
 					</div>
-					{props.signupLoading && renderLoadingSpinner()}
+					{props.signupLoading && <LoadingSpinnerView />}
 				</form>
 			</>
-		);
-	}
-
-	function renderLoadingSpinner() {
-		return (
-			<div className={styles.spinnerContainer}>
-				<IconRefresh stroke={2} className="spin-icon" />
-			</div>
 		);
 	}
 

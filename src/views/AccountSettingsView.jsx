@@ -1,5 +1,6 @@
 import styles from "../css/AccountSettings.module.css";
 import { IconUser, IconLock, IconContract, IconDatabase, IconDatabaseX, IconSettings, IconChevronLeft, IconLogout } from "@tabler/icons-react";
+import LoadingSpinnerView from "./LoadingSpinnerView";
 
 function AccountSettingsView(props) {
 	const settingsNavTop = [
@@ -58,7 +59,7 @@ function AccountSettingsView(props) {
 						<div className={styles.settingPageTitle}>{item.text}</div>
 					</div>
 					<div className={styles.settingsContainer}>
-						{item.renderFunction()}
+						{props.isLoading ? <LoadingSpinnerView /> : item.renderFunction()}
 						<div className={styles.actionButtonContainer}>{renderActionButton()}</div>
 					</div>
 				</div>
@@ -80,7 +81,7 @@ function AccountSettingsView(props) {
 						<div className={styles.settingPageTitle}>{item.text}</div>
 					</div>
 					<div className={styles.settingsContainer}>
-						{item.renderFunction()}
+						{props.isLoading ? <LoadingSpinnerView /> : item.renderFunction()}
 						<div className={styles.actionButtonContainer}>{renderActionButton()}</div>
 					</div>
 				</div>
@@ -121,6 +122,8 @@ function AccountSettingsView(props) {
 	}
 
 	function renderActionButton() {
+		if (props.isLoading) return <></>;
+
 		if (props.changedUserInfo !== null) {
 			return (
 				<>
