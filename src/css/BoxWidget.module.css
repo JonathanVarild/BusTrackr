@@ -30,7 +30,7 @@
 
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: var(--element-size) 1fr;
+    grid-template-rows: calc(var(--element-size) + 1.5 * var(--element-margin)) 1fr;
     grid-template-areas:
         "content-title"
         "content-content";
@@ -63,7 +63,7 @@
     grid-area: title;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .iconContainer {

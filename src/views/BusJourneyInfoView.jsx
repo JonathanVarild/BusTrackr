@@ -1,8 +1,7 @@
 import styles from "../css/BusJourneyInfo.module.css";
 import { IconRefresh, IconX, IconUsers, IconSteeringWheel, IconDoorExit, IconDoorEnter, IconCompass, IconBrandSpeedtest } from "@tabler/icons-react";
 import BoxWidgetView from "./BoxWidgetView";
-
-const blueBusses = ["1", "2", "3", "4", "6", "172", "173", "175", "176", "177", "178", "179", "471", "474", "670", "676", "677", "873", "875"];
+import { blueBusses } from "../store/mapData/utilities";
 
 function BusJourneyInfo(props) {
     function getBusColorStyle(line) {

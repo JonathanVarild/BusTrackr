@@ -1,7 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const apiUrl = import.meta.env.VITE_API_URL;
-const blueBusses = ["1", "2", "3", "4", "6", "172", "173", "175", "176", "177", "178", "179", "471", "474", "670", "676", "677", "873", "875"];
+
+import { blueBusses } from "./utilities";
+// const blueBusses = ["1", "2", "3", "4", "6", "172", "173", "175", "176", "177", "178", "179", "471", "474", "670", "676", "677", "873", "875"];
 
 export const journeyDetailsInitialState = {
 	journeyDetails: {
@@ -30,7 +32,6 @@ export function journeyDetailsBuilder(builder) {
 		.addCase(fetchJourneyDetails.pending, (state, action) => {
 			state.journeyDetails.status = "loading";
 			state.journeyDetails.requestId = action.meta.requestId;
-			state.showBusJourneyInfo = true;
 		})
 		.addCase(fetchJourneyDetails.fulfilled, (state, action) => {
 			if (state.journeyDetails.requestId === action.meta.requestId) {

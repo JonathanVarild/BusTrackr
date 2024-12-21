@@ -5,6 +5,7 @@ import { logoutInitialState, logoutBuilder, getLogoutMiddleware } from "./logout
 import { createAccountInitialState, createAccountBuilder } from "./createAccount";
 import { updateAccountInitialState, updateAccountBuilder } from "./updateAccount";
 import { updatePasswordInitialState, updatePasswordBuilder } from "./updatePassword";
+import { searchInitialState, searchBuilder } from "./search";
 
 const interfaceSlice = createSlice({
 	name: "interface",
@@ -34,12 +35,17 @@ const interfaceSlice = createSlice({
 			},
 		},
 		changedUserInfo: null,
+		searchMode: "stop",
+		searchQuery: null,
+		showBoxWidget: false,
+		lastClickedType: null,
 
 		...authInitialState,
 		...logoutInitialState,
 		...createAccountInitialState,
 		...updateAccountInitialState,
 		...updatePasswordInitialState,
+		...searchInitialState,
 	},
 	reducers: {
 		toggleNavigation: (state) => {
@@ -99,6 +105,15 @@ const interfaceSlice = createSlice({
 		updateSignupForm: (state, action) => {
 			state.authPopupForm.signup = { ...state.authPopupForm.signup, ...action.payload };
 		},
+		setShowBoxWidget: (state, action) => {
+			state.showBoxWidget = action.payload;
+		},
+		setLastClickedType: (state, action) => {
+			state.lastClickedType = action.payload;
+		},
+		setSearchQuery: (state, action) => {
+			state.searchQuery = action.payload;
+		}
 	},
 	extraReducers: (builder) => {
 		authenticateUserBuilder(builder);
@@ -107,6 +122,7 @@ const interfaceSlice = createSlice({
 		createAccountBuilder(builder);
 		updateAccountBuilder(builder);
 		updatePasswordBuilder(builder);
+		searchBuilder(builder);
 	},
 });
 
@@ -121,6 +137,9 @@ export const {
 	updateLoginForm,
 	updateSignupForm,
 	updateLastInteraction,
+	setShowBoxWidget,
+    setLastClickedType,
+	setSearchQuery,
 } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;

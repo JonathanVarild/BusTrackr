@@ -18,8 +18,6 @@ const mapDataSlice = createSlice({
 		},
 
 		selectedLiveVehicleId: null,
-		showBusJourneyInfo: false,
-		lastClickedType: null,
 
 		...fetchQuaysInitialState,
 		...fetchStopsInitialState,
@@ -40,9 +38,6 @@ const mapDataSlice = createSlice({
 				state.quays.list[action.payload.id].hovered = action.payload.hovered;
 			}
 		},
-		setLastClickedType: (state, action) => {
-			state.lastClickedType = action.payload;
-		},
 		setSelectedLiveVehicleId: (state, action) => {
 			state.selectedLiveVehicleId = action.payload;
 		},
@@ -52,9 +47,6 @@ const mapDataSlice = createSlice({
 			} else {
 				state.liveVehicles.list[action.payload.id].hovered = action.payload.hovered;
 			}
-		},
-		setShowBusJourneyInfo: (state, action) => {
-			state.showBusJourneyInfo = action.payload;
 		},
 		setZoomLevel: (state, action) => {
 			state.screenBoundary.zoom = action.payload;
@@ -84,7 +76,6 @@ export const {
 	updateScreenBottomRight,
 	addQuays,
 	setStationHovered,
-	setShowBusJourneyInfo,
 	setLiveVehicleHovered,
 	setZoomLevel,
 	setUserLocation,
