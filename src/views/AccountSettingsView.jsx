@@ -1,7 +1,7 @@
 import styles from "../css/AccountSettings.module.css";
 import { IconUser, IconLock, IconContract, IconDatabase, IconDatabaseX, IconSettings, IconChevronLeft, IconLogout } from "@tabler/icons-react";
 
-function AccountSettings(props) {
+function AccountSettingsView(props) {
 	const settingsNavTop = [
 		{ id: "details", icon: <IconUser stroke={2} />, text: "Account details", renderFunction: renderAccountDetails },
 		{ id: "security", icon: <IconLock stroke={2} />, text: "Security", renderFunction: renderSecurity },
@@ -108,19 +108,19 @@ function AccountSettings(props) {
 		return setting.id === props.settingOpen;
 	}
 
+	function onRevertACB() {
+		props.reverseChanges();
+	}
+
+	function onSaveACB() {
+		if (props.settingOpen === "menu" || props.settingOpen === "details") {
+			props.saveAccountChanges();
+		} else if (props.settingOpen === "security") {
+			props.updateAccountPassword();
+		}
+	}
+
 	function renderActionButton() {
-		function onRevertACB() {
-			props.reverseChanges();
-		}
-
-		function onSaveACB() {
-			if (props.settingOpen === "menu" || props.settingOpen === "details") {
-				props.saveAccountChanges();
-			} else if (props.settingOpen === "security") {
-				props.updateAccountPassword();
-			}
-		}
-
 		if (props.changedUserInfo !== null) {
 			return (
 				<>
@@ -276,4 +276,4 @@ function AccountSettings(props) {
 	}
 }
 
-export default AccountSettings;
+export default AccountSettingsView;

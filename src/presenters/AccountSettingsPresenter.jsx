@@ -1,4 +1,4 @@
-import AccountSettings from "../components/AccountSettings";
+import AccountSettingsView from "../views/AccountSettingsView";
 
 import { useSelector, useDispatch } from "react-redux";
 import { openAccountSetting, setChangedUserInfo, queuePopup, updateUserAccount, updateUserPassword } from "../store/interface";
@@ -10,7 +10,7 @@ function AccountSettingsPresenter(props) {
 	const dispatch = useDispatch();
 
 	return (
-		<AccountSettings
+		<AccountSettingsView
 			settingOpen={accountSettingOpen}
 			openSettingID={openSettingItemACB}
 			userInfo={userInfo}

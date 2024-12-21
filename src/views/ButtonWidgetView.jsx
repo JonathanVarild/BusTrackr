@@ -1,6 +1,6 @@
 import styles from "../css/ButtonWidget.module.css";
 
-function ButtonWidget(props) {
+function ButtonWidgetView(props) {
 	function onClickACB(event) {
 		if (props.onClick) {
 			props.onClick(event);
@@ -17,4 +17,4 @@ function ButtonWidget(props) {
 	);
 }
 
-export default ButtonWidget;
+export default ButtonWidgetView;

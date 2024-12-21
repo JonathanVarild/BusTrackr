@@ -1,4 +1,4 @@
-import AuthPopup from "../components/AuthPopup";
+import AuthPopupView from "../views/AuthPopupView";
 
 import { authenticateUser, createUserAccount, setAuthPopup, updateLoginForm, updateSignupForm } from "../store/interface";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,7 +11,7 @@ function AuthPopupPresenter(props) {
 	const dispatch = useDispatch();
 
 	return (
-		<AuthPopup
+		<AuthPopupView
 			setCurrentView={SetCurrentViewACB}
 			currentView={currentView}
 			authPopupForm={authPopupForm}

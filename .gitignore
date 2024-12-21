@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 # Misc
-*/.DS_Store
+.DS_Store

@@ -1,10 +1,10 @@
 import { useRef, useEffect } from "react";
 
-import RMapView from "../components/RMapView";
-import MapControls from "../components/MapControls";
-import SearchBar from "../components/MapSearchBar";
-import MapShortcuts from "../components/MapShortcuts";
-import BusJourneyInfo from "../components/BusJourneyInfoView";
+import RMapView from "../views/RMapView";
+import MapControlsView from "../views/MapControlsView";
+import SearchBarView from "../views/SearchBarView";
+import MapShortcutsView from "../views/MapShortcutsView";
+import BusJourneyInfo from "../views/BusJourneyInfoView";
 
 import { fromLonLat, toLonLat } from "ol/proj";
 import { boundingExtent } from "ol/extent";
@@ -96,7 +96,7 @@ function Map(props) {
 				setVehicleClicked={setVehicleClickedACB}
 			/>
 
-			{showBusJourneyInfo &&
+			{showBusJourneyInfo && (
 				<BusJourneyInfo
 					journeyDetails={journeyDetails}
 					journeyDetailsStatus={journeyDetailsStatus}
@@ -104,11 +104,11 @@ function Map(props) {
 					liveVehicles={liveVehicles}
 					onCloseClick={closeBusInfoACB}
 				/>
-			}
+			)}
 
-			<SearchBar />
-			<MapControls adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
-			<MapShortcuts
+			<SearchBarView />
+			<MapControlsView adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
+			<MapShortcutsView
 				enableUserLocation={enableUserLocationACB}
 				openFavorites={testWarningPopup}
 				openTrending={testInformationPopup}
@@ -148,7 +148,7 @@ function Map(props) {
 	}
 
 	function setVehicleClickedACB(payload) {
-		const combined = payload["service_journey_id"] + payload["vehicle_id"]
+		const combined = payload["service_journey_id"] + payload["vehicle_id"];
 		dispatch(setSelectedLiveVehicleId(combined));
 		dispatch(fetchJourneyDetails(payload));
 	}
@@ -209,12 +209,24 @@ function Map(props) {
 
 	function enableUserLocationACB() {
 		if (invalidLocation) {
-			alert("Could not get reliable location data.. Reload the page and try again.");
+			dispatch(
+				queuePopup({
+					title: "Unreliable Location",
+					message: "Your location accuracy is not good enough to determine an accurate location. Please check your browser permissions, reload the page, and try again.",
+					type: 0,
+				})
+			);
 			return;
 		}
 
 		if (!navigator.geolocation) {
-			alert("Could not get your location.. Please check your browser permissions!");
+			dispatch(
+				queuePopup({
+					title: "Location Failed",
+					message: "Your location could not be determined. Please check your browser permissions and that you have GPS coverage.",
+					type: 0,
+				})
+			);
 			return;
 		}
 

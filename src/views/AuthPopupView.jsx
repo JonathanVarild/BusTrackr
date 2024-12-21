@@ -1,7 +1,7 @@
 import { IconChevronLeft, IconUserScan, IconUserPlus, IconX, IconRefresh } from "@tabler/icons-react";
 import styles from "../css/AuthPopup.module.css";
 
-function AuthPopup(props) {
+function AuthPopupView(props) {
 	if (props.currentView === null) return;
 
 	const loading = props.loginLoading || props.signupLoading;
@@ -176,4 +176,4 @@ function AuthPopup(props) {
 	}
 }
 
-export default AuthPopup;
+export default AuthPopupView;
