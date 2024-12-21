@@ -14,7 +14,7 @@ function BusJourneyInfo(props) {
 
     function renderTitleCB() {
         return (
-            <h3 className={styles.titleh3}>
+            <h3 className={`${getBusColorStyle(props.journeyDetails.line)} ${styles.titleh3}`}>
                 <span className={`${getBusColorStyle(props.journeyDetails.line)} ${styles.lineSpan}`}>{props.journeyDetails.line ? props.journeyDetails.line : "-"}</span>
                 &nbsp;
                 <span className={`${styles.nameSpan}`}>{props.journeyDetails.destination ?? "Ej i trafik"}</span>

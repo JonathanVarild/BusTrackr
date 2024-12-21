@@ -11,14 +11,18 @@
 	display: flex;
 	align-items: center;
     flex-direction: row;
-	height: var(--element-size);
+	height: calc(var(--element-size) - 0.75 * var(--element-margin));;
+	border-radius: calc(1.25 * var(--element-margin));
+	padding-left: calc(0.5 * var(--element-margin));
+	padding-right: calc(0.5 * var(--element-margin));
 }
 
 .titleh3 > * {
 	display: flex;
-	height: calc(var(--element-size) - var(--element-margin));
+	align-items: center;
+	height: calc(var(--element-size) - 1.5 * var(--element-margin));
 	border-radius: var(--element-margin);
-	padding-left: calc(0.5 * var(--element-margin));
+	padding-left: calc(0.75 * var(--element-margin));
 	padding-right: calc(0.5 * var(--element-margin));
 }
 
