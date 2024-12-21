@@ -103,6 +103,7 @@ function Map(props) {
 					selectedLiveVehicleId={selectedLiveVehicleId}
 					liveVehicles={liveVehicles}
 					onCloseClick={closeBusInfoACB}
+					onFavoriteClick={closeBusInfoACB} /* This should be the favorite function in the future */
 				/>
 			)}
 

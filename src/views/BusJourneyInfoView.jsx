@@ -95,10 +95,14 @@ function BusJourneyInfo(props) {
         props.onCloseClick();
     }
 
+    function onFavoriteClickACB() {
+        props.onFavoriteClick();
+    }
+
     return (
         <BoxWidgetView
             onCloseClick={onCloseClickACB}
-            onFavoriteClick={onCloseClickACB}
+            onFavoriteClick={onFavoriteClickACB}
             dataStatus={props.journeyDetailsStatus}
             renderTitleElementCB={renderTitleCB}
             renderContentElementCB={renderBusJourneyInfoCB}
