@@ -1,20 +1,28 @@
 #inner {
-    padding: var(--element-margin);
-    width: calc(60% - 2 * var(--element-margin));
+	padding: var(--element-margin);
+	width: calc(60% - 2 * var(--element-margin));
 }
 
 #body {
-    display: flex;
-    justify-content: center; 
+	display: flex;
+	justify-content: center;
+}
+
+#body h2 {
+	margin-top: 2rem;
+}
+
+.bottomMargin {
+	margin-bottom: 1rem;
 }
 
 @media (max-width: 768px) {
-    #inner {
-      width: calc(100% - 2 * var(--element-margin));
-      margin: var(--element-margin);
-    }
+	#inner {
+		width: calc(100% - 2 * var(--element-margin));
+		margin: var(--element-margin);
+	}
 }
 
 #body li li {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
