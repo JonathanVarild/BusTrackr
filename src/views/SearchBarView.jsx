@@ -7,7 +7,8 @@ function SearchBarView(props) {
       props.onSearch(event.target.value, 0);
     }
     function onSearchACB(event) {
-        /* TODO */
+        const inputElement = event.target.parentNode.parentNode.parentNode.querySelector('input[name="searchBar"]');
+        props.onSearch(inputElement?.value || '', 0);
     }
     return (
         <div id={styles.outerContainer} className={`${styles.justifyContent}`}>
