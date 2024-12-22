@@ -26,7 +26,7 @@
 	text-wrap: nowrap;
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 300px) {
 	#attributionBar {
 		flex-direction: row;
 		text-align: unset;
@@ -37,7 +37,7 @@
 	}
 }
 
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 1300px) {
 	#attributionBar {
         top: unset;
         left: unset;

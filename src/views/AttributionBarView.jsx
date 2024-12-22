@@ -6,8 +6,6 @@ function AttributionBarView() {
 			<div className={styles.attributionText}>© OpenStreetMap contributors</div>
 			<span> | </span>
 			<div className={styles.attributionText}>© OpenMapTiles styles</div>
-			<span> | </span>
-			<div className={styles.attributionText}>Geodata from Geofabrik</div>
 		</div>
 	);
 }
