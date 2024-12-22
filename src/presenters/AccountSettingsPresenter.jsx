@@ -5,7 +5,7 @@ import { openAccountSetting, setChangedUserInfo, queuePopup } from "../store/int
 import { updateUserAccount } from "../store/interface/updateAccount";
 import { updateUserPassword } from "../store/interface/updatePassword";
 
-function AccountSettingsPresenter(props) {
+function AccountSettings(props) {
 	const accountSettingOpen = useSelector((state) => state.interface.accountSettingOpen);
 	const userInfo = useSelector((state) => state.interface.authenticate.userInfo);
 	const changedUserInfo = useSelector((state) => state.interface.changedUserInfo);
@@ -126,4 +126,4 @@ function AccountSettingsPresenter(props) {
 	}
 }
 
-export default AccountSettingsPresenter;
+export default AccountSettings;

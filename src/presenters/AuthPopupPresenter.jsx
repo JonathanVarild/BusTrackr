@@ -6,7 +6,7 @@ import { createUserAccount } from "../store/interface/createAccount";
 
 import { useSelector, useDispatch } from "react-redux";
 
-function AuthPopupPresenter(props) {
+function AuthPopup(props) {
 	const currentView = useSelector((state) => state.interface.authPopup);
 	const authPopupForm = useSelector((state) => state.interface.authPopupForm);
 	const loginStatus = useSelector((state) => state.interface.authenticate.status);
@@ -76,4 +76,4 @@ function AuthPopupPresenter(props) {
 	}
 }
 
-export default AuthPopupPresenter;
+export default AuthPopup;

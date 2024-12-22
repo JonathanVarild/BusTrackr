@@ -8,11 +8,12 @@ import Navbar from "./presenters/NavbarPresenter";
 import Map from "./presenters/MapPresenter";
 import About from "./presenters/AboutPresenter";
 import Attribution from "./presenters/AttributionPresenter";
-import AccountSettingsPresenter from "./presenters/AccountSettingsPresenter";
+import AccountSettings from "./presenters/AccountSettingsPresenter";
 import PopupBox from "./presenters/PopupBoxPresenter";
-import AuthPopupPresenter from "./presenters/AuthPopupPresenter";
+import AuthPopup from "./presenters/AuthPopupPresenter";
 import DataReport from "./presenters/DataReportPresenter";
 import LoadingSpinnerView from "./views/LoadingSpinnerView";
+import Trending from "./presenters/TrendingPresenter";
 
 import "./css/global.css";
 
@@ -35,9 +36,10 @@ function App() {
 					<Route path="data-report" element={<DataReport />} />
 				</Routes>
 			</BrowserRouter>
-			<AccountSettingsPresenter />
-			<AuthPopupPresenter />
+			<AccountSettings />
+			<AuthPopup />
 			<PopupBox />
+			<Trending />
 			{reauthStatus === "loading" && <LoadingSpinnerView />}
 		</>
 	);

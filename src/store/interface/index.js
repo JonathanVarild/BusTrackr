@@ -6,6 +6,7 @@ import { createAccountInitialState, createAccountBuilder } from "./createAccount
 import { updateAccountInitialState, updateAccountBuilder } from "./updateAccount";
 import { updatePasswordInitialState, updatePasswordBuilder } from "./updatePassword";
 import { searchInitialState, searchBuilder } from "./search";
+import { trendingBuilder, trendingInitalState } from "./trending";
 
 const interfaceSlice = createSlice({
 	name: "interface",
@@ -39,6 +40,7 @@ const interfaceSlice = createSlice({
 		searchQuery: null,
 		showBoxWidget: false,
 		lastClickedType: null,
+		showTrending: false,
 
 		...authInitialState,
 		...logoutInitialState,
@@ -46,6 +48,7 @@ const interfaceSlice = createSlice({
 		...updateAccountInitialState,
 		...updatePasswordInitialState,
 		...searchInitialState,
+		...trendingInitalState,
 	},
 	reducers: {
 		toggleNavigation: (state) => {
@@ -113,7 +116,10 @@ const interfaceSlice = createSlice({
 		},
 		setSearchQuery: (state, action) => {
 			state.searchQuery = action.payload;
-		}
+		},
+		setShowTrending: (state, action) => {
+			state.showTrending = action.payload;
+		},
 	},
 	extraReducers: (builder) => {
 		authenticateUserBuilder(builder);
@@ -123,6 +129,7 @@ const interfaceSlice = createSlice({
 		updateAccountBuilder(builder);
 		updatePasswordBuilder(builder);
 		searchBuilder(builder);
+		trendingBuilder(builder);
 	},
 });
 
@@ -138,8 +145,9 @@ export const {
 	updateSignupForm,
 	updateLastInteraction,
 	setShowBoxWidget,
-    setLastClickedType,
+	setLastClickedType,
 	setSearchQuery,
+	setShowTrending,
 } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;
