@@ -1,5 +1,7 @@
+import AttributionView from "../views/AttributionView";
+
 function Attribution(props) {
-	return <div>This is the attribution page.</div>;
+	return <AttributionView />;
 }
 
 export default Attribution;

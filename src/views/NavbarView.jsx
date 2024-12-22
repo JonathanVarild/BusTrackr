@@ -27,14 +27,6 @@ function NavbarView(props) {
 							</div>
 						</a>
 					</div>
-					<div id={styles.accountLink} className={`${styles.navItem} header-font rounded-corners drop-shadow blurred-background`}>
-						<button onClick={onClickAccountACB}>
-							<p>{props.userInfo === null ? "Login" : "Account"}</p>
-							<div className={styles.iconContainer}>
-								<IconUser stroke={2} />
-							</div>
-						</button>
-					</div>
 					<div id={styles.attributionLink} className={`${styles.navItem} header-font rounded-corners drop-shadow blurred-background`}>
 						<a href="/attribution">
 							<p>Attribution</p>
@@ -42,6 +34,14 @@ function NavbarView(props) {
 								<IconSparkles stroke={2} />
 							</div>
 						</a>
+					</div>
+					<div id={styles.accountLink} className={`${styles.navItem} header-font rounded-corners drop-shadow blurred-background`}>
+						<button onClick={onClickAccountACB}>
+							<p>{props.userInfo === null ? "Login" : "Account"}</p>
+							<div className={styles.iconContainer}>
+								<IconUser stroke={2} />
+							</div>
+						</button>
 					</div>
 				</nav>
 				<div className={`${styles.closeContainer}`}>

@@ -1,0 +1,31 @@
+.headerTitle {
+	font-weight: 600;
+}
+
+#trendingGrid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(5, auto);
+	gap: var(--element-margin);
+}
+
+.busItem {
+	display: flex;
+	gap: var(--element-margin);
+}
+
+.busNumber {
+	background-color: #e94256;
+	border-radius: calc(1.25 * var(--element-margin));
+	padding: 0.2rem;
+	color: white;
+	font-weight: 600;
+}
+
+.blueBus {
+    background-color: #007aff;
+}
+
+.numberID {
+	color: var(--smooth-black-transparent-80);
+}

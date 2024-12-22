@@ -5,6 +5,7 @@ import MapControlsView from "../views/MapControlsView";
 import SearchBarView from "../views/SearchBarView";
 import MapShortcutsView from "../views/MapShortcutsView";
 import BusJourneyInfo from "../views/BusJourneyInfoView";
+import SearchResultsView from "../views/SearchResultsView";
 
 import { fromLonLat, toLonLat } from "ol/proj";
 import { boundingExtent } from "ol/extent";
@@ -19,19 +20,20 @@ import {
 	setUserLocation,
 	setInvalidLocation,
 	setAwaitingLocation,
-	setShowBusJourneyInfo,
 	setSelectedLiveVehicleId,
 } from "../store/mapData";
+import { lastClickedTypes } from "../store/mapData/utilities";
 import { fetchQuays } from "../store/mapData/fetchQuays";
 import { fetchStops } from "../store/mapData/fetchStops";
 import { fetchLiveVehicles } from "../store/mapData/liveVehicles";
 import { fetchJourneyDetails } from "../store/mapData/journeyDetails";
-import { queuePopup, updateLastInteraction } from "../store/interface";
+import { queuePopup, updateLastInteraction, setShowBoxWidget, setLastClickedType, setSearchQuery, setShowTrending } from "../store/interface";
+import { fetchSearchResult } from "../store/interface/search";
+import { fetchTrendingBuses } from "../store/interface/trending";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
 let mapMoveHandlerIsThrottled = false;
-let fetchLiveVehiclesIsThrottled = false;
 const stationMinZoom = 12.3;
 
 function Map(props) {
@@ -43,12 +45,16 @@ function Map(props) {
 	const liveVehicles = useSelector((state) => state.mapData.liveVehicles.list);
 	const journeyDetails = useSelector((state) => state.mapData.journeyDetails.details);
 	const journeyDetailsStatus = useSelector((state) => state.mapData.journeyDetails.status);
-	const showBusJourneyInfo = useSelector((state) => state.mapData.showBusJourneyInfo);
+	const searchStatus = useSelector((state) => state.interface.search.status);
+	const searchQuery = useSelector((state) => state.interface.searchQuery);
+	const searchResults = useSelector((state) => state.interface.search.results);
+	const showBoxWidget = useSelector((state) => state.interface.showBoxWidget);
 	const zoom = useSelector((state) => state.mapData.screenBoundary.zoom);
 	const userLocation = useSelector((state) => state.mapData.userLocation);
 	const invalidLocation = useSelector((state) => state.mapData.invalidLocation);
 	const awaitingLocation = useSelector((state) => state.mapData.awaitingLocation);
 	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
+	const lastClickedType = useSelector((state) => state.interface.lastClickedType);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -96,17 +102,9 @@ function Map(props) {
 				setVehicleClicked={setVehicleClickedACB}
 			/>
 
-			{showBusJourneyInfo && (
-				<BusJourneyInfo
-					journeyDetails={journeyDetails}
-					journeyDetailsStatus={journeyDetailsStatus}
-					selectedLiveVehicleId={selectedLiveVehicleId}
-					liveVehicles={liveVehicles}
-					onCloseClick={closeBusInfoACB}
-				/>
-			)}
+			{renderCorrectBoxWidgetCB()}
 
-			<SearchBarView />
+			<SearchBarView onSearch={performSearchACB} />
 			<MapControlsView adjustMapZoom={mapZoomACB} enableUserLocation={enableUserLocationACB} invalidLocation={invalidLocation} awaitingLocation={awaitingLocation} />
 			<MapShortcutsView
 				enableUserLocation={enableUserLocationACB}
@@ -118,12 +116,65 @@ function Map(props) {
 		</>
 	);
 
+	function renderCorrectBoxWidgetCB() {
+		if (!showBoxWidget) {
+			return;
+		}
+
+		switch (lastClickedType) {
+			case lastClickedTypes.VEHICLE:
+				return (
+					<BusJourneyInfo
+						journeyDetails={journeyDetails}
+						journeyDetailsStatus={journeyDetailsStatus}
+						selectedLiveVehicleId={selectedLiveVehicleId}
+						liveVehicles={liveVehicles}
+						onCloseClick={closeBoxWidget}
+						onFavoriteClick={closeBoxWidget} /* This should be the favorite function in the future */
+					/>
+				);
+			case lastClickedTypes.SEARCH:
+				return (
+					<SearchResultsView
+						searchStatus={searchStatus}
+						onCloseClick={closeBoxWidget}
+						onFavoriteClick={closeBoxWidget}
+						searchResults={searchResults}
+						performSearchRelative={performSearchRelativeACB}
+					/>
+				);
+			default:
+				return;
+		}
+	}
+
+	function performSearchRelativeACB(direction) {
+		dispatch(updateLastInteraction());
+		const newPage = searchResults.page + direction;
+		dispatch(fetchSearchResult({ query: searchQuery, page: newPage }));
+	}
+
+	function performSearchACB(query, page) {
+		dispatch(updateLastInteraction());
+		dispatch(setLastClickedType(lastClickedTypes.SEARCH));
+		dispatch(setShowBoxWidget(true));
+		dispatch(setSearchQuery(query));
+        if (query.length < 3) return;
+		dispatch(fetchSearchResult({ query, page }));
+		dispatch(setShowTrending(false));
+	}
+
 	function openFavoritesACB() {}
 
-	function openTrendingACB() {}
+	function openTrendingACB() {
+		dispatch(fetchTrendingBuses());
+		dispatch(setShowTrending(true));
+		dispatch(setSelectedLiveVehicleId(null));
+		dispatch(setLastClickedType(null));
+	}
 
-	function closeBusInfoACB() {
-		dispatch(setShowBusJourneyInfo(false));
+	function closeBoxWidget() {
+		dispatch(setShowBoxWidget(false));
 	}
 
 	function setStationHoveredACB(payload) {
@@ -137,9 +188,12 @@ function Map(props) {
 	}
 
 	function setVehicleClickedACB(payload) {
+		dispatch(setLastClickedType(lastClickedTypes.VEHICLE));
+		dispatch(setShowBoxWidget(true));
 		const combined = payload["service_journey_id"] + payload["vehicle_id"];
 		dispatch(setSelectedLiveVehicleId(combined));
 		dispatch(fetchJourneyDetails(payload));
+		dispatch(setShowTrending(false));
 	}
 
 	function mapMoveACB() {
@@ -158,7 +212,7 @@ function Map(props) {
 			updateStationsACB(mapView, map, zoom);
 		}
 
-		// fetchLiveVehiclesConsitently();
+		dispatch(fetchLiveVehicles()); // Always fetch buses after movement of map
 
 		mapMoveHandlerIsThrottled = true;
 		setTimeout(() => {

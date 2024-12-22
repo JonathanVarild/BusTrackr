@@ -1,10 +1,19 @@
 import styles from "../css/DataReport.module.css";
+import LoadingSpinnerView from "../views/LoadingSpinnerView";
 
 function DataReportView(props) {
+	if (props.status === "failed") {
+		return <section className={styles.dataReportPage}>We could not find any data.</section>;
+	}
+
+	if (props.data === null) {
+		return <LoadingSpinnerView />;
+	}
+
 	return (
 		<section className={styles.dataReportPage}>
 			<h1>User data report</h1>
-			<div className={styles.reportInfo}>A new report will be available for generation in 24 hours. Please save this report if you want to view it again.</div>
+			<div className={styles.reportInfo}>This report is showing all account information that we store in our database.</div>
 			<h2>User data:</h2>
 			<table>
 				<thead>
@@ -16,27 +25,23 @@ function DataReportView(props) {
 				<tbody>
 					<tr>
 						<td>user_id</td>
-						<td></td>
+						<td>{props.data.userData.id}</td>
 					</tr>
 					<tr>
 						<td>username</td>
-						<td></td>
+						<td>{props.data.userData.username}</td>
 					</tr>
 					<tr>
 						<td>email</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>password_hash</td>
-						<td></td>
+						<td>{props.data.userData.email}</td>
 					</tr>
 					<tr>
 						<td>date_of_birth</td>
-						<td></td>
+						<td>{props.data.userData.date_of_birth}</td>
 					</tr>
 					<tr>
 						<td>registration_date</td>
-						<td></td>
+						<td>{props.data.userData.registration_date}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -48,17 +53,7 @@ function DataReportView(props) {
 						<th>user_id</th>
 					</tr>
 				</thead>
-				<tbody>{[{ lineID: "2123414123132", userID: "3" }].map(renderFavoriteLineCB)}</tbody>
-			</table>
-			<h2>Favorite stations:</h2>
-			<table>
-				<thead>
-					<tr>
-						<th>station_id</th>
-						<th>user_id</th>
-					</tr>
-				</thead>
-				<tbody>{[{ stationID: "2123414123132", userID: "3" }].map(renderFavoriteStationCB)}</tbody>
+				<tbody>{props.data.favoriteLines.map(renderFavoriteLineCB)}</tbody>
 			</table>
 			<h2>Login logs:</h2>
 			<table>
@@ -68,7 +63,7 @@ function DataReportView(props) {
 						<th>ip</th>
 					</tr>
 				</thead>
-				<tbody>{[{ time: "YYYY-MM-DD HH:MM:SS", ip: "192.168.1.1" }].map(renderLoginCB)}</tbody>
+				<tbody>{props.data.loginLogs.map(renderLoginCB)}</tbody>
 			</table>
 			<h2>Report logs:</h2>
 			<table>
@@ -78,7 +73,7 @@ function DataReportView(props) {
 						<th>ip</th>
 					</tr>
 				</thead>
-				<tbody>{[{ time: "YYYY-MM-DD HH:MM:SS", ip: "192.168.1.1" }].map(renderReportCB)}</tbody>
+				<tbody>{props.data.reportLogs.map(renderReportCB)}</tbody>
 			</table>
 			<h2>Agreement logs:</h2>
 			<table>
@@ -89,21 +84,15 @@ function DataReportView(props) {
 						<th>ip</th>
 					</tr>
 				</thead>
-				<tbody>
-					{[
-						{ time: "YYYY-MM-DD HH:MM:SS", type: "terms_of_service", ip: "192.168.1.1" },
-						{ time: "YYYY-MM-DD HH:MM:SS", type: "data_policy", ip: "192.168.1.1" },
-					].map(renderAgreementCB)}
-				</tbody>
+				<tbody>{props.data.agreements.map(renderAgreementCB)}</tbody>
 			</table>
-            
 		</section>
 	);
 
 	function renderLoginCB(login) {
 		return (
-			<tr key={login.time + login.ip}>
-				<td>{login.time}</td>
+			<tr key={login.timestamp + login.ip}>
+				<td>{login.timestamp} (UTC +0)</td>
 				<td>{login.ip}</td>
 			</tr>
 		);
@@ -111,8 +100,8 @@ function DataReportView(props) {
 
 	function renderReportCB(report) {
 		return (
-			<tr key={report.time + report.ip}>
-				<td>{report.time}</td>
+			<tr key={report.timestamp + report.ip}>
+				<td>{report.timestamp} (UTC +0)</td>
 				<td>{report.ip}</td>
 			</tr>
 		);
@@ -120,8 +109,8 @@ function DataReportView(props) {
 
 	function renderAgreementCB(agreement) {
 		return (
-			<tr key={agreement.time + agreement.type + agreement.ip}>
-				<td>{agreement.time}</td>
+			<tr key={agreement.timestamp + agreement.type + agreement.ip}>
+				<td>{agreement.timestamp} (UTC +0)</td>
 				<td>{agreement.type}</td>
 				<td>{agreement.ip}</td>
 			</tr>
@@ -130,8 +119,8 @@ function DataReportView(props) {
 
 	function renderFavoriteLineCB(favoriteLine) {
 		return (
-			<tr key={favoriteLine.lineID + favoriteLine.userID}>
-				<td>{favoriteLine.lineID}</td>
+			<tr key={favoriteLine.line_id + favoriteLine.userID}>
+				<td>{favoriteLine.line_id}</td>
 				<td>{favoriteLine.userID}</td>
 			</tr>
 		);

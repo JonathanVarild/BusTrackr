@@ -1,0 +1,140 @@
+#containerOuter {
+    pointer-events: none;
+    position: fixed;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    bottom: calc(var(--element-size) + var(--element-margin));
+    margin: var(--element-margin);
+    width: calc(100% - 2 * var(--element-margin));
+    z-index: 99999;
+    transition: height 0.1s cubic-bezier(0.79, 0.14, 0.15, 0.86);
+}
+
+#container {
+    pointer-events: all;
+    display: flex;
+    align-items: flex-end;
+    gap: var(--element-margin);
+    transition: height 0.1s cubic-bezier(0.79, 0.14, 0.15, 0.86);
+    width: 100%;
+}
+
+.content {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: var(--element-margin);
+    font-size: calc(0.5 * var(--element-size));
+    color: var(--smooth-black-transparent);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: calc(var(--element-size) + 1.5 * var(--element-margin)) 1fr;
+    grid-template-areas:
+        "content-title"
+        "content-content";
+    transition: height 0.1s cubic-bezier(0.79, 0.14, 0.15, 0.86);
+}
+
+#contentInner {
+    grid-area: content-content;
+    height: 100%;
+}
+
+#widgetHeader {
+    grid-area: content-title;
+
+    display: grid;
+    grid-template-columns: var(--element-size) 1fr var(--element-size);
+    grid-template-rows: 1fr;
+    grid-template-areas: "favorite title close";
+}
+
+#favoriteContainer {
+    grid-area: favorite;
+}
+
+#closeContainer {
+    grid-area: close;
+}
+
+#titleContainer {
+    grid-area: title;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-inline: 0.2rem;
+}
+
+.iconContainer {
+    border-radius: calc(0.5 * var(--element-margin));
+    width: var(--element-size);
+    height: var(--element-size);
+}
+
+.iconContainer:hover {
+    background-color: var(--smooth-black-transparent-20);
+}
+
+.iconButton {
+    width: 100%;
+    height: 100%;
+}
+
+.iconInnerContainer {
+    width: 100%;
+    height: 100%;
+    opacity: 40%;
+}
+
+.iconInnerContainer:hover {
+    opacity: 100%;
+}
+
+.iconFullColor {
+    width: var(--element-size);
+    height: var(--element-size);
+    color: var(--smooth-black);
+}
+
+.iconFullColor:hover {
+    color: #e94256;
+}
+
+.suspenseContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    padding-bottom: var(--element-margin);
+}
+
+.spinnerIcon {
+    width: var(--element-size);
+    height: var(--element-size);
+}
+
+@media screen and (min-width: 768px),
+screen and (orientation: landscape) {
+    #containerOuter {
+        justify-content: center;
+    }
+
+    #container {
+        display: flex;
+        gap: var(--element-margin);
+        width: 90%;
+        max-width: 40rem;
+    }
+
+    .content {
+        flex-grow: 1;
+        border: none;
+        outline: none;
+        padding: var(--element-margin);
+        font-size: calc(0.5 * var(--element-size));
+        color: var(--smooth-black-transparent);
+    }
+}

@@ -16,7 +16,7 @@ export const updateUserAccount = createAsyncThunk("interface/updateUserAccount",
 	const currentUserInfo = state.authenticate.userInfo;
 	const changedUserInfo = state.changedUserInfo;
 
-	if (state.updateAccount.requestId !== requestId) return abort("Request already in progress.");
+	if (state.updateAccount.requestId !== requestId) return
 
 	return await fetch(apiUrl + "/api/update-account", {
 		method: "POST",

@@ -5,6 +5,10 @@ import { logoutInitialState, logoutBuilder, getLogoutMiddleware } from "./logout
 import { createAccountInitialState, createAccountBuilder } from "./createAccount";
 import { updateAccountInitialState, updateAccountBuilder } from "./updateAccount";
 import { updatePasswordInitialState, updatePasswordBuilder } from "./updatePassword";
+import { searchInitialState, searchBuilder } from "./search";
+import { trendingBuilder, trendingInitalState } from "./trending";
+import { deleteAccountBuilder, deleteAccountInitialState, getDeleteAccountMiddleware } from "./deleteAccount";
+import { dataReportBuilder, dataReportInitalState } from "./dataReport";
 
 const interfaceSlice = createSlice({
 	name: "interface",
@@ -34,12 +38,21 @@ const interfaceSlice = createSlice({
 			},
 		},
 		changedUserInfo: null,
+		searchMode: "stop",
+		searchQuery: null,
+		showBoxWidget: false,
+		lastClickedType: null,
+		showTrending: false,
 
 		...authInitialState,
 		...logoutInitialState,
 		...createAccountInitialState,
 		...updateAccountInitialState,
 		...updatePasswordInitialState,
+		...searchInitialState,
+		...trendingInitalState,
+		...deleteAccountInitialState,
+		...dataReportInitalState,
 	},
 	reducers: {
 		toggleNavigation: (state) => {
@@ -99,6 +112,18 @@ const interfaceSlice = createSlice({
 		updateSignupForm: (state, action) => {
 			state.authPopupForm.signup = { ...state.authPopupForm.signup, ...action.payload };
 		},
+		setShowBoxWidget: (state, action) => {
+			state.showBoxWidget = action.payload;
+		},
+		setLastClickedType: (state, action) => {
+			state.lastClickedType = action.payload;
+		},
+		setSearchQuery: (state, action) => {
+			state.searchQuery = action.payload;
+		},
+		setShowTrending: (state, action) => {
+			state.showTrending = action.payload;
+		},
 	},
 	extraReducers: (builder) => {
 		authenticateUserBuilder(builder);
@@ -107,6 +132,10 @@ const interfaceSlice = createSlice({
 		createAccountBuilder(builder);
 		updateAccountBuilder(builder);
 		updatePasswordBuilder(builder);
+		searchBuilder(builder);
+		trendingBuilder(builder);
+		deleteAccountBuilder(builder);
+		dataReportBuilder(builder);
 	},
 });
 
@@ -121,8 +150,13 @@ export const {
 	updateLoginForm,
 	updateSignupForm,
 	updateLastInteraction,
+	setShowBoxWidget,
+	setLastClickedType,
+	setSearchQuery,
+	setShowTrending,
 } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;
 
 export const logoutMiddlewareFunction = getLogoutMiddleware(dequeuePopup);
+export const deleteAccountMiddlewareFunction = getDeleteAccountMiddleware(dequeuePopup);
