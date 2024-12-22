@@ -7,6 +7,8 @@ function SearchBarView(props) {
       props.onSearch(event.target.value, 0);
     }
     function onSearchACB(event) {
+        // NOTE: This will break if ButtonWidget is updated, if that ever happens it's time to come up
+        // with a better solution here...
         const inputElement = event.target.parentNode.parentNode.parentNode.querySelector('input[name="searchBar"]');
         props.onSearch(inputElement?.value || '', 0);
     }
