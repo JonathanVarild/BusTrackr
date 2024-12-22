@@ -7,6 +7,7 @@ import { updateAccountInitialState, updateAccountBuilder } from "./updateAccount
 import { updatePasswordInitialState, updatePasswordBuilder } from "./updatePassword";
 import { searchInitialState, searchBuilder } from "./search";
 import { trendingBuilder, trendingInitalState } from "./trending";
+import { deleteAccountBuilder, deleteAccountInitialState, getDeleteAccountMiddleware } from "./deleteAccount";
 
 const interfaceSlice = createSlice({
 	name: "interface",
@@ -49,6 +50,7 @@ const interfaceSlice = createSlice({
 		...updatePasswordInitialState,
 		...searchInitialState,
 		...trendingInitalState,
+		...deleteAccountInitialState
 	},
 	reducers: {
 		toggleNavigation: (state) => {
@@ -130,6 +132,7 @@ const interfaceSlice = createSlice({
 		updatePasswordBuilder(builder);
 		searchBuilder(builder);
 		trendingBuilder(builder);
+		deleteAccountBuilder(builder)
 	},
 });
 
@@ -153,3 +156,5 @@ export const {
 export default interfaceSlice.reducer;
 
 export const logoutMiddlewareFunction = getLogoutMiddleware(dequeuePopup);
+export const deleteAccountMiddlewareFunction = getDeleteAccountMiddleware(dequeuePopup);
+

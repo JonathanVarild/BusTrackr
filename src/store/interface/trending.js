@@ -15,7 +15,7 @@ export const trendingInitalState = {
 export const fetchTrendingBuses = createAsyncThunk("interface/trendingBuses", async (_, { getState, abort, requestId }) => {
 	const state = getState().interface;
 
-	if (state.trendingBuses.requestId !== requestId) return;
+	if (state.trendingBuses.requestId !== requestId) return abort("Request already in progress.");
 
 	return await fetch(apiUrl + "/api/trending_buses", {
 		method: "POST",
