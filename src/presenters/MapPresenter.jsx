@@ -32,6 +32,7 @@ import { queuePopup, updateLastInteraction, setShowBoxWidget, setLastClickedType
 import { fetchSearchResult } from "../store/interface/search";
 import { fetchTrendingBuses } from "../store/interface/trending";
 import AttributionBarView from "../views/AttributionBarView";
+import { fetchRandomBus } from "../store/interface/shuffleBus";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
@@ -58,6 +59,8 @@ function Map(props) {
 	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
 	const lastClickedType = useSelector((state) => state.interface.lastClickedType);
 	const favorites = useSelector((state) => state.interface.favorites.list);
+	const shuffleBusStatus = useSelector((state) => state.interface.shuffleBus.status);
+	const currentShuffleBus = useSelector((state) => state.interface.shuffleBus.currentBus);
 	const userData = useSelector((state) => state.interface.authenticate.userInfo)
 
 	const dispatch = useDispatch();
@@ -87,6 +90,23 @@ function Map(props) {
 
 	const extent = boundingExtent([fromLonLat([16.08748, 59.90015]), fromLonLat([19.4616, 58.60894])]);
 
+	useEffect(() => {
+		if (currentShuffleBus !== null && currentShuffleBus !== true) {
+			const coords = fromLonLat([currentShuffleBus.location.lon, currentShuffleBus.location.lat]);
+			const map = mapRef.current?.ol;
+			if (map) {
+				const mapView = map.getView();
+				if (zoom < 13) {
+					mapView.animate({ zoom: 15, center: coords });
+				} else {
+					const currentCoords = mapRef.current?.ol.getView().getCenter();
+					mapView.animate({ zoom: 13, center: currentCoords }, { zoom: 13, center: coords }, { zoom: 15, center: coords });
+				}
+				setVehicleClickedACB(currentShuffleBus);
+			}
+		}
+	}, [currentShuffleBus]);
+
 	return (
 		<>
 			<RMapView
@@ -115,8 +135,10 @@ function Map(props) {
 				enableUserLocation={enableUserLocationACB}
 				openFavorites={openFavoritesACB}
 				openTrending={openTrendingACB}
+				shuffleBus={shuffleBusACB}
 				invalidLocation={invalidLocation}
 				awaitingLocation={awaitingLocation}
+				awaitingShuffle={shuffleBusStatus === "loading"}
 			/>
 			<AttributionBarView />
 		</>
@@ -204,6 +226,10 @@ function Map(props) {
 		dispatch(setShowTrending(true));
 		dispatch(setSelectedLiveVehicleId(null));
 		dispatch(setLastClickedType(null));
+	}
+
+	function shuffleBusACB() {
+		dispatch(fetchRandomBus());
 	}
 
 	function closeBoxWidget() {
