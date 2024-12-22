@@ -1,4 +1,4 @@
-import styles from "../css/About.module.css";
+import styles from "../css/InfoPages.module.css";
 
 function AboutView() {
 	return (
