@@ -180,9 +180,9 @@ function Map(props) {
 	}
 
 	function openFavoritesACB() {
-		//dispatch(fetchTrendingBuses());
 		dispatch(setShowTrending(false));
 		dispatch(setShowFavorites(true));
+		dispatch(fetchFavorites());
 		dispatch(setSelectedLiveVehicleId(null));
 		dispatch(setLastClickedType(null));
 	}

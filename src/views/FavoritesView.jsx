@@ -19,37 +19,35 @@ function FavoritesView(props) {
 			<div id={styles.contentWrapper}>
 				<div id={styles.infoHeader}>Click on a bus to show all such buses on the map.</div>
 				<div id={styles.busGrid}>
-					{[
-						{ line: "474", destination: "Hemmesta", routeID: 1 },
-						{ line: "111", destination: "Någonstans", routeID: 2 },
-						{ line: "111", destination: "dsfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdffsd", routeID: 3 },
-						{ line: "474", destination: "Hemmesta asdasd asdasd asdasda asdas dasdasd asdasda sd", routeID: 4 },
-						{ line: "474", destination: "Hemmesta", routeID: 5 },
-					].map(renderFavoriteCB)}
+					{Object.entries(props.favorites).sort((a, b) => ('' + a[1].line).localeCompare(b[1].line)).map(renderFavoriteCB)}
 				</div>
 			</div>
 		);
 	}
 
-	function renderFavoriteCB(bus) {
+	function renderFavoriteCB([route_id, data]) {
 		const classNames = [styles.busNumber];
 
-		if (isBlueBus(bus.line)) {
+		if (isBlueBus(data.line)) {
 			classNames.push(styles.blueBus);
 		}
 
 		function onUnfavoriteACB() {
-			props.onUnfavorite(bus.routeID);
+			props.onUnfavorite(route_id);
+		}
+
+		function showOnlyACB() {
+			props.showOnly(route_id);
 		}
 
 		return (
-			<div key={bus.routeID} className={styles.busItem}>
+			<div key={route_id} className={styles.busItem}>
 				<button onClick={onUnfavoriteACB}>
 					<IconHeartFilled stroke={2} />
 				</button>
-				<button className={classNames.join(" ")}>
-					{bus.line}
-					<div className={styles.destination}>{bus.destination}</div>
+				<button className={classNames.join(" ")} onClick={showOnlyACB}>
+					<span className={styles.lineNumber}>{data.line}</span> 
+					<div className={styles.destination}>{data.destination}</div>
 				</button>
 			</div>
 		);
