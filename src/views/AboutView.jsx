@@ -1,10 +1,14 @@
 import styles from "../css/InfoPages.module.css";
+import backgroundJPG from "../media/background.jpg"
+
 
 function AboutView() {
 	return (
+		<>
+		<img id={styles.backgroundImage} src={backgroundJPG} alt="Background Image" />
 		<section>
 			<div id={styles.body}>
-				<div id={styles.inner}>
+				<div id={styles.inner} className={`blurred-background rounded-corners drop-shadow`}>
 					<h1>About The Project</h1>
 					<p className={styles.bottomMargin}>
 						BusTrackr is app created by Jonathan Värild, Lukas Nordström and Samuel Brodin as the project part of the course DH2642 Interaction Programming and the
@@ -20,7 +24,7 @@ function AboutView() {
 					</p>
 					<p>
 						Check out the backend{" "}
-						<a href="https://github.com/JonathanVarild/BusTrackr" target="_blank">
+						<a href="https://github.com/Vuroz/BusTrackr-Server" target="_blank">
 							here.
 						</a>{" "}
 					</p>
@@ -54,6 +58,7 @@ function AboutView() {
 				</div>
 			</div>
 		</section>
+		</>
 	);
 }
 

@@ -1,6 +1,17 @@
+#backgroundImage {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+	z-index: -1;
+}
+
 #inner {
 	padding: var(--element-margin);
 	width: calc(60% - 2 * var(--element-margin));
+
+	color: var(--smooth-black);
 }
 
 #body {

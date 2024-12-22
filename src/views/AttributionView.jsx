@@ -1,10 +1,13 @@
 import styles from "../css/InfoPages.module.css";
+import backgroundJPG from "../media/background.jpg"
 
 function AttributionView() {
 	return (
+		<>
+		<img id={styles.backgroundImage} src={backgroundJPG} alt="Background Image" /><img id={styles.backgroundImage} src={backgroundJPG} alt="Background Image" />
 		<section>
 			<div id={styles.body}>
-				<div id={styles.inner} className="drop-shadow rounded-corners">
+				<div id={styles.inner} className="blurred-background drop-shadow rounded-corners">
 					<h1>Attribution</h1>
 					<p>This project was made possible thanks to the contributions of the following tools, libraries, and individuals.</p>
 					<h2>Tools and Libraries</h2>
@@ -102,6 +105,7 @@ function AttributionView() {
 				</div>
 			</div>
 		</section>
+		</>
 	);
 }
 
