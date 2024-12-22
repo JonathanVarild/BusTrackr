@@ -4,7 +4,7 @@ import styles from "../css/Favorites.module.css";
 import { IconHeartFilled } from "@tabler/icons-react";
 
 function FavoritesView(props) {
-	return <BoxWidgetView onCloseClick={onCloseClickACB} dataStatus={"idle"} renderTitleElementCB={renderTitleCB} renderContentElementCB={renderContenCB} />;
+	return <BoxWidgetView onCloseClick={onCloseClickACB} dataStatus={props.status} renderTitleElementCB={renderTitleCB} renderContentElementCB={renderContenCB} />;
 
 	function renderTitleCB() {
 		return <h3 className={styles.headerTitle}>Favorite Buses</h3>;

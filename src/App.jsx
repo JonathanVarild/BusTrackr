@@ -14,10 +14,9 @@ import PopupBox from "./presenters/PopupBoxPresenter";
 import AuthPopup from "./presenters/AuthPopupPresenter";
 import DataReport from "./presenters/DataReportPresenter";
 import LoadingSpinnerView from "./views/LoadingSpinnerView";
-import Trending from "./presenters/TrendingPresenter";
+import BoxWidget from "./presenters/BoxWidgetPresenter";
 
 import "./css/global.css";
-import Favorites from "./presenters/FavoritesPresenter";
 
 function App() {
 	const reauthStatus = useSelector((state) => state.interface.reauthenticate.status);
@@ -45,8 +44,7 @@ function App() {
 			<AccountSettings />
 			<AuthPopup />
 			<PopupBox />
-			<Trending />
-			<Favorites />
+			<BoxWidget />
 			{reauthStatus === "loading" && <LoadingSpinnerView />}
 		</div>
 	);

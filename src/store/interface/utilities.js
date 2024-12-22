@@ -6,6 +6,13 @@ export async function fetchResolvedCB(resp) {
 	return resp.json();
 }
 
+export const lastClickedTypes = {
+	VEHICLE: "vehicle",
+	SEARCH: "search",
+	TRENDING: "trending",
+	FAVORITES: "favorites"
+}
+
 export function parseStringTime(stringTime) {
 	return new Date(stringTime + "Z").toLocaleString("sv-SE").replace(",", "");
 }
