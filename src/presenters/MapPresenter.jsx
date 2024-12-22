@@ -31,6 +31,7 @@ import { fetchFavorites, addFavorite, removeFavorite } from "../store/interface/
 import { queuePopup, updateLastInteraction, setShowBoxWidget, setLastClickedType, setSearchQuery, setShowTrending, setShowFavorites } from "../store/interface";
 import { fetchSearchResult } from "../store/interface/search";
 import { fetchTrendingBuses } from "../store/interface/trending";
+import AttributionBarView from "../views/AttributionBarView";
 
 const center = fromLonLat([18.06478765050284, 59.3262518657495]);
 
@@ -116,6 +117,7 @@ function Map(props) {
 				invalidLocation={invalidLocation}
 				awaitingLocation={awaitingLocation}
 			/>
+			<AttributionBarView />
 		</>
 	);
 
@@ -155,9 +157,9 @@ function Map(props) {
 	function favoriteClickedACB() {
 		const route_id = journeyDetails.route_id;
 		if (favorites && route_id in favorites) {
-			dispatch(removeFavorite({route_id}));
+			dispatch(removeFavorite({ route_id }));
 		} else {
-			dispatch(addFavorite({route_id}));
+			dispatch(addFavorite({ route_id }));
 		}
 		dispatch(updateLastInteraction());
 	}
@@ -173,7 +175,7 @@ function Map(props) {
 		dispatch(setLastClickedType(lastClickedTypes.SEARCH));
 		dispatch(setShowBoxWidget(true));
 		dispatch(setSearchQuery(query));
-        if (query.length < 3) return;
+		if (query.length < 3) return;
 		dispatch(fetchSearchResult({ query, page }));
 		dispatch(setShowTrending(false));
 		dispatch(setShowFavorites(false));
@@ -189,7 +191,7 @@ function Map(props) {
 
 	function openTrendingACB() {
 		dispatch(fetchTrendingBuses());
-		dispatch(setLastClickedType(lastClickedTypes.TRENDING))
+		dispatch(setLastClickedType(lastClickedTypes.TRENDING));
 		dispatch(setShowTrending(true));
 		dispatch(setSelectedLiveVehicleId(null));
 		dispatch(setLastClickedType(null));

@@ -14,3 +14,7 @@
       margin: var(--element-margin);
     }
 }
+
+#body li li {
+    margin-bottom: 0;
+}
