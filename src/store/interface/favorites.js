@@ -111,6 +111,8 @@ export function favoritesBuilder(builder) {
 			if (state.favorites.requestIdRemove === action.meta.requestId) {
 				state.favorites.statusRemove = "idle";
 				state.favorites.requestIdRemove = null;
+
+                state.favorites.list = action.payload.favorites;
 			}
 		})
 		.addCase(removeFavorite.rejected, (state, action) => {

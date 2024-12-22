@@ -40,7 +40,6 @@ export function searchBuilder(builder) {
 				state.search.requestId = null;
 
 				state.search.results = action.payload;
-				console.log(action.payload);
 			}
 		})
 		.addCase(fetchSearchResult.rejected, (state, action) => {
