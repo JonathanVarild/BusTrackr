@@ -26,7 +26,7 @@ import { fetchStops } from "../store/mapData/fetchStops";
 import { fetchLiveVehicles } from "../store/mapData/liveVehicles";
 import { fetchJourneyDetails } from "../store/mapData/journeyDetails";
 import { fetchFavorites } from "../store/interface/favorites";
-import { queuePopup, updateLastInteraction, setShowBoxWidget, setLastClickedType, setSearchQuery, setShowTrending, setShowFavorites } from "../store/interface";
+import { queuePopup, updateLastInteraction, setShowBoxWidget, setLastClickedType, setSearchQuery } from "../store/interface";
 import { fetchSearchResult } from "../store/interface/search";
 import { fetchTrendingBuses } from "../store/interface/trending";
 import AttributionBarView from "../views/AttributionBarView";

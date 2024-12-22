@@ -32,7 +32,6 @@ export function searchBuilder(builder) {
 		.addCase(fetchSearchResult.pending, (state, action) => {
 			state.search.status = "loading";
 			state.search.requestId = action.meta.requestId;
-			state.showBusJourneyInfo = true;
 		})
 		.addCase(fetchSearchResult.fulfilled, (state, action) => {
 			if (state.search.requestId === action.meta.requestId) {

@@ -44,8 +44,6 @@ const interfaceSlice = createSlice({
 		searchQuery: null,
 		showBoxWidget: false,
 		lastClickedType: null,
-		showTrending: false,
-		showFavorites: false,
 
 		...authInitialState,
 		...logoutInitialState,
@@ -115,12 +113,6 @@ const interfaceSlice = createSlice({
 		},
 		setSearchQuery: (state, action) => {
 			state.searchQuery = action.payload;
-		},
-		setShowTrending: (state, action) => {
-			state.showTrending = action.payload;
-		},
-		setShowFavorites: (state, action) => {
-			state.showFavorites = action.payload;
 		},
 	},
 	extraReducers: (builder) => {
