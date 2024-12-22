@@ -1,14 +1,13 @@
 import styles from "../css/InfoPages.module.css";
 import backgroundJPG from "../media/background.jpg"
 
-
 function AboutView() {
 	return (
 		<>
 		<img id={styles.backgroundImage} src={backgroundJPG} alt="Background Image" />
 		<section>
 			<div id={styles.body}>
-				<div id={styles.inner} className={`blurred-background rounded-corners drop-shadow`}>
+				<div id={styles.inner} className="blurred-background rounded-corners drop-shadow">
 					<h1>About The Project</h1>
 					<p className={styles.bottomMargin}>
 						BusTrackr is app created by Jonathan Värild, Lukas Nordström and Samuel Brodin as the project part of the course DH2642 Interaction Programming and the
