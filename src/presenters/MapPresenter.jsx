@@ -58,6 +58,7 @@ function Map(props) {
 	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
 	const lastClickedType = useSelector((state) => state.interface.lastClickedType);
 	const favorites = useSelector((state) => state.interface.favorites.list);
+	const userData = useSelector((state) => state.interface.authenticate.userInfo)
 
 	const dispatch = useDispatch();
 
@@ -182,6 +183,14 @@ function Map(props) {
 	}
 
 	function openFavoritesACB() {
+		if (userData === null) {
+			dispatch(queuePopup({
+				title: "Please sign in",
+				message: "You need to be signed in to use favorites",
+				type: 0,
+			}));
+			return; 
+		}
 		dispatch(setShowTrending(false));
 		dispatch(setShowFavorites(true));
 		dispatch(fetchFavorites());

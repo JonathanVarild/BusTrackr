@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchResolvedCB } from "./utilities";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -27,7 +28,7 @@ export const fetchFavorites = createAsyncThunk("interface/fetchFavorites", async
 			"Content-type": "application/json; charset=UTF-8",
 		},
 		credentials: "include",
-	}).then((resp) => resp.json());
+	}).then(fetchResolvedCB);
 });
 
 export const addFavorite = createAsyncThunk("interface/addFavorite", async ({ route_id }, { getState }) => {
@@ -41,7 +42,7 @@ export const addFavorite = createAsyncThunk("interface/addFavorite", async ({ ro
 			"Content-type": "application/json; charset=UTF-8",
 		},
 		credentials: "include",
-	}).then((resp) => resp.json());
+	}).then(fetchResolvedCB);
 });
 
 
@@ -56,7 +57,7 @@ export const removeFavorite = createAsyncThunk("interface/removeFavorite", async
 			"Content-type": "application/json; charset=UTF-8",
 		},
 		credentials: "include",
-	}).then((resp) => resp.json());
+	}).then(fetchResolvedCB);
 });
 
 export function favoritesBuilder(builder) {
@@ -94,6 +95,14 @@ export function favoritesBuilder(builder) {
 		.addCase(addFavorite.rejected, (state, action) => {
 			state.favorites.statusAdd = "failed";
 			state.favorites.errorAdd = action.error.message;
+			
+			if (state.authenticate.userInfo === null) {
+				state.queuedPopups.push({
+					title: "Please sign in",
+					message: "You need to be signed in to use favorites",
+					type: 0,
+				});
+			}
 		});
 
     builder
@@ -112,5 +121,13 @@ export function favoritesBuilder(builder) {
 		.addCase(removeFavorite.rejected, (state, action) => {
 			state.favorites.statusRemove = "failed";
 			state.favorites.errorRemove = action.error.message;
+
+			if (state.authenticate.userInfo === null) {
+				state.queuedPopups.push({
+					title: "Please sign in",
+					message: "You need to be signed in to use favorites",
+					type: 0,
+				});
+			}
 		});
 }
