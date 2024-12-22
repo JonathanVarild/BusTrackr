@@ -4,8 +4,6 @@ import RMapView from "../views/RMapView";
 import MapControlsView from "../views/MapControlsView";
 import SearchBarView from "../views/SearchBarView";
 import MapShortcutsView from "../views/MapShortcutsView";
-import BusJourneyInfo from "../views/BusJourneyInfoView";
-import SearchResultsView from "../views/SearchResultsView";
 
 import { fromLonLat, toLonLat } from "ol/proj";
 import { boundingExtent } from "ol/extent";
@@ -27,7 +25,7 @@ import { fetchQuays } from "../store/mapData/fetchQuays";
 import { fetchStops } from "../store/mapData/fetchStops";
 import { fetchLiveVehicles } from "../store/mapData/liveVehicles";
 import { fetchJourneyDetails } from "../store/mapData/journeyDetails";
-import { fetchFavorites, addFavorite, removeFavorite } from "../store/interface/favorites";
+import { fetchFavorites } from "../store/interface/favorites";
 import { queuePopup, updateLastInteraction, setShowBoxWidget, setLastClickedType, setSearchQuery, setShowTrending, setShowFavorites } from "../store/interface";
 import { fetchSearchResult } from "../store/interface/search";
 import { fetchTrendingBuses } from "../store/interface/trending";
@@ -50,8 +48,6 @@ function Map(props) {
 	const invalidLocation = useSelector((state) => state.mapData.invalidLocation);
 	const awaitingLocation = useSelector((state) => state.mapData.awaitingLocation);
 	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
-	const lastClickedType = useSelector((state) => state.interface.lastClickedType);
-	const favorites = useSelector((state) => state.interface.favorites.list);
 	const shuffleBusStatus = useSelector((state) => state.interface.shuffleBus.status);
 	const currentShuffleBus = useSelector((state) => state.interface.shuffleBus.currentBus);
 	const userData = useSelector((state) => state.interface.authenticate.userInfo)
@@ -76,7 +72,7 @@ function Map(props) {
 			} else {
 				dispatch(fetchLiveVehicles());
 			}
-		}, 20000);
+		}, 2000);
 
 		return () => clearInterval(intervalId); // Cleanup on unmount
 	}, [lastInteraction, dispatch]);
@@ -161,17 +157,12 @@ function Map(props) {
 
 	function openTrendingACB() {
 		dispatch(setLastClickedType(lastClickedTypes.TRENDING));
-		dispatch(setShowTrending(true));
-		dispatch(setSelectedLiveVehicleId(null));
-		dispatch(setLastClickedType(null));
+		dispatch(setShowBoxWidget(true));
+		dispatch(fetchTrendingBuses());
 	}
 
 	function shuffleBusACB() {
 		dispatch(fetchRandomBus());
-	}
-
-	function closeBoxWidget() {
-		dispatch(setShowBoxWidget(false));
 	}
 
 	function setStationHoveredACB(payload) {
