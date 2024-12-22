@@ -68,6 +68,10 @@
     gap: calc(0.5 * var(--element-margin));
 }
 
+.navItem > a:hover, .navItem > button:hover {
+    text-decoration: none;
+}
+
 .iconContainer {
     opacity: 40%;
     color: var(--smooth-black);

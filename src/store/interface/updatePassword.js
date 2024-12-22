@@ -15,7 +15,7 @@ export const updateUserPassword = createAsyncThunk("interface/updateUserPassword
 	const state = getState().interface;
 	const changedUserInfo = state.changedUserInfo;
 
-	if (state.updatePassword.requestId !== requestId) return abort("Request already in progress.");
+	if (state.updatePassword.requestId !== requestId) return;
 
 	return await fetch(apiUrl + "/api/update-password", {
 		method: "POST",

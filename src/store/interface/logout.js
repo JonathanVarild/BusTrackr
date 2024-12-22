@@ -14,7 +14,7 @@ export const logoutInitialState = {
 export const logoutUser = createAsyncThunk("interface/logoutUser", async (_, { getState, abort, requestId }) => {
 	const state = getState().interface;
 
-	if (state.logout.requestId !== requestId) return abort("Request already in progress.");
+	if (state.logout.requestId !== requestId) return;
 
 	return await fetch(apiUrl + "/api/logout", {
 		method: "POST",

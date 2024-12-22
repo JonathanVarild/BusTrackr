@@ -31,12 +31,12 @@
 	font-optical-sizing: auto;
 	font-weight: 800;
 	font-style: normal;
-	font-variation-settings:
-		"ROND" 70;
+	font-variation-settings: "ROND" 70;
 
 	background-color: var(--smooth-black);
-	color: #FF9400;
+	color: #ff9400;
 	overflow: hidden;
+	font-size: 1.5rem;
 }
 
 .lineSpan {
@@ -125,10 +125,11 @@
 
 @media screen and (min-width: 768px), screen and (orientation: landscape) {
 	.busInfoConatainer {
-		grid-template-columns: 1fr 1fr 1fr;
-		grid-template-rows: 1fr 1fr;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 1fr 1fr;
 		grid-template-areas:
-			"area-from area-capacity area-speed"
-			"area-to   area-operator area-heading";
+			"area-from area-speed"
+			"area-to area-heading"
+			"area-operator area-capacity";
 	}
 }

@@ -15,7 +15,7 @@ export const createUserAccount = createAsyncThunk("interface/createUserAccount",
 	const state = getState().interface;
 	const signupForm = state.authPopupForm.signup;
 
-	if (state.createUser.requestId !== requestId) return abort("Request already in progress.");
+	if (state.createUser.requestId !== requestId) return;
 
 	return await fetch(apiUrl + "/api/register", {
 		method: "POST",

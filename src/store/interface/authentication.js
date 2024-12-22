@@ -20,7 +20,7 @@ export const authenticateUser = createAsyncThunk("interface/authenticateUser", a
 	const state = getState().interface;
 	const loginForm = state.authPopupForm.login;
 
-	if (state.authenticate.requestId !== requestId) return abort("Request already in progress.");
+	if (state.authenticate.requestId !== requestId) return;
 
 	return await fetch(apiUrl + "/api/login", {
 		method: "POST",
