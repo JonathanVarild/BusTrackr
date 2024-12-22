@@ -19,7 +19,7 @@ function FavoritesView(props) {
 			<div id={styles.contentWrapper}>
 				<div id={styles.infoHeader}>Click on a bus to show all such buses on the map.</div>
 				<div id={styles.busGrid}>
-					{Object.entries(props.favorites).sort((a, b) => ('' + a[1].line).localeCompare(b[1].line)).map(renderFavoriteCB)}
+					{props.favorites && Object.entries(props.favorites).sort((a, b) => ('' + a[1].line).localeCompare(b[1].line)).map(renderFavoriteCB)}
 				</div>
 			</div>
 		);

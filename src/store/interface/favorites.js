@@ -18,50 +18,44 @@ export const favoritesInitialState = {
 };
 
 export const fetchFavorites = createAsyncThunk("interface/fetchFavorites", async (_, { getState }) => {
-	const user_id = getState().interface.authenticate.userInfo.id;
-
 	return await fetch(apiUrl + "/api/favorites", {
 		method: "POST",
 		body: JSON.stringify({
             type: 'list',
-            user_id
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
 		},
+		credentials: "include",
 	}).then((resp) => resp.json());
 });
 
 export const addFavorite = createAsyncThunk("interface/addFavorite", async ({ route_id }, { getState }) => {
-	const user_id = getState().interface.authenticate.userInfo.id;
-
 	return await fetch(apiUrl + "/api/favorites", {
 		method: "POST",
 		body: JSON.stringify({
             type: 'add',
-            user_id,
             route_id
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
 		},
+		credentials: "include",
 	}).then((resp) => resp.json());
 });
 
 
 export const removeFavorite = createAsyncThunk("interface/removeFavorite", async ({ route_id }, { getState }) => {
-	const user_id = getState().interface.authenticate.userInfo.id;
-
 	return await fetch(apiUrl + "/api/favorites", {
 		method: "POST",
 		body: JSON.stringify({
             type: 'remove',
-            user_id,
             route_id
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
 		},
+		credentials: "include",
 	}).then((resp) => resp.json());
 });
 

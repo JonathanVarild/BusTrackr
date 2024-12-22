@@ -24,6 +24,8 @@ function BusJourneyInfo(props) {
     function isFavoriteRoute() {
         if (props.journeyDetails.route_id === undefined)
             return;
+        if (props.favoriteRoutes === undefined)
+            return;
         return props.journeyDetails.route_id in props.favoriteRoutes;
     }
 
