@@ -38,7 +38,7 @@ function BoxWidgetView(props) {
                         ) : (
                             <div></div>
                         )}
-                        {props.dataStatus !== "loading" && <div id={styles.titleContainer}>{props.renderTitleElementCB()}</div>}
+                        {props.dataStatus != "loading" && <div id={styles.titleContainer}>{props.renderTitleElementCB()}</div>}
                         <div id={styles.closeContainer} className={`${styles.iconContainer}`}>
                             <button type='button' className={styles.iconButton} onClick={onCloseClickACB}>
                                 <div className={styles.iconInnerContainer}>

@@ -1,8 +1,8 @@
-import Trending from "../views/TrendingView";
+import TrendingView from "../views/TrendingView";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowTrending } from "../store/interface";
 
-function TrendingPresenter(props) {
+function Trending(props) {
 	const dispatch = useDispatch();
 	const showTrending = useSelector((state) => state.interface.showTrending);
 	const trendingData = useSelector((state) => state.interface.trendingBuses);
@@ -11,11 +11,11 @@ function TrendingPresenter(props) {
 		return <></>;
 	}
 
-	return <Trending onCloseClick={onCloseClickACB} trendingData={trendingData} />;
+	return <TrendingView onCloseClick={onCloseClickACB} trendingData={trendingData} />;
 
 	function onCloseClickACB() {
 		dispatch(setShowTrending(false));
 	}
 }
 
-export default TrendingPresenter;
+export default Trending;

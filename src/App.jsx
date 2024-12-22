@@ -17,6 +17,7 @@ import LoadingSpinnerView from "./views/LoadingSpinnerView";
 import Trending from "./presenters/TrendingPresenter";
 
 import "./css/global.css";
+import Favorites from "./presenters/FavoritesPresenter";
 
 function App() {
 	const reauthStatus = useSelector((state) => state.interface.reauthenticate.status);
@@ -45,6 +46,7 @@ function App() {
 			<AuthPopup />
 			<PopupBox />
 			<Trending />
+			<Favorites />
 			{reauthStatus === "loading" && <LoadingSpinnerView />}
 		</div>
 	);

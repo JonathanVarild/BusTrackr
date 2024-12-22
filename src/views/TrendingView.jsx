@@ -2,7 +2,7 @@ import BoxWidgetView from "./BoxWidgetView";
 import { isBlueBus } from "../store/mapData/utilities";
 import styles from "../css/Trending.module.css";
 
-function Trending(props) {
+function TrendingView(props) {
 	return <BoxWidgetView onCloseClick={onCloseClickACB} dataStatus={props.trendingData.status} renderTitleElementCB={renderTitleCB} renderContentElementCB={renderContenCB} />;
 
 	function renderTitleCB() {
@@ -39,4 +39,4 @@ function Trending(props) {
 	}
 }
 
-export default Trending;
+export default TrendingView;

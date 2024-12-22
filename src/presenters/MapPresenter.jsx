@@ -28,7 +28,7 @@ import { fetchStops } from "../store/mapData/fetchStops";
 import { fetchLiveVehicles } from "../store/mapData/liveVehicles";
 import { fetchJourneyDetails } from "../store/mapData/journeyDetails";
 import { fetchFavorites, addFavorite, removeFavorite } from "../store/interface/favorites";
-import { queuePopup, updateLastInteraction, setShowBoxWidget, setLastClickedType, setSearchQuery, setShowTrending } from "../store/interface";
+import { queuePopup, updateLastInteraction, setShowBoxWidget, setLastClickedType, setSearchQuery, setShowTrending, setShowFavorites } from "../store/interface";
 import { fetchSearchResult } from "../store/interface/search";
 import { fetchTrendingBuses } from "../store/interface/trending";
 
@@ -175,9 +175,16 @@ function Map(props) {
         if (query.length < 3) return;
 		dispatch(fetchSearchResult({ query, page }));
 		dispatch(setShowTrending(false));
+		dispatch(setShowFavorites(false));
 	}
 
-	function openFavoritesACB() {}
+	function openFavoritesACB() {
+		//dispatch(fetchTrendingBuses());
+		dispatch(setShowTrending(false));
+		dispatch(setShowFavorites(true));
+		dispatch(setSelectedLiveVehicleId(null));
+		dispatch(setLastClickedType(null));
+	}
 
 	function openTrendingACB() {
 		dispatch(fetchTrendingBuses());
@@ -209,6 +216,7 @@ function Map(props) {
 		dispatch(fetchJourneyDetails(payload));
 		dispatch(fetchFavorites());
 		dispatch(setShowTrending(false));
+		dispatch(setShowFavorites(false));
 	}
 
 	function mapMoveACB() {

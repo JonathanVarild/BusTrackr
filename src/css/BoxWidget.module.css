@@ -35,11 +35,13 @@
         "content-title"
         "content-content";
     transition: height 0.1s cubic-bezier(0.79, 0.14, 0.15, 0.86);
+    overflow: hidden;
 }
 
 #contentInner {
     grid-area: content-content;
     height: 100%;
+    overflow: hidden;
 }
 
 #widgetHeader {

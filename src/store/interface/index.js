@@ -44,6 +44,7 @@ const interfaceSlice = createSlice({
 		showBoxWidget: false,
 		lastClickedType: null,
 		showTrending: false,
+		showFavorites: false,
 
 		...authInitialState,
 		...logoutInitialState,
@@ -126,6 +127,9 @@ const interfaceSlice = createSlice({
 		setShowTrending: (state, action) => {
 			state.showTrending = action.payload;
 		},
+		setShowFavorites: (state, action) => {
+			state.showFavorites = action.payload;
+		},
 	},
 	extraReducers: (builder) => {
 		authenticateUserBuilder(builder);
@@ -157,6 +161,7 @@ export const {
 	setLastClickedType,
 	setSearchQuery,
 	setShowTrending,
+	setShowFavorites,
 } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;
