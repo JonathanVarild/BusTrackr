@@ -10,7 +10,12 @@ function Trending(props) {
 	}
 
 	function renderContenCB() {
-		return <div id={styles.trendingGrid}>{props.buses.map(renderBusCB)}</div>;
+
+        if (props.trendingData.error) {
+            return <div>There seems like an error occured. Please try again..</div>
+        }
+
+		return <div id={styles.trendingGrid}>{props.trendingData.buses.map(renderBusCB)}</div>;
 	}
 
 	function renderBusCB(bus, index) {

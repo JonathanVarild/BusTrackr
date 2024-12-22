@@ -11,7 +11,7 @@ function TrendingPresenter(props) {
 		return <></>;
 	}
 
-	return <Trending onCloseClick={onCloseClickACB} trendingData={trendingData} buses={trendingData.buses} />;
+	return <Trending onCloseClick={onCloseClickACB} trendingData={trendingData} />;
 
 	function onCloseClickACB() {
 		dispatch(setShowTrending(false));
