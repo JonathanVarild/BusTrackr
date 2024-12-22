@@ -29,7 +29,7 @@
     padding: var(--element-margin);
 }
 
-#logo img {
+#logo img, #logo a {
     height: 100%;
 }
 
