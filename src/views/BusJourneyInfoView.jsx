@@ -21,6 +21,13 @@ function BusJourneyInfo(props) {
         );
     }
 
+    function isFavoriteRoute() {
+        if (props.journeyDetails.route_id === undefined)
+            return;
+        return props.journeyDetails.route_id in props.favoriteRoutes;
+    }
+
+
     function renderBusJourneyInfoCB() {
         return (
             <div id={styles.infoContainer}>
@@ -105,6 +112,7 @@ function BusJourneyInfo(props) {
             dataStatus={props.journeyDetailsStatus}
             renderTitleElementCB={renderTitleCB}
             renderContentElementCB={renderBusJourneyInfoCB}
+            isFavorite={isFavoriteRoute}
         />
     );
 }

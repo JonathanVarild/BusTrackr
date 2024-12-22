@@ -134,6 +134,7 @@ function Map(props) {
 						liveVehicles={liveVehicles}
 						onCloseClick={closeBoxWidget}
 						onFavoriteClick={favoriteClickedACB} /* This should be the favorite function in the future */
+						favoriteRoutes={favorites}
 					/>
 				);
 			case lastClickedTypes.SEARCH:
