@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { reauthenticateUser } from "./store/interface/authentication";
+import { updateLastInteraction } from "./store/interface";
 
 import Navbar from "./presenters/NavbarPresenter";
 import Map from "./presenters/MapPresenter";
@@ -25,8 +26,12 @@ function App() {
 		dispatch(reauthenticateUser());
 	}, [dispatch]);
 
+	function updateLastInteractionACB() {
+		dispatch(updateLastInteraction());
+	}
+
 	return (
-		<>
+		<div id="contentWrapper" onClick={updateLastInteractionACB} onScrollCapture={updateLastInteractionACB}>
 			<Navbar />
 			<BrowserRouter>
 				<Routes>
@@ -41,7 +46,7 @@ function App() {
 			<PopupBox />
 			<Trending />
 			{reauthStatus === "loading" && <LoadingSpinnerView />}
-		</>
+		</div>
 	);
 }
 
