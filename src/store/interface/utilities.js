@@ -1,5 +1,5 @@
 export async function fetchResolvedCB(resp) {
-	if (resp.status !== 200) {
+	if (resp.status < 200 || resp.status > 200) {
 		const error = await resp.json();
 		return Promise.reject(new Error(error.message));
 	}

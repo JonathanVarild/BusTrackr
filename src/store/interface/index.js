@@ -10,6 +10,7 @@ import { trendingBuilder, trendingInitalState } from "./trending";
 import { deleteAccountBuilder, deleteAccountInitialState, getDeleteAccountMiddleware } from "./deleteAccount";
 import { dataReportBuilder, dataReportInitalState } from "./dataReport";
 import { favoritesBuilder, favoritesInitialState } from "./favorites";
+import { shuffleBusBuilder, shuffleBusInitialState } from "./shuffleBus";
 
 const interfaceSlice = createSlice({
 	name: "interface",
@@ -56,6 +57,7 @@ const interfaceSlice = createSlice({
 		...deleteAccountInitialState,
 		...dataReportInitalState,
 		...favoritesInitialState,
+		...shuffleBusInitialState,
 	},
 	reducers: {
 		toggleNavigation: (state) => {
@@ -75,20 +77,10 @@ const interfaceSlice = createSlice({
 		},
 		dequeuePopup: (state, action) => {
 			switch (action.payload) {
-				case "DeleteAccount":
-					console.log("Deleted account.");
-					break;
-				case "AbortDeleteAccount":
-					console.log("Account not deleted.");
-					break;
-				case "ClosedWelcomeMessage":
-					console.log("Welcome message was closed.");
-					break;
 				case "RevertSettingChanges":
 					state.changedUserInfo = null;
 					break;
 				case "NoLongerInactive":
-					console.log("User is active again!");
 					state.lastInteraction = Date.now();
 					break;
 			}
@@ -143,6 +135,7 @@ const interfaceSlice = createSlice({
 		deleteAccountBuilder(builder);
 		dataReportBuilder(builder);
 		favoritesBuilder(builder);
+		shuffleBusBuilder(builder);
 	},
 });
 
