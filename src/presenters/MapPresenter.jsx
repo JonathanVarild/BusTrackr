@@ -27,6 +27,7 @@ import { fetchQuays } from "../store/mapData/fetchQuays";
 import { fetchStops } from "../store/mapData/fetchStops";
 import { fetchLiveVehicles } from "../store/mapData/liveVehicles";
 import { fetchJourneyDetails } from "../store/mapData/journeyDetails";
+import { fetchFavorites, addFavorite, removeFavorite } from "../store/interface/favorites";
 import { queuePopup, updateLastInteraction, setShowBoxWidget, setLastClickedType, setSearchQuery, setShowTrending } from "../store/interface";
 import { fetchSearchResult } from "../store/interface/search";
 import { fetchTrendingBuses } from "../store/interface/trending";
@@ -55,6 +56,8 @@ function Map(props) {
 	const awaitingLocation = useSelector((state) => state.mapData.awaitingLocation);
 	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
 	const lastClickedType = useSelector((state) => state.interface.lastClickedType);
+	const favorites = useSelector((state) => state.interface.favorites.list);
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -130,7 +133,7 @@ function Map(props) {
 						selectedLiveVehicleId={selectedLiveVehicleId}
 						liveVehicles={liveVehicles}
 						onCloseClick={closeBoxWidget}
-						onFavoriteClick={closeBoxWidget} /* This should be the favorite function in the future */
+						onFavoriteClick={favoriteClickedACB} /* This should be the favorite function in the future */
 					/>
 				);
 			case lastClickedTypes.SEARCH:
@@ -146,6 +149,16 @@ function Map(props) {
 			default:
 				return;
 		}
+	}
+
+	function favoriteClickedACB() {
+		const route_id = journeyDetails.route_id;
+		if (favorites && route_id in favorites) {
+			dispatch(removeFavorite({route_id}));
+		} else {
+			dispatch(addFavorite({route_id}));
+		}
+		dispatch(updateLastInteraction());
 	}
 
 	function performSearchRelativeACB(direction) {
@@ -168,6 +181,7 @@ function Map(props) {
 
 	function openTrendingACB() {
 		dispatch(fetchTrendingBuses());
+		dispatch(setLastClickedType(lastClickedTypes.TRENDING))
 		dispatch(setShowTrending(true));
 		dispatch(setSelectedLiveVehicleId(null));
 		dispatch(setLastClickedType(null));
@@ -193,6 +207,7 @@ function Map(props) {
 		const combined = payload["service_journey_id"] + payload["vehicle_id"];
 		dispatch(setSelectedLiveVehicleId(combined));
 		dispatch(fetchJourneyDetails(payload));
+		dispatch(fetchFavorites());
 		dispatch(setShowTrending(false));
 	}
 

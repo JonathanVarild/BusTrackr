@@ -9,6 +9,7 @@ import { searchInitialState, searchBuilder } from "./search";
 import { trendingBuilder, trendingInitalState } from "./trending";
 import { deleteAccountBuilder, deleteAccountInitialState, getDeleteAccountMiddleware } from "./deleteAccount";
 import { dataReportBuilder, dataReportInitalState } from "./dataReport";
+import { favoritesBuilder, favoritesInitialState } from "./favorites";
 
 const interfaceSlice = createSlice({
 	name: "interface",
@@ -53,6 +54,7 @@ const interfaceSlice = createSlice({
 		...trendingInitalState,
 		...deleteAccountInitialState,
 		...dataReportInitalState,
+		...favoritesInitialState,
 	},
 	reducers: {
 		toggleNavigation: (state) => {
@@ -136,6 +138,7 @@ const interfaceSlice = createSlice({
 		trendingBuilder(builder);
 		deleteAccountBuilder(builder);
 		dataReportBuilder(builder);
+		favoritesBuilder(builder);
 	},
 });
 
