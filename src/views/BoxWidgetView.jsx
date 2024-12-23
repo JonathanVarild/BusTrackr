@@ -27,7 +27,7 @@ function BoxWidgetView(props) {
             <div id={styles.container}>
                 <div className={`${styles.content} header-2-font blurred-background rounded-corners drop-shadow`}>
                     <div id={styles.widgetHeader}>
-                        {props.onFavoriteClick ? (
+                        {(props.showHeart && props.onFavoriteClick) ? (
                             <div id={styles.favoriteContainer} className={`${styles.iconContainer}`}>
                                 <button type='button' className={styles.iconButton} onClick={onFavoriteClickACB}>
                                     <div className={styles.iconInnerContainer}>

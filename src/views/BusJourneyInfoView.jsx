@@ -115,6 +115,7 @@ function BusJourneyInfo(props) {
             renderTitleElementCB={renderTitleCB}
             renderContentElementCB={renderBusJourneyInfoCB}
             isFavorite={isFavoriteRoute}
+            showHeart={(props.journeyDetails.line != null)}
         />
     );
 }
