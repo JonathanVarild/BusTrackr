@@ -11,13 +11,13 @@ export const searchInitialState = {
 	},
 };
 
-export const fetchSearchResult = createAsyncThunk("interface/fetchSearchResult", async ({ query, page }, { getState }) => {
+async function fetchSearchResultCB({ query, page }, { getState }) {
 	const mode = getState().interface.searchMode;
 
 	return await fetch(apiUrl + "/api/search", {
 		method: "POST",
 		body: JSON.stringify({
-			"type": mode,
+			type: mode,
 			query,
 			page,
 		}),
@@ -25,7 +25,9 @@ export const fetchSearchResult = createAsyncThunk("interface/fetchSearchResult",
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then((resp) => resp.json());
-});
+}
+
+export const fetchSearchResult = createAsyncThunk("interface/fetchSearchResult", fetchSearchResultCB);
 
 export function searchBuilder(builder) {
 	builder

@@ -14,7 +14,7 @@ export const journeyDetailsInitialState = {
 	},
 };
 
-export const fetchJourneyDetails = createAsyncThunk("mapData/fetchJourneyDetails", async ({ service_journey_id, vehicle_id }) => {
+async function fetchJourneyDetailsCB({ service_journey_id, vehicle_id }) {
 	return await fetch(apiUrl + "/api/journey_details", {
 		method: "POST",
 		body: JSON.stringify({
@@ -25,7 +25,9 @@ export const fetchJourneyDetails = createAsyncThunk("mapData/fetchJourneyDetails
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then((resp) => resp.json());
-});
+}
+
+export const fetchJourneyDetails = createAsyncThunk("mapData/fetchJourneyDetails", fetchJourneyDetailsCB);
 
 export function journeyDetailsBuilder(builder) {
 	builder

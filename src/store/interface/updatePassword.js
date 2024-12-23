@@ -11,7 +11,7 @@ export const updatePasswordInitialState = {
 	},
 };
 
-export const updateUserPassword = createAsyncThunk("interface/updateUserPassword", async (_, { getState, abort, requestId }) => {
+async function updateUserPasswordCB(_, { getState, abort, requestId }) {
 	const state = getState().interface;
 	const changedUserInfo = state.changedUserInfo;
 
@@ -27,7 +27,9 @@ export const updateUserPassword = createAsyncThunk("interface/updateUserPassword
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then(fetchResolvedCB);
-});
+}
+
+export const updateUserPassword = createAsyncThunk("interface/updateUserPassword", updateUserPasswordCB);
 
 export function updatePasswordBuilder(builder) {
 	builder

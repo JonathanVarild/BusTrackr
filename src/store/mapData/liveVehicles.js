@@ -12,7 +12,7 @@ export const liveVehiclesInitialState = {
 	},
 };
 
-export const fetchLiveVehicles = createAsyncThunk("mapData/fetchLiveVehicles", async (_, { getState }) => {
+async function fetchLiveVehiclesCB(_, { getState }) {
 	const screenBoundary = getState().mapData.screenBoundary;
 
 	return await fetch(apiUrl + "/api/live", {
@@ -27,7 +27,9 @@ export const fetchLiveVehicles = createAsyncThunk("mapData/fetchLiveVehicles", a
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then((resp) => resp.json());
-});
+}
+
+export const fetchLiveVehicles = createAsyncThunk("mapData/fetchLiveVehicles", fetchLiveVehiclesCB);
 
 export function liveVehiclesBuilder(builder) {
 	builder
@@ -40,16 +42,18 @@ export function liveVehiclesBuilder(builder) {
 				state.liveVehicles.status = "idle";
 				state.liveVehicles.requestId = null;
 
-				const newLiveVehicles = action.payload.list.filter((liveVehicle) => {
-					return state.showOnlyRouteId == null || state.showOnlyRouteId === liveVehicle.route_id;
-				}).map((liveVehicle) => {
-					const existingVehicle = state.liveVehicles.list[liveVehicle.service_journey_id + liveVehicle.vehicle_id];
-					return {
-						...liveVehicle,
-						location: createLocation(parseFloat(liveVehicle.location.lat), parseFloat(liveVehicle.location.lon)),
-						routeColor: existingVehicle?.routeColor ?? "unknown",
-					};
-				});
+				const newLiveVehicles = action.payload.list
+					.filter((liveVehicle) => {
+						return state.showOnlyRouteId == null || state.showOnlyRouteId === liveVehicle.route_id;
+					})
+					.map((liveVehicle) => {
+						const existingVehicle = state.liveVehicles.list[liveVehicle.service_journey_id + liveVehicle.vehicle_id];
+						return {
+							...liveVehicle,
+							location: createLocation(parseFloat(liveVehicle.location.lat), parseFloat(liveVehicle.location.lon)),
+							routeColor: existingVehicle?.routeColor ?? "unknown",
+						};
+					});
 
 				state.liveVehicles.list = Object.fromEntries(newLiveVehicles.map((liveVehicle) => [liveVehicle.service_journey_id + liveVehicle.vehicle_id, liveVehicle]));
 			}

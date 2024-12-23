@@ -11,7 +11,7 @@ export const logoutInitialState = {
 	},
 };
 
-export const logoutUser = createAsyncThunk("interface/logoutUser", async (_, { getState, abort, requestId }) => {
+async function logoutUserCB(_, { getState, abort, requestId }) {
 	const state = getState().interface;
 
 	if (state.logout.requestId !== requestId) return abort("Request already in progress.");
@@ -23,7 +23,9 @@ export const logoutUser = createAsyncThunk("interface/logoutUser", async (_, { g
 		},
 		credentials: "include",
 	}).then(fetchResolvedCB);
-});
+}
+
+export const logoutUser = createAsyncThunk("interface/logoutUser", logoutUserCB);
 
 export function logoutBuilder(builder) {
 	builder

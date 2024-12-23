@@ -12,7 +12,7 @@ export const shuffleBusInitialState = {
 	},
 };
 
-export const fetchRandomBus = createAsyncThunk("interface/shuffleBus", async (_, { getState, abort, requestId }) => {
+async function fetchRandomBusCB(_, { getState, abort, requestId }) {
 	const state = getState().interface;
 
 	if (state.shuffleBus.requestId !== requestId) return abort("Request already in progress.");
@@ -23,7 +23,9 @@ export const fetchRandomBus = createAsyncThunk("interface/shuffleBus", async (_,
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then(fetchResolvedCB);
-});
+}
+
+export const fetchRandomBus = createAsyncThunk("interface/shuffleBus", fetchRandomBusCB);
 
 export function shuffleBusBuilder(builder) {
 	builder
