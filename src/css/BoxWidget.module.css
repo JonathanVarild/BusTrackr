@@ -134,7 +134,7 @@ screen and (orientation: landscape) {
     }
 
     #widgetHeader {
-        grid-template-columns: var(--element-size) calc(40rem - 4 * var(--element-margin) - 2 * var(--element-size)) var(--element-size);
+        grid-template-columns: var(--element-size) calc((40rem - 2 * var(--element-margin)) - 2 * var(--element-size)) var(--element-size);
         max-width: unset;
     }
 
