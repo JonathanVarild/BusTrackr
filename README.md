@@ -22,7 +22,7 @@ BusTrackr is app created by [Jonathan Värild](mailto:varild@kth.se), [Lukas Nor
 - Ability to generate user data report.
 - User position and its accuracy shown on map.
 - Filter live data based on "liked" routes.
-- Backend API ([BusTrackr-Server](https://github.com/Vuroz/BusTrackr-Server), not part of grading 🥲😵)
+- Backend API ([BusTrackr-Server](https://github.com/Vuroz/BusTrackr-Server), not part of grading 🥲)
     - Endpoint for returning quays based on coordinate bounds.
     - Endpoint for returning stops based on coordinate bounds.
     - Endpoint for returning stop groups
@@ -30,11 +30,11 @@ BusTrackr is app created by [Jonathan Värild](mailto:varild@kth.se), [Lukas Nor
         - Based on a list of IDs.
     - Much more, see other repo.
 
-## Setup
+## 🧐 Setup
 *Disclaimer: The following setup is only for the front end of the project. Both for development purposes and production deployment, the back end needs to be setup as well. Deploying the project requires a more advanced setup than listed below.*
 
 ### Steps
-0. Setup the [back end](https://github.com/Vuroz/BusTrackr-Server) and run it
+0. Setup the [back end](https://github.com/Vuroz/BusTrackr-Server) and run it 🙏
 1. Clone this repo
 2. Install the necessary dependencies using npm (`npm i`) or yarn
 3. Run `npm run local-dev` to run with local back end.
