@@ -20,6 +20,7 @@ function BoxWidget(props) {
 	const lastClickedType = useSelector((state) => state.interface.lastClickedType);
 	const trendingData = useSelector((state) => state.interface.trendingBuses);
 	const favoritesStatus = useSelector((state) => state.interface.favorites.status);
+	const favoritesError = useSelector((state) => state.interface.favorites.error);
 	const favoritesData = useSelector((state) => state.interface.favorites.list);
 	const searchStatus = useSelector((state) => state.interface.search.status);
 	const searchQuery = useSelector((state) => state.interface.searchQuery);
@@ -61,7 +62,7 @@ function BoxWidget(props) {
 		case lastClickedTypes.TRENDING:
 			return <TrendingView onCloseClick={closeBoxWidgetACB} trendingData={trendingData} />;
 		case lastClickedTypes.FAVORITES:
-			return <FavoritesView status={favoritesStatus} favorites={favoritesData} onCloseClick={closeBoxWidgetACB} onUnfavorite={onUnfavoriteACB} showOnly={showOnlyACB} />;
+			return <FavoritesView status={favoritesStatus} error={favoritesError} favorites={favoritesData} onCloseClick={closeBoxWidgetACB} onUnfavorite={onUnfavoriteACB} showOnly={showOnlyACB} />;
 		default:
 			return <></>;
 	}

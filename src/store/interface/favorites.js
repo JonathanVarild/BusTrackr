@@ -18,7 +18,7 @@ export const favoritesInitialState = {
 	},
 };
 
-export const fetchFavorites = createAsyncThunk("interface/fetchFavorites", async (_, { getState }) => {
+async function fetchFavoritesCB(_, { getState }) {
 	return await fetch(apiUrl + "/api/favorites", {
 		method: "POST",
 		body: JSON.stringify({
@@ -29,9 +29,10 @@ export const fetchFavorites = createAsyncThunk("interface/fetchFavorites", async
 		},
 		credentials: "include",
 	}).then(fetchResolvedCB);
-});
+}
+export const fetchFavorites = createAsyncThunk("interface/fetchFavorites", fetchFavoritesCB);
 
-export const addFavorite = createAsyncThunk("interface/addFavorite", async ({ route_id }, { getState }) => {
+async function addFavoriteCB({ route_id }, { getState }) {
 	return await fetch(apiUrl + "/api/favorites", {
 		method: "POST",
 		body: JSON.stringify({
@@ -43,10 +44,10 @@ export const addFavorite = createAsyncThunk("interface/addFavorite", async ({ ro
 		},
 		credentials: "include",
 	}).then(fetchResolvedCB);
-});
+}
+export const addFavorite = createAsyncThunk("interface/addFavorite", addFavoriteCB);
 
-
-export const removeFavorite = createAsyncThunk("interface/removeFavorite", async ({ route_id }, { getState }) => {
+async function removeFavoriteCB({ route_id }, { getState }) {
 	return await fetch(apiUrl + "/api/favorites", {
 		method: "POST",
 		body: JSON.stringify({
@@ -58,12 +59,14 @@ export const removeFavorite = createAsyncThunk("interface/removeFavorite", async
 		},
 		credentials: "include",
 	}).then(fetchResolvedCB);
-});
+}
+export const removeFavorite = createAsyncThunk("interface/removeFavorite", removeFavoriteCB);
 
 export function favoritesBuilder(builder) {
 	builder
 		.addCase(fetchFavorites.pending, (state, action) => {
 			state.favorites.status = "loading";
+			state.favorites.error = null;
 			state.favorites.requestId = action.meta.requestId;
 		})
 		.addCase(fetchFavorites.fulfilled, (state, action) => {

@@ -1,5 +1,5 @@
 import styles from "../css/BusJourneyInfo.module.css";
-import { IconRefresh, IconX, IconUsers, IconSteeringWheel, IconDoorExit, IconDoorEnter, IconCompass, IconBrandSpeedtest } from "@tabler/icons-react";
+import { IconUsers, IconSteeringWheel, IconDoorExit, IconDoorEnter, IconCompass, IconBrandSpeedtest } from "@tabler/icons-react";
 import BoxWidgetView from "./BoxWidgetView";
 import { blueBusses } from "../store/mapData/utilities";
 

@@ -131,16 +131,6 @@ function DataReportView(props) {
 			</tr>
 		);
 	}
-
-	function renderFavoriteStationCB(favoriteStation) {
-		return (
-			<tr key={favoriteStation.lineID + favoriteStation.userID}>
-				<td>{props.data.userData.id}</td>
-				<td>{favoriteStation.stationID}</td>
-				<td>{favoriteStation.userID}</td>
-			</tr>
-		);
-	}
 }
 
 export default DataReportView;

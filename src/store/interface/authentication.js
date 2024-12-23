@@ -16,7 +16,7 @@ export const authInitialState = {
 	},
 };
 
-export const authenticateUser = createAsyncThunk("interface/authenticateUser", async (_, { getState, abort, requestId }) => {
+async function authenticateUserCB(_, { getState, abort, requestId }) {
 	const state = getState().interface;
 	const loginForm = state.authPopupForm.login;
 
@@ -33,9 +33,10 @@ export const authenticateUser = createAsyncThunk("interface/authenticateUser", a
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then(fetchResolvedCB);
-});
+}
+export const authenticateUser = createAsyncThunk("interface/authenticateUser", authenticateUserCB);
 
-export const reauthenticateUser = createAsyncThunk("interface/reauthenticateUser", async () => {
+async function reauthenticateUserCB() {
 	return await fetch(apiUrl + "/api/re-auth", {
 		method: "POST",
 		headers: {
@@ -44,7 +45,8 @@ export const reauthenticateUser = createAsyncThunk("interface/reauthenticateUser
 		},
 		credentials: "include",
 	}).then(fetchResolvedCB);
-});
+}
+export const reauthenticateUser = createAsyncThunk("interface/reauthenticateUser", reauthenticateUserCB);
 
 export function authenticateUserBuilder(builder) {
 	builder

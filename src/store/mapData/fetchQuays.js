@@ -12,7 +12,7 @@ export const fetchQuaysInitialState = {
 	},
 };
 
-export const fetchQuays = createAsyncThunk("mapData/fetchQuays", async (_, { getState }) => {
+async function fetchQuaysCB(_, { getState }) {
 	const screenBoundary = getState().mapData.screenBoundary;
 
 	return await fetch(apiUrl + "/api/quays", {
@@ -27,7 +27,8 @@ export const fetchQuays = createAsyncThunk("mapData/fetchQuays", async (_, { get
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then((resp) => resp.json());
-});
+}
+export const fetchQuays = createAsyncThunk("mapData/fetchQuays", fetchQuaysCB);
 
 export function fetchQuaysBuilder(builder) {
 	builder

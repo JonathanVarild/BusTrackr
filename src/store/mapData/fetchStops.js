@@ -12,7 +12,7 @@ export const fetchStopsInitialState = {
 	},
 };
 
-export const fetchStops = createAsyncThunk("mapData/fetchStops", async (_, { getState }) => {
+async function fetchStopsCB(_, { getState }) {
 	const screenBoundary = getState().mapData.screenBoundary;
 
 	return await fetch(apiUrl + "/api/stops", {
@@ -27,7 +27,9 @@ export const fetchStops = createAsyncThunk("mapData/fetchStops", async (_, { get
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then((resp) => resp.json());
-});
+}
+
+export const fetchStops = createAsyncThunk("mapData/fetchStops", fetchStopsCB);
 
 export function fetchStopsBuilder(builder) {
 	builder

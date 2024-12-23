@@ -11,7 +11,7 @@ export const createAccountInitialState = {
 	},
 };
 
-export const createUserAccount = createAsyncThunk("interface/createUserAccount", async (_, { getState, abort, requestId }) => {
+async function createUserAccountCB(_, { getState, abort, requestId }) {
 	const state = getState().interface;
 	const signupForm = state.authPopupForm.signup;
 
@@ -32,7 +32,8 @@ export const createUserAccount = createAsyncThunk("interface/createUserAccount",
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then(fetchResolvedCB);
-});
+}
+export const createUserAccount = createAsyncThunk("interface/createUserAccount", createUserAccountCB);
 
 export function createAccountBuilder(builder) {
 	builder
