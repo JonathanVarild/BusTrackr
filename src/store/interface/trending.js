@@ -12,7 +12,7 @@ export const trendingInitalState = {
 	},
 };
 
-export const fetchTrendingBuses = createAsyncThunk("interface/trendingBuses", async (_, { getState, abort, requestId }) => {
+async function fetchTrendingBusesCB(_, { getState, abort, requestId }) {
 	const state = getState().interface;
 
 	if (state.trendingBuses.requestId !== requestId) return abort("Request already in progress.");
@@ -23,7 +23,9 @@ export const fetchTrendingBuses = createAsyncThunk("interface/trendingBuses", as
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then(fetchResolvedCB);
-});
+}
+
+export const fetchTrendingBuses = createAsyncThunk("interface/trendingBuses", fetchTrendingBusesCB);
 
 export function trendingBuilder(builder) {
 	builder

@@ -11,12 +11,12 @@ export const updateAccountInitialState = {
 	},
 };
 
-export const updateUserAccount = createAsyncThunk("interface/updateUserAccount", async (_, { getState, abort, requestId }) => {
+async function updateUserAccountCB(_, { getState, abort, requestId }) {
 	const state = getState().interface;
 	const currentUserInfo = state.authenticate.userInfo;
 	const changedUserInfo = state.changedUserInfo;
 
-	if (state.updateAccount.requestId !== requestId) return
+	if (state.updateAccount.requestId !== requestId) return abort("Request already in progress.");
 
 	return await fetch(apiUrl + "/api/update-account", {
 		method: "POST",
@@ -29,7 +29,9 @@ export const updateUserAccount = createAsyncThunk("interface/updateUserAccount",
 			"Content-type": "application/json; charset=UTF-8",
 		},
 	}).then(fetchResolvedCB);
-});
+}
+
+export const updateUserAccount = createAsyncThunk("interface/updateUserAccount", updateUserAccountCB);
 
 export function updateAccountBuilder(builder) {
 	builder
