@@ -43,7 +43,7 @@ function AboutView() {
 							<ul>
 								<li>Second-year student in the Degree Programme in Computer Engineering (TIDAB)</li>
 								<li>
-									<a href="https://www.linkedin.com/in/lukas-nordström-27959528a/">LinkedIn</a>
+									<a href="https://www.linkedin.com/in/lukasnordström/">LinkedIn</a>
 								</li>
 							</ul>
 						</li>
