@@ -5,7 +5,6 @@ import { fetchDataReport } from "../store/interface/dataReport";
 
 function DataReport(props) {
 	const dataReport = useSelector((state) => state.interface.dataReport);
-	const userInfo = useSelector((state) => state.interface.authenticate.userInfo);
 	const dispatch = useDispatch();
 
 	useEffect(() => {

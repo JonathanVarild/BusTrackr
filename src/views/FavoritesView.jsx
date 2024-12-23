@@ -11,7 +11,7 @@ function FavoritesView(props) {
 	}
 
 	function renderContenCB() {
-		if (/*props.trendingData.error */ false) {
+		if (props.error !== null) {
 			return <div>There seems like an error occured. Please try again..</div>;
 		}
 

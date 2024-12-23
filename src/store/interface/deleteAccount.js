@@ -11,7 +11,7 @@ export const deleteAccountInitialState = {
 	},
 };
 
-export const deleteAccount = createAsyncThunk("interface/deleteAccount", async (_, { getState, requestId }) => {
+async function deleteAccountCB(_, { getState, requestId }) {
 	const state = getState().interface;
 
 	if (state.deleteAccount.requestId !== requestId) return abort("Request already in progress.");
@@ -23,7 +23,8 @@ export const deleteAccount = createAsyncThunk("interface/deleteAccount", async (
 		},
 		credentials: "include",
 	}).then(fetchResolvedCB);
-});
+}
+export const deleteAccount = createAsyncThunk("interface/deleteAccount", deleteAccountCB);
 
 export function deleteAccountBuilder(builder) {
 	builder

@@ -12,7 +12,7 @@ export const dataReportInitalState = {
 	},
 };
 
-export const fetchDataReport = createAsyncThunk("interface/fetchDataReport", async (_, { getState, abort, requestId }) => {
+async function fetchDataReportCB(_, { getState, abort, requestId }) {
 	const state = getState().interface;
 
 	if (state.dataReport.requestId !== requestId) return abort("Request already in progress.");
@@ -24,7 +24,8 @@ export const fetchDataReport = createAsyncThunk("interface/fetchDataReport", asy
 		},
 		credentials: "include",
 	}).then(fetchResolvedCB);
-});
+}
+export const fetchDataReport = createAsyncThunk("interface/fetchDataReport", fetchDataReportCB);
 
 export function dataReportBuilder(builder) {
 	builder

@@ -267,13 +267,16 @@ function Map(props) {
 			dispatch(setAwaitingLocation());
 		}
 
-		navigator.geolocation.clearWatch(navigator.geolocation.watchPosition.length);
-		navigator.geolocation.watchPosition((position) => {
+		function onLocationSuccessCB(position) {
 			dispatch(setUserLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude, accuracy: position.coords.accuracy }));
-		}),
-			(error) => {
-				setInvalidLocation(true);
-			};
+		}
+		
+		function onLocationFailCB(error) {
+			dispatch(setInvalidLocation(true));
+		}
+		
+		navigator.geolocation.clearWatch(navigator.geolocation.watchPosition.length);
+		navigator.geolocation.watchPosition(onLocationSuccessCB, onLocationFailCB);
 
 		const coords = userLocation != null ? fromLonLat([userLocation.longitude, userLocation.latitude]) : center;
 		const zoom = userLocation != null ? 18 : 12;

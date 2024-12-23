@@ -15,7 +15,7 @@ function AuthPopup(props) {
 
 	return (
 		<AuthPopupView
-			setCurrentView={SetCurrentViewACB}
+			setCurrentView={setCurrentViewACB}
 			currentView={currentView}
 			authPopupForm={authPopupForm}
 			onChangeLoginInput={onChangeLoginInputACB}
@@ -29,7 +29,7 @@ function AuthPopup(props) {
 		/>
 	);
 
-	function SetCurrentViewACB(view) {
+	function setCurrentViewACB(view) {
 		dispatch(setAuthPopup(view));
 	}
 
