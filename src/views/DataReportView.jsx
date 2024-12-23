@@ -49,7 +49,7 @@ function DataReportView(props) {
 			<table>
 				<thead>
 					<tr>
-						<th>line_id</th>
+						<th>route_id</th>
 						<th>user_id</th>
 					</tr>
 				</thead>
@@ -119,8 +119,8 @@ function DataReportView(props) {
 
 	function renderFavoriteLineCB(favoriteLine) {
 		return (
-			<tr key={favoriteLine.line_id + favoriteLine.userID}>
-				<td>{favoriteLine.line_id}</td>
+			<tr key={favoriteLine.route_id + favoriteLine.userID}>
+				<td>{favoriteLine.route_id}</td>
 				<td>{favoriteLine.userID}</td>
 			</tr>
 		);
