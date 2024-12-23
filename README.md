@@ -40,7 +40,7 @@ BusTrackr is app created by [Jonathan Värild](mailto:varild@kth.se), [Lukas Nor
 3. Run `npm run local-dev` to run with local back end.
 
 ## 😏 3rd party components
-RLayers is a third party component used in `src/presenters/MapPresenter.jsx` and `src/views/RMapView.jsx`
+RLayers is a third party component used in `src/presenters/MapPresenter.jsx` and `src/views/RMapView.jsx`. Also OpenLayers is used in the project, mostly in the same files.
 
 ## 💯 Attributions
 ### OpenStreetMap 
