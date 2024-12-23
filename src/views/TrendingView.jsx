@@ -29,7 +29,7 @@ function TrendingView(props) {
 			<div key={bus.busLine} className={styles.busItem}>
                 <div className={styles.numberID}>{index + 1}:</div>
 				<div className={classNames.join(" ")}>{bus.busLine}</div>
-				<div>{bus.clickCount} clicks</div>
+				<div className={styles.textContainer}>{bus.clickCount} clicks</div>
 			</div>
 		);
 	}

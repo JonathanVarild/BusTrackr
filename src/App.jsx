@@ -17,6 +17,7 @@ import LoadingSpinnerView from "./views/LoadingSpinnerView";
 import BoxWidget from "./presenters/BoxWidgetPresenter";
 
 import "./css/global.css";
+import FilteringPopup from "./presenters/FilteringPopupPresenter";
 
 function App() {
 	const reauthStatus = useSelector((state) => state.interface.reauthenticate.status);
@@ -43,8 +44,9 @@ function App() {
 			</BrowserRouter>
 			<AccountSettings />
 			<AuthPopup />
-			<PopupBox />
 			<BoxWidget />
+			<PopupBox />
+			<FilteringPopup />
 			{reauthStatus === "loading" && <LoadingSpinnerView />}
 		</div>
 	);
