@@ -1,0 +1,15 @@
+#popupWindow {
+	position: fixed;
+	top: 8rem;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: var(--element-margin);
+	text-align: center;
+	font-weight: 600;
+}
+
+.title {
+	color: var(--smooth-black-transparent-80);
+	font-size: 1.3rem;
+}
+

@@ -19,6 +19,7 @@ import {
 	setInvalidLocation,
 	setAwaitingLocation,
 	setSelectedLiveVehicleId,
+	setShowOnlyRouteId,
 } from "../store/mapData";
 import { lastClickedTypes } from "../store/interface/utilities";
 import { fetchQuays } from "../store/mapData/fetchQuays";
@@ -163,6 +164,7 @@ function Map(props) {
 
 	function shuffleBusACB() {
 		dispatch(fetchRandomBus());
+		dispatch(setShowOnlyRouteId(null));
 	}
 
 	function setStationHoveredACB(payload) {

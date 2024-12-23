@@ -72,11 +72,11 @@
 	gap: var(--element-margin);
 	color: var(--smooth-black-transparent);
 	padding-block: var(--element-margin);
-	width: 60%;
+	width: 75%;
 	border-bottom: 1px solid var(--smooth-black-transparent-10);
 	font-weight: 600;
 	padding-inline: var(--element-margin);
-	font-size: 1.5rem;
+	font-size: 1.3rem;
 }
 
 .settingPage {
