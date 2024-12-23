@@ -7,7 +7,7 @@
 
 .reportInfo {
     width: 100%;
-    max-width: 30rem;
+    max-width: 50rem;
     text-align: center;
     margin-bottom: var(--element-margin);
     color: var(--smooth-black-transparent);
@@ -27,7 +27,7 @@
     border: 1px solid var(--smooth-black-transparent-80);
     border-collapse: collapse;
     width: 100%;
-    max-width: 30rem;
+    max-width: 50rem;
     margin-bottom: 2rem;
 }
 
