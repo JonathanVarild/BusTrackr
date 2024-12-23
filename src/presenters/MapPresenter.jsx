@@ -51,7 +51,7 @@ function Map(props) {
 	const lastInteraction = useSelector((state) => state.interface.lastInteraction);
 	const shuffleBusStatus = useSelector((state) => state.interface.shuffleBus.status);
 	const currentShuffleBus = useSelector((state) => state.interface.shuffleBus.currentBus);
-	const userData = useSelector((state) => state.interface.authenticate.userInfo)
+	const userData = useSelector((state) => state.interface.authenticate.userInfo);
 
 	const dispatch = useDispatch();
 
@@ -132,7 +132,6 @@ function Map(props) {
 		</>
 	);
 
-
 	function performSearchACB(query, page) {
 		dispatch(updateLastInteraction());
 		dispatch(setLastClickedType(lastClickedTypes.SEARCH));
@@ -144,12 +143,14 @@ function Map(props) {
 
 	function openFavoritesACB() {
 		if (userData === null) {
-			dispatch(queuePopup({
-				title: "Please sign in",
-				message: "You need to be signed in to use favorites",
-				type: 0,
-			}));
-			return; 
+			dispatch(
+				queuePopup({
+					title: "Please sign in",
+					message: "You need to be signed in to use favorites",
+					type: 0,
+				})
+			);
+			return;
 		}
 		dispatch(setLastClickedType(lastClickedTypes.FAVORITES));
 		dispatch(setShowBoxWidget(true));
@@ -183,7 +184,9 @@ function Map(props) {
 		const combined = payload["service_journey_id"] + payload["vehicle_id"];
 		dispatch(setSelectedLiveVehicleId(combined));
 		dispatch(fetchJourneyDetails(payload));
-		dispatch(fetchFavorites());
+		if (userData !== null) {
+			dispatch(fetchFavorites());
+		}
 	}
 
 	function mapMoveACB() {
@@ -270,11 +273,11 @@ function Map(props) {
 		function onLocationSuccessCB(position) {
 			dispatch(setUserLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude, accuracy: position.coords.accuracy }));
 		}
-		
+
 		function onLocationFailCB(error) {
 			dispatch(setInvalidLocation(true));
 		}
-		
+
 		navigator.geolocation.clearWatch(navigator.geolocation.watchPosition.length);
 		navigator.geolocation.watchPosition(onLocationSuccessCB, onLocationFailCB);
 

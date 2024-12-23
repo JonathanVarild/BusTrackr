@@ -6,8 +6,8 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export const favoritesInitialState = {
 	favorites: {
 		status: "idle",
-        statusAdd: "idle",
-        statusRemove: "idle",
+		statusAdd: "idle",
+		statusRemove: "idle",
 		error: null,
 		errorAdd: null,
 		errorRemove: null,
@@ -22,7 +22,7 @@ async function fetchFavoritesCB(_, { getState }) {
 	return await fetch(apiUrl + "/api/favorites", {
 		method: "POST",
 		body: JSON.stringify({
-            type: 'list',
+			type: "list",
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
@@ -32,12 +32,18 @@ async function fetchFavoritesCB(_, { getState }) {
 }
 export const fetchFavorites = createAsyncThunk("interface/fetchFavorites", fetchFavoritesCB);
 
-async function addFavoriteCB({ route_id }, { getState }) {
+async function addFavoriteCB({ route_id }, { getState, abort }) {
+	const state = getState().interface;
+
+	if (state.authenticate.userInfo === null) {
+		return abort("Not logged in");
+	}
+
 	return await fetch(apiUrl + "/api/favorites", {
 		method: "POST",
 		body: JSON.stringify({
-            type: 'add',
-            route_id
+			type: "add",
+			route_id,
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
@@ -48,11 +54,17 @@ async function addFavoriteCB({ route_id }, { getState }) {
 export const addFavorite = createAsyncThunk("interface/addFavorite", addFavoriteCB);
 
 async function removeFavoriteCB({ route_id }, { getState }) {
+	const state = getState().interface;
+
+	if (state.authenticate.userInfo === null) {
+		return abort("Not logged in");
+	}
+
 	return await fetch(apiUrl + "/api/favorites", {
 		method: "POST",
 		body: JSON.stringify({
-            type: 'remove',
-            route_id
+			type: "remove",
+			route_id,
 		}),
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
@@ -82,7 +94,7 @@ export function favoritesBuilder(builder) {
 			state.favorites.error = action.error.message;
 		});
 
-    builder
+	builder
 		.addCase(addFavorite.pending, (state, action) => {
 			state.favorites.statusAdd = "loading";
 			state.favorites.requestIdAdd = action.meta.requestId;
@@ -92,13 +104,13 @@ export function favoritesBuilder(builder) {
 				state.favorites.statusAdd = "idle";
 				state.favorites.requestIdAdd = null;
 
-                state.favorites.list = action.payload.favorites;
+				state.favorites.list = action.payload.favorites;
 			}
 		})
 		.addCase(addFavorite.rejected, (state, action) => {
 			state.favorites.statusAdd = "failed";
 			state.favorites.errorAdd = action.error.message;
-			
+
 			if (state.authenticate.userInfo === null) {
 				state.queuedPopups.push({
 					title: "Please sign in",
@@ -108,7 +120,7 @@ export function favoritesBuilder(builder) {
 			}
 		});
 
-    builder
+	builder
 		.addCase(removeFavorite.pending, (state, action) => {
 			state.favorites.statusRemove = "loading";
 			state.favorites.requestIdRemove = action.meta.requestId;
@@ -118,7 +130,7 @@ export function favoritesBuilder(builder) {
 				state.favorites.statusRemove = "idle";
 				state.favorites.requestIdRemove = null;
 
-                state.favorites.list = action.payload.favorites;
+				state.favorites.list = action.payload.favorites;
 			}
 		})
 		.addCase(removeFavorite.rejected, (state, action) => {

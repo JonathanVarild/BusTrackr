@@ -56,13 +56,22 @@ function BoxWidget(props) {
 					onFavoriteClick={closeBoxWidgetACB}
 					searchResults={searchResults}
 					performSearchRelative={performSearchRelativeACB}
-                    searchQuery={searchQuery}
+					searchQuery={searchQuery}
 				/>
 			);
 		case lastClickedTypes.TRENDING:
 			return <TrendingView onCloseClick={closeBoxWidgetACB} trendingData={trendingData} />;
 		case lastClickedTypes.FAVORITES:
-			return <FavoritesView status={favoritesStatus} error={favoritesError} favorites={favoritesData} onCloseClick={closeBoxWidgetACB} onUnfavorite={onUnfavoriteACB} showOnly={showOnlyACB} />;
+			return (
+				<FavoritesView
+					status={favoritesStatus}
+					error={favoritesError}
+					favorites={favoritesData}
+					onCloseClick={closeBoxWidgetACB}
+					onUnfavorite={onUnfavoriteACB}
+					showOnly={showOnlyACB}
+				/>
+			);
 		default:
 			return <></>;
 	}
