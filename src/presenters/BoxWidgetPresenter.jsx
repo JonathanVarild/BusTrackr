@@ -55,6 +55,7 @@ function BoxWidget(props) {
                     onFavoriteClick={closeBoxWidgetACB}
                     searchResults={searchResults}
                     performSearchRelative={performSearchRelativeACB}
+                    searchQuery={searchQuery}
                 />
             );
         case lastClickedTypes.TRENDING:
