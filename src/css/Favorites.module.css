@@ -1,0 +1,96 @@
+#contentWrapper {
+	width: 100%;
+	overflow: hidden;
+}
+
+.headerTitle {
+	font-weight: 600;
+	font-size: 2.2rem;
+}
+
+#infoHeader {
+	font-weight: 600;
+	font-size: 1.2rem;
+	text-align: center;
+	padding-bottom: 1rem;
+}
+
+#busGrid {
+	display: grid;
+	grid-template-columns: repeat(1, 100%);
+	gap: var(--element-margin);
+	overflow: hidden;
+}
+
+.busItem {
+	display: flex;
+	gap: var(--element-margin);
+	align-items: center;
+	font-size: 1.4rem;
+}
+
+.busItem button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.busItem button:hover {
+	opacity: 0.85;
+}
+
+.busItem svg {
+	width: 1.8rem;
+	height: 1.8rem;
+}
+
+.busNumber {
+	background-color: #e94256;
+	border-radius: calc(1.25 * var(--element-margin));
+	padding: 0.3rem;
+	color: white;
+	font-weight: bold;
+	display: flex;
+	gap: var(--element-margin);
+	overflow: hidden;
+	width: 100%;
+}
+
+.lineNumber {
+	display: flex;
+	justify-content: center;
+	padding-left: 0.5rem;
+	width: 3rem;
+}
+
+.destination {
+	font-family: "Doto", serif;
+	font-optical-sizing: auto;
+	font-weight: 800;
+	font-size: 1.2rem;
+	background-color: var(--smooth-black);
+	color: #ff9400;
+	overflow: hidden;
+	border-radius: var(--element-margin);
+	padding: 0.3rem;
+	text-wrap: nowrap;
+	width: 100%;
+}
+
+.blueBus {
+	background-color: #007aff;
+}
+
+@media screen and (min-width: 768px), screen and (orientation: landscape) {
+	#busGrid {
+		grid-template-columns: repeat(2, 50%);
+	}
+
+	.busNumber {
+		max-width: 75%;
+	}
+
+	.busItem {
+		justify-content: center;
+	}
+}

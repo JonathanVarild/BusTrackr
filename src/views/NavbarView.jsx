@@ -7,7 +7,9 @@ function NavbarView(props) {
 	return (
 		<header id={styles.container} className={`${props.isNavOpen ? styles.navOpen : ""}`}>
 			<div id={styles.logo} className="rounded-corners drop-shadow blurred-background">
-				<img src={logo} alt="BusTrackr Logo (BusTrackr LIVE)" />
+				<a href="/">
+					<img src={logo} alt="BusTrackr Logo (BusTrackr LIVE)" />
+				</a>
 			</div>
 			<div id={styles.headernav}>
 				<nav className={props.isNavOpen ? styles.navContainerOpen : styles.navContainerClosed}>

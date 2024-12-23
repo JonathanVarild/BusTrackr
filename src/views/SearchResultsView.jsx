@@ -35,15 +35,19 @@ function SearchResultsView(props) {
         return (
             <div id={styles.resultTitle}>
                 <div className={styles.pageSwitcherContainer}>
-                    <button className={styles.pageSwitcherBtn} onClick={getPrevPageACB} disabled={props.searchResults?.page <= 0}>
+                    <button className={styles.pageSwitcherBtn} onClick={getPrevPageACB} disabled={(props.searchQuery.length < 3) || props.searchResults?.page <= 0}>
                         <IconCaretLeft className={styles.pageSwitcherIcon} stroke={1.25} />
                     </button>
                 </div>
                 <div className={styles.pageVisualizer}>
-                    <p>{props.searchResults.page + 1 + " / " + Math.ceil(props.searchResults.total / 5)}</p>
+                    {props.searchQuery.length < 3 ? (
+                        <p>- / -</p>
+                    ) : (
+                        <p>{props.searchResults.page + 1 + " / " + Math.ceil(props.searchResults.total / 5)}</p>
+                    )}
                 </div>
                 <div className={styles.pageSwitcherContainer}>
-                    <button className={styles.pageSwitcherBtn} onClick={getNextPageACB} disabled={props.searchResults?.is_last_page}>
+                    <button className={styles.pageSwitcherBtn} onClick={getNextPageACB} disabled={(props.searchQuery.length < 3) || props.searchResults?.is_last_page}>
                         <IconCaretRight className={styles.pageSwitcherIcon} stroke={1.25} />
                     </button>
                 </div>
@@ -64,6 +68,9 @@ function SearchResultsView(props) {
     }
 
     function contentCB() {
+        if (props.searchQuery.length < 3) {
+            return <p>Please type at least 3 characters</p>
+        }
         return <div id={styles.resultsContainer}>{props.searchResults?.results?.map(renderBusResult)}</div>;
     }
 

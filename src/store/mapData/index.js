@@ -18,6 +18,7 @@ const mapDataSlice = createSlice({
 		},
 
 		selectedLiveVehicleId: null,
+		showOnlyRouteId: null,
 
 		...fetchQuaysInitialState,
 		...fetchStopsInitialState,
@@ -37,6 +38,9 @@ const mapDataSlice = createSlice({
 			} else {
 				state.quays.list[action.payload.id].hovered = action.payload.hovered;
 			}
+		},
+		setShowOnlyRouteId: (state, action) => {
+			state.showOnlyRouteId = action.payload;
 		},
 		setSelectedLiveVehicleId: (state, action) => {
 			state.selectedLiveVehicleId = action.payload;
@@ -83,6 +87,7 @@ export const {
 	setAwaitingLocation,
 	setSelectedLiveVehicleId,
 	setLastClickedType,
+	setShowOnlyRouteId,
 } = mapDataSlice.actions;
 
 export default mapDataSlice.reducer;

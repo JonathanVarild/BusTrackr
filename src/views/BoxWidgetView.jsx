@@ -1,5 +1,5 @@
 import styles from "../css/BoxWidget.module.css";
-import { IconHeart, IconX, IconRefresh } from "@tabler/icons-react";
+import { IconHeart, IconHeartFilled, IconX, IconRefresh } from "@tabler/icons-react";
 
 function BoxWidgetView(props) {
     function onCloseClickACB(event) {
@@ -27,18 +27,23 @@ function BoxWidgetView(props) {
             <div id={styles.container}>
                 <div className={`${styles.content} header-2-font blurred-background rounded-corners drop-shadow`}>
                     <div id={styles.widgetHeader}>
-                        {props.onFavoriteClick ? (
+                        {(props.showHeart && props.onFavoriteClick) ? (
                             <div id={styles.favoriteContainer} className={`${styles.iconContainer}`}>
                                 <button type='button' className={styles.iconButton} onClick={onFavoriteClickACB}>
                                     <div className={styles.iconInnerContainer}>
-                                        <IconHeart stroke={1.25} className={`${styles.iconFullColor}`} />
+                                        {props.isFavorite && props.isFavorite() ? (
+                                            <IconHeartFilled stroke={1.25} className={`${styles.iconFullColor}`} />
+                                        ) : (
+                                            <IconHeart stroke={1.25} className={`${styles.iconFullColor}`} />
+                                        )
+                                        }
                                     </div>
                                 </button>
                             </div>
                         ) : (
                             <div></div>
                         )}
-                        {props.dataStatus !== "loading" && <div id={styles.titleContainer}>{props.renderTitleElementCB()}</div>}
+                        {props.dataStatus != "loading" && <div id={styles.titleContainer}>{props.renderTitleElementCB()}</div>}
                         <div id={styles.closeContainer} className={`${styles.iconContainer}`}>
                             <button type='button' className={styles.iconButton} onClick={onCloseClickACB}>
                                 <div className={styles.iconInnerContainer}>

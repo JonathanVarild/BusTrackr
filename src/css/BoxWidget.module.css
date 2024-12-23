@@ -35,20 +35,24 @@
         "content-title"
         "content-content";
     transition: height 0.1s cubic-bezier(0.79, 0.14, 0.15, 0.86);
+    overflow: hidden;
 }
 
 #contentInner {
     grid-area: content-content;
     height: 100%;
+    overflow: hidden;
 }
 
 #widgetHeader {
     grid-area: content-title;
 
     display: grid;
-    grid-template-columns: var(--element-size) 1fr var(--element-size);
+    grid-template-columns: var(--element-size) calc(100vw - 4 * var(--element-margin) - 2 * var(--element-size)) var(--element-size);
     grid-template-rows: 1fr;
     grid-template-areas: "favorite title close";
+
+    max-width: calc(100vw - 4 * var(--element-margin));
 }
 
 #favoriteContainer {
@@ -64,7 +68,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-inline: 0.2rem;
+    max-width: 100%;
 }
 
 .iconContainer {
@@ -127,6 +131,11 @@ screen and (orientation: landscape) {
         gap: var(--element-margin);
         width: 90%;
         max-width: 40rem;
+    }
+
+    #widgetHeader {
+        grid-template-columns: var(--element-size) calc(40rem - 4 * var(--element-margin) - 2 * var(--element-size)) var(--element-size);
+        max-width: unset;
     }
 
     .content {

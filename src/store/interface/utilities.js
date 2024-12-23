@@ -1,9 +1,16 @@
 export async function fetchResolvedCB(resp) {
-	if (resp.status !== 200) {
+	if (resp.status < 200 || resp.status > 200) {
 		const error = await resp.json();
 		return Promise.reject(new Error(error.message));
 	}
 	return resp.json();
+}
+
+export const lastClickedTypes = {
+	VEHICLE: "vehicle",
+	SEARCH: "search",
+	TRENDING: "trending",
+	FAVORITES: "favorites"
 }
 
 export function parseStringTime(stringTime) {

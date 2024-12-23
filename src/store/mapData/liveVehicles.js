@@ -40,7 +40,9 @@ export function liveVehiclesBuilder(builder) {
 				state.liveVehicles.status = "idle";
 				state.liveVehicles.requestId = null;
 
-				const newLiveVehicles = action.payload.list.map((liveVehicle) => {
+				const newLiveVehicles = action.payload.list.filter((liveVehicle) => {
+					return state.showOnlyRouteId == null || state.showOnlyRouteId === liveVehicle.route_id;
+				}).map((liveVehicle) => {
 					const existingVehicle = state.liveVehicles.list[liveVehicle.service_journey_id + liveVehicle.vehicle_id];
 					return {
 						...liveVehicle,

@@ -49,8 +49,8 @@ function DataReportView(props) {
 			<table>
 				<thead>
 					<tr>
-						<th>line_id</th>
 						<th>user_id</th>
+						<th>route_id</th>
 					</tr>
 				</thead>
 				<tbody>{props.data.favoriteLines.map(renderFavoriteLineCB)}</tbody>
@@ -59,6 +59,7 @@ function DataReportView(props) {
 			<table>
 				<thead>
 					<tr>
+						<th>user_id</th>
 						<th>time</th>
 						<th>ip</th>
 					</tr>
@@ -69,6 +70,7 @@ function DataReportView(props) {
 			<table>
 				<thead>
 					<tr>
+						<th>user_id</th>
 						<th>time</th>
 						<th>ip</th>
 					</tr>
@@ -79,6 +81,7 @@ function DataReportView(props) {
 			<table>
 				<thead>
 					<tr>
+						<th>user_id</th>
 						<th>time</th>
 						<th>type</th>
 						<th>ip</th>
@@ -92,6 +95,7 @@ function DataReportView(props) {
 	function renderLoginCB(login) {
 		return (
 			<tr key={login.timestamp + login.ip}>
+				<td>{props.data.userData.id}</td>
 				<td>{login.timestamp} (UTC +0)</td>
 				<td>{login.ip}</td>
 			</tr>
@@ -101,6 +105,7 @@ function DataReportView(props) {
 	function renderReportCB(report) {
 		return (
 			<tr key={report.timestamp + report.ip}>
+				<td>{props.data.userData.id}</td>
 				<td>{report.timestamp} (UTC +0)</td>
 				<td>{report.ip}</td>
 			</tr>
@@ -110,6 +115,7 @@ function DataReportView(props) {
 	function renderAgreementCB(agreement) {
 		return (
 			<tr key={agreement.timestamp + agreement.type + agreement.ip}>
+				<td>{props.data.userData.id}</td>
 				<td>{agreement.timestamp} (UTC +0)</td>
 				<td>{agreement.type}</td>
 				<td>{agreement.ip}</td>
@@ -119,9 +125,9 @@ function DataReportView(props) {
 
 	function renderFavoriteLineCB(favoriteLine) {
 		return (
-			<tr key={favoriteLine.line_id + favoriteLine.userID}>
-				<td>{favoriteLine.line_id}</td>
-				<td>{favoriteLine.userID}</td>
+			<tr key={favoriteLine.route_id + favoriteLine.userID}>
+				<td>{props.data.userData.id}</td>
+				<td>{favoriteLine.route_id}</td>
 			</tr>
 		);
 	}
@@ -129,6 +135,7 @@ function DataReportView(props) {
 	function renderFavoriteStationCB(favoriteStation) {
 		return (
 			<tr key={favoriteStation.lineID + favoriteStation.userID}>
+				<td>{props.data.userData.id}</td>
 				<td>{favoriteStation.stationID}</td>
 				<td>{favoriteStation.userID}</td>
 			</tr>

@@ -9,6 +9,8 @@ import { searchInitialState, searchBuilder } from "./search";
 import { trendingBuilder, trendingInitalState } from "./trending";
 import { deleteAccountBuilder, deleteAccountInitialState, getDeleteAccountMiddleware } from "./deleteAccount";
 import { dataReportBuilder, dataReportInitalState } from "./dataReport";
+import { favoritesBuilder, favoritesInitialState } from "./favorites";
+import { shuffleBusBuilder, shuffleBusInitialState } from "./shuffleBus";
 
 const interfaceSlice = createSlice({
 	name: "interface",
@@ -42,7 +44,6 @@ const interfaceSlice = createSlice({
 		searchQuery: null,
 		showBoxWidget: false,
 		lastClickedType: null,
-		showTrending: false,
 
 		...authInitialState,
 		...logoutInitialState,
@@ -53,6 +54,8 @@ const interfaceSlice = createSlice({
 		...trendingInitalState,
 		...deleteAccountInitialState,
 		...dataReportInitalState,
+		...favoritesInitialState,
+		...shuffleBusInitialState,
 	},
 	reducers: {
 		toggleNavigation: (state) => {
@@ -72,20 +75,10 @@ const interfaceSlice = createSlice({
 		},
 		dequeuePopup: (state, action) => {
 			switch (action.payload) {
-				case "DeleteAccount":
-					console.log("Deleted account.");
-					break;
-				case "AbortDeleteAccount":
-					console.log("Account not deleted.");
-					break;
-				case "ClosedWelcomeMessage":
-					console.log("Welcome message was closed.");
-					break;
 				case "RevertSettingChanges":
 					state.changedUserInfo = null;
 					break;
 				case "NoLongerInactive":
-					console.log("User is active again!");
 					state.lastInteraction = Date.now();
 					break;
 			}
@@ -121,9 +114,6 @@ const interfaceSlice = createSlice({
 		setSearchQuery: (state, action) => {
 			state.searchQuery = action.payload;
 		},
-		setShowTrending: (state, action) => {
-			state.showTrending = action.payload;
-		},
 	},
 	extraReducers: (builder) => {
 		authenticateUserBuilder(builder);
@@ -136,6 +126,8 @@ const interfaceSlice = createSlice({
 		trendingBuilder(builder);
 		deleteAccountBuilder(builder);
 		dataReportBuilder(builder);
+		favoritesBuilder(builder);
+		shuffleBusBuilder(builder);
 	},
 });
 
@@ -154,6 +146,7 @@ export const {
 	setLastClickedType,
 	setSearchQuery,
 	setShowTrending,
+	setShowFavorites,
 } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;

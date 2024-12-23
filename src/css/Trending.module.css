@@ -1,5 +1,6 @@
 .headerTitle {
 	font-weight: 600;
+	font-size: 2rem;
 }
 
 #trendingGrid {
@@ -12,6 +13,7 @@
 .busItem {
 	display: flex;
 	gap: var(--element-margin);
+	font-size: 1.2rem;
 }
 
 .busNumber {
@@ -20,12 +22,33 @@
 	padding: 0.2rem;
 	color: white;
 	font-weight: 600;
+	width: 2.9rem;
+	height: 2.3rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .blueBus {
-    background-color: #007aff;
+	background-color: #007aff;
 }
 
 .numberID {
 	color: var(--smooth-black-transparent-80);
+}
+
+.textContainer {
+	display: flex;
+	align-items: center;
+}
+
+@media screen and (min-width: 768px) {
+	.headerTitle {
+		font-size: 2.2rem;
+	}
+
+	.busNumber {
+		width: 3.5rem;
+		height: 2.5rem;
+	}
 }

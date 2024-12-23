@@ -15,6 +15,7 @@
 	border-radius: calc(1.25 * var(--element-margin));
 	padding-left: calc(0.5 * var(--element-margin));
 	padding-right: calc(0.5 * var(--element-margin));
+	overflow: hidden;
 }
 
 .titleh3 > * {
@@ -24,6 +25,7 @@
 	border-radius: var(--element-margin);
 	padding-left: calc(0.75 * var(--element-margin));
 	padding-right: calc(0.5 * var(--element-margin));
+	max-width: 100%;
 }
 
 .nameSpan {
@@ -35,6 +37,7 @@
 
 	background-color: var(--smooth-black);
 	color: #ff9400;
+	white-space: nowrap;
 	overflow: hidden;
 	font-size: 1.5rem;
 }

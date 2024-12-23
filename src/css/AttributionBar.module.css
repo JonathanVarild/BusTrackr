@@ -1,0 +1,53 @@
+#attributionBar {
+	position: fixed;
+	top: 4rem;
+	right: 50%;
+	transform: translateX(50%);
+	font-size: 0.7rem;
+	padding: 0.2rem;
+	font-weight: 500;
+	text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+
+#attributionBar:hover {
+	background-color: white;
+	border-radius: 5px;
+}
+
+#attributionBar span {
+	padding-inline: 0.3rem;
+	display: none;
+}
+
+.attributionText {
+	text-wrap: nowrap;
+}
+
+@media screen and (min-width: 300px) {
+	#attributionBar {
+		flex-direction: row;
+		text-align: unset;
+	}
+
+	#attributionBar span {
+		display: unset;
+	}
+}
+
+@media screen and (min-width: 1300px) {
+	#attributionBar {
+        top: unset;
+        left: unset;
+		right: 0;
+		bottom: 0;
+		transform: unset;
+	}
+
+    #attributionBar:hover {
+        border-radius: unset;
+        border-top-left-radius: 5px;
+    }
+}

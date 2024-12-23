@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { reauthenticateUser } from "./store/interface/authentication";
+import { updateLastInteraction } from "./store/interface";
 
 import Navbar from "./presenters/NavbarPresenter";
 import Map from "./presenters/MapPresenter";
@@ -13,9 +14,10 @@ import PopupBox from "./presenters/PopupBoxPresenter";
 import AuthPopup from "./presenters/AuthPopupPresenter";
 import DataReport from "./presenters/DataReportPresenter";
 import LoadingSpinnerView from "./views/LoadingSpinnerView";
-import Trending from "./presenters/TrendingPresenter";
+import BoxWidget from "./presenters/BoxWidgetPresenter";
 
 import "./css/global.css";
+import FilteringPopup from "./presenters/FilteringPopupPresenter";
 
 function App() {
 	const reauthStatus = useSelector((state) => state.interface.reauthenticate.status);
@@ -25,8 +27,12 @@ function App() {
 		dispatch(reauthenticateUser());
 	}, [dispatch]);
 
+	function updateLastInteractionACB() {
+		dispatch(updateLastInteraction());
+	}
+
 	return (
-		<>
+		<div id="contentWrapper" onClick={updateLastInteractionACB} onScrollCapture={updateLastInteractionACB}>
 			<Navbar />
 			<BrowserRouter>
 				<Routes>
@@ -38,10 +44,11 @@ function App() {
 			</BrowserRouter>
 			<AccountSettings />
 			<AuthPopup />
+			<BoxWidget />
 			<PopupBox />
-			<Trending />
+			<FilteringPopup />
 			{reauthStatus === "loading" && <LoadingSpinnerView />}
-		</>
+		</div>
 	);
 }
 
