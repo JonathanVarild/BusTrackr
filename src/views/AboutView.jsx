@@ -51,6 +51,9 @@ function AboutView() {
 							<strong>Samuel Brodin</strong>
 							<ul>
 								<li>Second-year student in the Degree Programme in Computer Engineering (TIDAB)</li>
+								<li>
+									<a href="https://www.linkedin.com/in/samuel-brodin-10825a343/">LinkedIn</a>
+								</li>
 							</ul>
 						</li>
 					</ul>
